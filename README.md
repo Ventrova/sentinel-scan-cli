@@ -1,3 +1,7 @@
+<p align="center">
+  <a href="https://ventrova.dev"><img src="assets/ventrova-wordmark.png" alt="Ventrova" width="440"></a>
+</p>
+
 # Sentinel Scan CLI
 
 A free, open-source command-line tool that runs a 15-attack prompt-injection
