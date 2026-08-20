@@ -2,6 +2,13 @@
   <a href="https://ventrova.dev"><img src="assets/ventrova-wordmark.png" alt="Ventrova" width="440"></a>
 </p>
 
+<p align="center">
+  <a href="https://ventrova.dev">ventrova.dev</a> ·
+  <a href="https://ventrova.dev/audit">Get your endpoint audited</a> ·
+  <a href="https://github.com/Ventrova/sentinel-scan-cli/stargazers">⭐ Star this repo</a> ·
+  <a href="https://github.com/Ventrova/sentinel-scan-cli/subscription">👁 Watch for new attacks</a>
+</p>
+
 # Sentinel Scan CLI
 
 A free, open-source command-line tool that runs a 15-attack prompt-injection
@@ -98,6 +105,14 @@ written report you can hand to a customer or a compliance reviewer.
 
 - See a real finding from a live scan: **https://ventrova.dev/teardown**
 - Get your own endpoint audited ($249, fixed price, fast turnaround): **https://ventrova.dev/audit**
+
+## Contributing
+
+Bug reports, false-positive/negative reports, and new attack proposals are
+welcome. See [CONTRIBUTING.md](./CONTRIBUTING.md).
+
+If this tool was useful, a star helps other people building on top of LLMs
+find it: [github.com/Ventrova/sentinel-scan-cli](https://github.com/Ventrova/sentinel-scan-cli).
 
 ## License
 
