@@ -1,0 +1,47 @@
+name: Scan found something
+description: Sentinel Scan flagged a real vulnerability or a false positive in your LLM app, and you want help or want to share it.
+title: "[Finding] "
+labels: ["scan-finding"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Tell us what Sentinel Scan found. Please **do not paste secrets, API keys, or sensitive customer data** here — redact before posting. If your finding is sensitive, mention that below and we'll follow up privately.
+  - type: dropdown
+    id: finding-type
+    attributes:
+      label: What kind of finding is this?
+      options:
+        - Confirmed vulnerability (prompt injection, jailbreak, data leak, etc.)
+        - Suspected vulnerability - not fully verified
+        - False positive
+        - Unclear result / need help interpreting output
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary of the finding
+      description: What did the scan flag? Paste the relevant (redacted) scan output if possible.
+    validations:
+      required: true
+  - type: textarea
+    id: target
+    attributes:
+      label: Target details
+      description: What kind of app/model was scanned (framework, model provider, endpoint type). No need to share URLs or keys.
+    validations:
+      required: false
+  - type: input
+    id: version
+    attributes:
+      label: sentinel-scan-cli version / commit
+    validations:
+      required: false
+  - type: checkboxes
+    id: interest
+    attributes:
+      label: Interested in a deeper assessment?
+      options:
+        - label: I'd like Ventrova to reach out about a fuller security assessment for this finding.
+          required: false

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Ask a question / general discussion
+    url: https://github.com/Ventrova/sentinel-scan-cli/discussions
+    about: For questions, ideas, and general discussion, please use GitHub Discussions instead of an issue.
+  - name: Ventrova - LLM app-security scanning
+    url: https://ventrova.dev
+    about: Learn more about the Sentinel Scan pilot and Ventrova's LLM security tooling.
