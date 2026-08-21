@@ -203,6 +203,10 @@ def run_scan(args):
         print("presence only - it will miss subtler leaks and false-negatives on both sides.")
         print("For a thorough, LLM-judged audit with a full report: https://ventrova.dev/audit")
         print("See what a real finding looks like: https://ventrova.dev/teardown")
+    print()
+    print("Want this scan running on a schedule instead of by hand? We're building")
+    print("continuous monitoring (founder pricing $49-99/mo, waitlist open):")
+    print("https://ventrova.dev/audit#monitoring")
     return out
 
 
