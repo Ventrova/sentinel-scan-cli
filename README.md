@@ -106,6 +106,10 @@ written report you can hand to a customer or a compliance reviewer.
 - See a real finding from a live scan: **https://ventrova.dev/teardown**
 - Get your own endpoint audited ($249, fixed price, fast turnaround): **https://ventrova.dev/audit**
 
+## Related
+
+- [PromptGuard CI](https://github.com/Ventrova/promptguard-ci) - same attack-pack approach, wired into your CI pipeline to catch prompt-injection regressions on every push/PR.
+
 ## Contributing
 
 Bug reports, false-positive/negative reports, and new attack proposals are
