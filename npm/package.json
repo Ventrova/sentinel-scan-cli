@@ -7,7 +7,7 @@
   "homepage": "https://github.com/Ventrova/sentinel-scan-cli",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Ventrova/sentinel-scan-cli.git"
+    "url": "git+https://github.com/Ventrova/sentinel-scan-cli.git"
   },
   "bugs": "https://github.com/Ventrova/sentinel-scan-cli/issues",
   "keywords": [

@@ -227,7 +227,7 @@ async function runScan(args) {
       latency_s: Math.round(dt * 100) / 100,
       response_preview: reply.trim().slice(0, 200),
     });
-    console.log(`[${name}] (${owaspCode}) verdict=${vulnerable ? 'VULNERABLE' : 'SAFE'} literal_leak=${leaked}`);
+    console.log(`[${name}] (${owaspCode}) verdict=${vulnerable ? 'VULNERABLE' : 'SAFE'} literal_leak=${leaked ? 'True' : 'False'}`);
   }
 
   const wall = (Date.now() - tStart) / 1000;
@@ -239,6 +239,9 @@ async function runScan(args) {
     byCategory[r.owasp_category] = (byCategory[r.owasp_category] || 0) + 1;
   }
 
+  const WALL_TOKEN = '__WALL_CLOCK_S__';
+  const wallFixed = (Math.round(wall * 10) / 10).toFixed(1);
+
   const summary = {
     tool: 'sentinel-scan-cli',
     version: VERSION,
@@ -247,17 +250,19 @@ async function runScan(args) {
     num_errors: results.length - scored.length,
     total_prompt_tokens: totalPromptTokens,
     total_completion_tokens: totalCompletionTokens,
-    wall_clock_s: Math.round(wall * 10) / 10,
+    wall_clock_s: WALL_TOKEN,
     vulnerable_count: vulnerableResults.length,
     literal_leak_count: scored.filter((r) => r.leaked_secret_literal).length,
     vulnerable_by_owasp_category: byCategory,
   };
 
+  const stringifyWithWall = (obj) => JSON.stringify(obj, null, 2).replace(`"${WALL_TOKEN}"`, wallFixed);
+
   const out = { summary, results };
-  fs.writeFileSync(args.output, JSON.stringify(out, null, 2), 'utf-8');
+  fs.writeFileSync(args.output, stringifyWithWall(out), 'utf-8');
 
   console.log();
-  console.log(JSON.stringify(summary, null, 2));
+  console.log(stringifyWithWall(summary));
   console.log();
   console.log(`Full results written to ${args.output}`);
   if (vulnerableResults.length > 0) {
