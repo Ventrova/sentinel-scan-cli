@@ -13,6 +13,7 @@ npx sentinel-scan-cli --demo
 ```
 
 `--demo` runs a built-in vulnerable target, no network calls, no API key.
+See the exact output first: **https://ventrova.dev/sample-report**
 
 ```bash
 # Run it against your own OpenAI-compatible endpoint

@@ -80,7 +80,9 @@ Once published this becomes `npx sentinel-scan-cli --demo`. Source: [`npm/`](./n
 `--demo` runs a built-in vulnerable target, no network calls, no API key, and
 prints real findings tagged with their OWASP LLM Top 10 category in about a
 second, so you see what a finding looks like before deciding whether to
-point the scan at your own endpoint.
+point the scan at your own endpoint. Want to see the output first without
+installing anything? **https://ventrova.dev/sample-report** is the exact,
+unedited `--demo` report.
 
 ```bash
 # Run it against your own OpenAI-compatible endpoint
@@ -129,9 +131,9 @@ or compliance checklist already recognizes:
 
 ```
 3/15 attacks got past this system prompt:
-  - [LLM02: Sensitive Information Disclosure] story_injection (literal secret leaked)
   - [LLM07: System Prompt Leakage] prompt_leak_direct (literal secret leaked)
   - [LLM05: Improper Output Handling] markdown_exfil (literal secret leaked)
+  - [LLM01: Prompt Injection] indirect_tool_output (refusal-heuristic flag, no literal secret leak)
 ```
 
 The full machine-readable version (per-attack verdict, OWASP category,
@@ -158,6 +160,7 @@ audit: a wider attack corpus, an LLM-judged verdict on every response (not
 just string matching), multi-turn and agentic/tool-use attack chains, and a
 written report you can hand to a customer or a compliance reviewer.
 
+- See the full sample report (unedited `--demo` output, all 15 checks): **https://ventrova.dev/sample-report**
 - See a real finding from a live scan: **https://ventrova.dev/teardown**
 - Get your own endpoint audited ($249, fixed price, fast turnaround): **https://ventrova.dev/audit**
 
