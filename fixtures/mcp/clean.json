@@ -1,0 +1,36 @@
+{
+  "name": "example-clean-server",
+  "tools": [
+    {
+      "name": "search_docs",
+      "description": "Searches internal product documentation by keyword and returns matching page excerpts.",
+      "inputSchema": {
+        "type": "object",
+        "properties": { "query": { "type": "string" } },
+        "additionalProperties": false
+      },
+      "scopes": ["docs:read"]
+    },
+    {
+      "name": "fetch_webpage",
+      "description": "Fetches the raw text content of a single allow-listed URL for the user to review.",
+      "inputSchema": {
+        "type": "object",
+        "properties": { "url": { "type": "string" } },
+        "additionalProperties": false
+      },
+      "scopes": ["web:read"]
+    }
+  ],
+  "mcpServers": {
+    "docs-search": {
+      "command": "npx",
+      "args": ["-y", "@acme/docs-mcp-server@2.4.1"],
+      "env": {
+        "DOCS_API_KEY": "${DOCS_API_KEY}"
+      },
+      "publisher": "Acme Inc. (verified npm publisher)",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

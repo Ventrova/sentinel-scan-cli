@@ -9,8 +9,10 @@ attacks caused a policy break or leaked a planted secret.
 
 Also includes `sentinel-scan mcp`, a static heuristic scanner for MCP tool
 manifests (mcp.json) that flags tool-description prompt injection,
-tool-name shadowing, excessive-agency schema patterns, and indirect-injection
-surface area - no network calls, no LLM calls.
+tool-name shadowing, excessive-agency schema patterns, indirect-injection
+surface area, unpinned/remote server sources, hardcoded credentials,
+overbroad wildcard scopes, and missing provenance/signature metadata - no
+network calls, no LLM calls.
 
 Zero dependencies beyond the Python 3 standard library. Nothing is sent
 anywhere except your own endpoint - no telemetry, no phone-home.
@@ -73,6 +75,23 @@ VERSION = "1.2.0"
 #                             |              | execute) - the "toxic flow"
 #                             |              | combination indirect prompt
 #                             |              | injection needs to do damage
+# unpinned_remote_source     | LLM03        | a server entry launches a
+#                             |              | package via npx/uvx/pip/etc
+#                             |              | with no pinned version, or is
+#                             |              | reachable over a plaintext
+#                             |              | (http://) remote transport
+# hardcoded_credential       | LLM02        | an API key/token/password
+#                             |              | literal embedded in a server's
+#                             |              | env block or CLI args instead
+#                             |              | of an env-var placeholder
+# overbroad_tool_scope       | LLM06        | a tool or server declares a
+#                             |              | wildcard/blanket scope or
+#                             |              | permission ("*", "all", "admin")
+#                             |              | instead of an enumerated list
+# missing_provenance         | LLM03        | a remote-sourced server entry
+#                             |              | (package runner or URL) with no
+#                             |              | signature/checksum/publisher
+#                             |              | field to verify what's launched
 
 MCP_SEVERITY_RANK = {"LOW": 0, "MEDIUM": 1, "HIGH": 2}
 
@@ -130,6 +149,35 @@ _MCP_ACT_KEYWORDS = (
     "send", "email", "post", "write", "delete", "execute", "run", "deploy",
     "transfer", "purchase", "pay", "publish", "message", "invoke",
 )
+
+# Package-manager runners commonly used to launch an MCP server, split by
+# ecosystem so version-pin syntax can be checked correctly ("pkg@1.2.3" for
+# node, "pkg==1.2.3" for python).
+_MCP_NODE_RUNNERS = {"npx", "bunx", "pnpm", "yarn", "npm"}
+_MCP_PY_RUNNERS = {"pip", "pipx", "uv", "uvx"}
+_MCP_PACKAGE_RUNNERS = _MCP_NODE_RUNNERS | _MCP_PY_RUNNERS
+
+# env/arg key names that suggest the value is a credential of some kind.
+_MCP_SECRET_KEY_RE = re.compile(
+    r"(api[_-]?key|secret|token|password|passwd|credential|access[_-]?key|private[_-]?key)",
+    re.IGNORECASE,
+)
+# A value that's a placeholder to be resolved at launch time, not a literal
+# secret: "${VAR}", "$VAR", "<VAR>", or empty.
+_MCP_PLACEHOLDER_RE = re.compile(r"^\$\{[^}]+\}$|^\$[A-Za-z_][A-Za-z0-9_]*$|^<.*>$|^$")
+# A CLI arg of the form --some-key=value or --some-key value where the key
+# name looks like a credential.
+_MCP_CLI_SECRET_ARG_RE = re.compile(
+    r"^--?([\w-]*(?:key|token|secret|password|credential)[\w-]*)[=\s](.+)$",
+    re.IGNORECASE,
+)
+
+# Wildcard/blanket scope or permission strings instead of an enumerated list.
+_MCP_WILDCARD_SCOPE_RE = re.compile(r"^(\*|all|admin|full[_-]?access|god[_-]?mode)$", re.IGNORECASE)
+
+# Fields that would let a reviewer verify what's actually being launched for
+# a remote-sourced server (package registry pull or remote URL transport).
+_MCP_PROVENANCE_FIELDS = ("signature", "sha256", "checksum", "integrity", "publisher", "provenance", "attestation")
 
 
 def _mcp_edit_distance_le(a, b, limit):
@@ -358,11 +406,148 @@ def _mcp_scan_indirect_injection_surface(tools):
     return findings
 
 
+def _mcp_package_ref_is_pinned(command, arg):
+    """True if a positional npx/uvx/pip/etc arg pins an exact version."""
+    if command in _MCP_NODE_RUNNERS:
+        body = arg[1:] if arg.startswith("@") else arg
+        return "@" in body
+    if command in _MCP_PY_RUNNERS:
+        return "==" in arg or arg.count("@") >= 1
+    return True
+
+
+def _mcp_looks_like_package_ref(arg):
+    if not isinstance(arg, str) or not arg or arg.startswith("-"):
+        return False
+    if arg in ("run", "install", "exec", "dlx", "add", "-y", "--yes"):
+        return False
+    if arg.startswith((".", "/", "http://", "https://")):
+        return False
+    return re.match(r"^@?[A-Za-z0-9][\w.\-]*(/[\w.\-]+)?(?:[=@][\w.\-+]+)?$", arg) is not None
+
+
+def _mcp_scan_source_pinning(server_name, server):
+    """LLM03: remote/unpinned tool sources - unversioned package pulls or
+    plaintext remote transports in a server launch config."""
+    findings = []
+    command = server.get("command")
+    args = server.get("args") if isinstance(server.get("args"), list) else []
+    url = server.get("url")
+
+    if isinstance(url, str) and url.lower().startswith("http://"):
+        findings.append(_mcp_finding(
+            "unpinned_remote_source", "LLM03", "HIGH", server_name,
+            f'server is reachable over a plaintext remote transport: "{url}"',
+            "Serve MCP over https:// (or a local stdio transport). A plaintext "
+            "remote endpoint can be tampered with or impersonated in transit.",
+        ))
+
+    if isinstance(command, str) and command.lower() in _MCP_PACKAGE_RUNNERS:
+        cmd = command.lower()
+        for arg in args:
+            if not _mcp_looks_like_package_ref(arg):
+                continue
+            if not _mcp_package_ref_is_pinned(cmd, arg):
+                findings.append(_mcp_finding(
+                    "unpinned_remote_source", "LLM03", "MEDIUM", server_name,
+                    f'server launches package "{arg}" via {command!r} with no pinned '
+                    "version (no @version/==version suffix) - it fetches whatever the "
+                    "registry serves at run time",
+                    "Pin an exact version (e.g. package@1.2.3, package==1.2.3) so the "
+                    "server can't be silently swapped for a malicious update between runs.",
+                ))
+    return findings
+
+
+def _mcp_scan_env_secrets(server_name, server):
+    """LLM02: secrets or credentials hardcoded in a server's env block or args,
+    instead of an env-var placeholder resolved at launch time."""
+    findings = []
+    env = server.get("env")
+    if isinstance(env, dict):
+        for key, value in env.items():
+            if not isinstance(value, str):
+                continue
+            if _MCP_PLACEHOLDER_RE.match(value.strip()):
+                continue
+            if _MCP_SECRET_KEY_RE.search(key) and len(value.strip()) >= 8:
+                findings.append(_mcp_finding(
+                    "hardcoded_credential", "LLM02", "HIGH", server_name,
+                    f'env var "{key}" holds a literal value (not an "${{ENV_VAR}}" '
+                    f'placeholder): "{value[:8]}..."',
+                    "Reference credentials via an environment-variable placeholder "
+                    '(e.g. "${OPENAI_API_KEY}") resolved from a secret store at launch '
+                    "time - never commit a literal secret value into mcp.json.",
+                ))
+
+    args = server.get("args")
+    if isinstance(args, list):
+        for arg in args:
+            if not isinstance(arg, str):
+                continue
+            m = _MCP_CLI_SECRET_ARG_RE.match(arg)
+            if m and not _MCP_PLACEHOLDER_RE.match(m.group(2).strip()):
+                findings.append(_mcp_finding(
+                    "hardcoded_credential", "LLM02", "HIGH", server_name,
+                    f'command-line arg passes a literal credential: "{arg[:60]}"',
+                    "Do not pass API keys/tokens/passwords as literal CLI arguments in "
+                    "mcp.json - they leak via process listings and shell history. Use "
+                    "an env-var placeholder instead.",
+                ))
+    return findings
+
+
+def _mcp_scan_wildcard_scope(name, scopes):
+    """LLM06: overbroad or wildcard tool/server scopes instead of an
+    enumerated, least-privilege permission list."""
+    findings = []
+    if isinstance(scopes, str):
+        scopes = [scopes]
+    if not isinstance(scopes, list):
+        return findings
+    for scope in scopes:
+        if isinstance(scope, str) and _MCP_WILDCARD_SCOPE_RE.match(scope.strip()):
+            findings.append(_mcp_finding(
+                "overbroad_tool_scope", "LLM06", "HIGH", name,
+                f'declares a wildcard/blanket scope entry: "{scope}"',
+                "Enumerate the exact scopes/permissions this tool or server needs "
+                "instead of granting a wildcard or blanket admin/full-access scope.",
+            ))
+            break
+    return findings
+
+
+def _mcp_scan_provenance(server_name, server):
+    """LLM03: missing tool provenance/signature - a remote-sourced server
+    (package runner or URL transport) with no way to verify what's launched."""
+    findings = []
+    command = server.get("command")
+    has_remote_source = (
+        (isinstance(command, str) and command.lower() in _MCP_PACKAGE_RUNNERS)
+        or isinstance(server.get("url"), str)
+    )
+    if has_remote_source and not any(server.get(f) for f in _MCP_PROVENANCE_FIELDS):
+        findings.append(_mcp_finding(
+            "missing_provenance", "LLM03", "LOW", server_name,
+            "server config launches a remote-sourced package or endpoint but "
+            "declares no provenance metadata (no signature/checksum/publisher field)",
+            "Record and verify a publisher identity, signature, or checksum for "
+            "remote-sourced MCP servers so a swapped or compromised package/build "
+            "can be detected before use.",
+        ))
+    return findings
+
+
 def scan_mcp_manifest(manifest):
     """Run all MCP manifest heuristics. manifest is the parsed mcp.json dict."""
     tools = manifest.get("tools")
     if not isinstance(tools, list):
         tools = []
+    servers = manifest.get("mcpServers")
+    if not isinstance(servers, dict):
+        servers = manifest.get("servers")
+    if not isinstance(servers, dict):
+        servers = {}
 
     findings = []
     for tool in tools:
@@ -371,8 +556,17 @@ def scan_mcp_manifest(manifest):
         name = tool.get("name", "<unnamed>")
         findings.extend(_mcp_scan_description(name, tool.get("description")))
         findings.extend(_mcp_scan_schema_agency(tool))
+        findings.extend(_mcp_scan_wildcard_scope(name, tool.get("scopes") or tool.get("permissions")))
     findings.extend(_mcp_scan_name_shadowing(tools))
     findings.extend(_mcp_scan_indirect_injection_surface(tools))
+
+    for server_name, server in servers.items():
+        if not isinstance(server, dict):
+            continue
+        findings.extend(_mcp_scan_source_pinning(server_name, server))
+        findings.extend(_mcp_scan_env_secrets(server_name, server))
+        findings.extend(_mcp_scan_wildcard_scope(server_name, server.get("scopes") or server.get("permissions")))
+        findings.extend(_mcp_scan_provenance(server_name, server))
 
     findings.sort(key=lambda f: MCP_SEVERITY_RANK.get(f["severity"], 0), reverse=True)
 
@@ -386,6 +580,7 @@ def scan_mcp_manifest(manifest):
         "tool": "sentinel-scan-cli mcp",
         "version": VERSION,
         "num_tools_scanned": len(tools),
+        "num_servers_scanned": len(servers),
         "num_findings": len(findings),
         "findings_by_severity": by_severity,
         "findings_by_heuristic": by_heuristic,
@@ -445,8 +640,21 @@ DEMO_MCP_MANIFEST = {
                     "body": {"type": "string"},
                 },
             },
+            "scopes": ["*"],
         },
     ],
+    "mcpServers": {
+        "github-tools": {
+            "command": "npx",
+            "args": ["-y", "@acme/github-mcp-server"],
+            "env": {
+                "GITHUB_TOKEN": "ghp_1A2b3C4d5E6f7G8h9I0jklmnopqrstuvwxYZ",
+            },
+        },
+        "legacy-search": {
+            "url": "http://legacy-search.internal.example.com/mcp",
+        },
+    },
 }
 
 
@@ -503,8 +711,10 @@ def build_mcp_arg_parser():
         description=(
             "Static heuristic scan of an MCP tool manifest (mcp.json) for "
             "tool-description prompt injection, tool-name shadowing, "
-            "excessive-agency schema patterns, and indirect-injection surface. "
-            "No server execution, no network calls, no LLM calls."
+            "excessive-agency schema patterns, indirect-injection surface, "
+            "unpinned/remote server sources, hardcoded credentials, overbroad "
+            "wildcard scopes, and missing provenance/signature metadata. No "
+            "server execution, no network calls, no LLM calls."
         ),
     )
     parser.add_argument("--manifest", help="Path to an mcp.json tool manifest to scan")
@@ -521,6 +731,7 @@ def build_mcp_arg_parser():
 OWASP_LLM_TOP10 = {
     "LLM01": "Prompt Injection",
     "LLM02": "Sensitive Information Disclosure",
+    "LLM03": "Supply Chain Vulnerabilities",
     "LLM05": "Improper Output Handling",
     "LLM06": "Excessive Agency",
     "LLM07": "System Prompt Leakage",

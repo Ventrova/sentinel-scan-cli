@@ -26,8 +26,10 @@ endpoint - nothing is sent to Ventrova.
 
 Also includes `sentinel-scan mcp`, a static heuristic scanner for MCP tool
 manifests (`mcp.json`) that flags tool-description prompt injection,
-tool-name shadowing, excessive-agency schema patterns, and indirect-injection
-surface area - see [MCP tool manifest scan](#mcp-tool-manifest-scan) below.
+tool-name shadowing, excessive-agency schema patterns, indirect-injection
+surface area, unpinned/remote server sources, hardcoded credentials,
+overbroad wildcard scopes, and missing provenance/signature metadata - see
+[MCP tool manifest scan](#mcp-tool-manifest-scan) below.
 
 ## Why this exists
 
@@ -176,11 +178,23 @@ reports:
 | `tool_name_shadowing` | LLM01 | Tool names that collide or near-collide (edit distance <= 2) with common sensitive/builtin tool names, or descriptions that claim to override/replace another tool |
 | `excessive_agency_schema` | LLM06 | Input schemas granting broad power: free-form `command`/`shell`/`code` string parameters, `sudo`/`admin`/`bypass` boolean flags, or wide-open schemas (`additionalProperties: true`, no declared properties) |
 | `indirect_injection_surface` | LLM01 | A manifest that both ingests untrusted external content (fetch/browse/read-inbox) and can take action (send/write/execute) - the "toxic flow" combination indirect prompt injection needs to do damage |
+| `unpinned_remote_source` | LLM03 | A `mcpServers` entry that launches a package via `npx`/`uvx`/`pip`/etc with no pinned version, or is reachable over a plaintext (`http://`) remote transport |
+| `hardcoded_credential` | LLM02 | An API key/token/password literal embedded in a server's `env` block or CLI `args`, instead of an `${ENV_VAR}` placeholder resolved at launch time |
+| `overbroad_tool_scope` | LLM06 | A tool or server declares a wildcard/blanket scope or permission (`"*"`, `"all"`, `"admin"`) instead of an enumerated, least-privilege list |
+| `missing_provenance` | LLM03 | A remote-sourced server entry (package runner or URL transport) with no signature/checksum/publisher field to verify what's actually being launched |
 
 ```bash
 sentinel-scan mcp --demo
 sentinel-scan mcp --manifest mcp.json
 ```
+
+The first four heuristics run against the `tools` array (either a raw
+`mcp.json` manifest or the `tools/list` response from an MCP server); the
+last four run against an `mcpServers` block (the server-launch config format
+used by Claude Desktop, Cursor, and similar MCP clients), checking the
+`command`/`args`/`env`/`url`/`scopes` each server declares. Example fixtures
+for both a deliberately vulnerable and a clean manifest are in
+[`fixtures/mcp/`](./fixtures/mcp/).
 
 Full findings (heuristic, OWASP category, severity, tool, evidence,
 recommendation) are written to `sentinel_scan_mcp_results.json` (or
