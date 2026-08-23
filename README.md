@@ -12,6 +12,9 @@
 [![LLM Security: Scanned](https://ventrova.dev/badges/llm-security-scanned.svg)](https://ventrova.dev)
 [![Prompt Injection: Tested](https://ventrova.dev/badges/prompt-injection-tested.svg)](https://ventrova.dev)
 [![Red-Team: Tested](https://ventrova.dev/badges/red-team-tested.svg)](https://ventrova.dev)
+[![Action self-test](https://github.com/Ventrova/sentinel-scan-cli/actions/workflows/self-test.yml/badge.svg)](https://github.com/Ventrova/sentinel-scan-cli/actions/workflows/self-test.yml)
+[![GitHub release](https://img.shields.io/github/v/release/Ventrova/sentinel-scan-cli)](https://github.com/Ventrova/sentinel-scan-cli/releases)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
 # Sentinel Scan CLI
 
@@ -244,9 +247,21 @@ jobs:
 | `output` | `sentinel-scan-results.sarif` | Where to write the report |
 | `upload-sarif` | `true` | Auto-upload the report to code scanning via `github/codeql-action/upload-sarif` when `format` is `sarif`. Requires `security-events: write` permission on the job. Set to `false` to handle the upload yourself (e.g. custom `category`). |
 
-Outputs: `results-file` (path to the report) and `finding-count` (total
-findings). No network calls, no secrets required - it's the same static
-heuristic scanner described above, just wired into CI.
+| Output | Description |
+|---|---|
+| `results-file` | Path to the generated report file (same value as the `output` input) |
+| `finding-count` | Total number of findings across all severities |
+
+```yaml
+      - uses: Ventrova/sentinel-scan-cli@v1
+        id: scan
+        with:
+          manifest: mcp.json
+      - run: echo "found ${{ steps.scan.outputs.finding-count }} issue(s) in ${{ steps.scan.outputs.results-file }}"
+```
+
+No network calls, no secrets required - it's the same static heuristic
+scanner described above, just wired into CI.
 
 Each SARIF result maps to a rule ID (the heuristic name, e.g.
 `tool_description_injection`), an OWASP LLM Top 10 category
