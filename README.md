@@ -9,6 +9,10 @@
   <a href="https://github.com/Ventrova/sentinel-scan-cli/subscription">👁 Watch for new attacks</a>
 </p>
 
+[![LLM Security: Scanned](https://ventrova.dev/badges/llm-security-scanned.svg)](https://ventrova.dev)
+[![Prompt Injection: Tested](https://ventrova.dev/badges/prompt-injection-tested.svg)](https://ventrova.dev)
+[![Red-Team: Tested](https://ventrova.dev/badges/red-team-tested.svg)](https://ventrova.dev)
+
 # Sentinel Scan CLI
 
 A free, open-source command-line tool that runs a 15-attack prompt-injection
