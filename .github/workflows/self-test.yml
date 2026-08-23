@@ -1,0 +1,48 @@
+name: Action self-test
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  clean-manifest-passes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Scan clean fixture (should pass)
+        uses: ./
+        with:
+          manifest: fixtures/mcp/clean.json
+          fail-on-severity: high
+          format: sarif
+          output: clean-results.sarif
+      - uses: actions/upload-artifact@v4
+        with:
+          name: clean-results
+          path: clean-results.sarif
+
+  vulnerable-manifest-fails:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Scan vulnerable fixture (expected to fail the gate)
+        id: scan
+        continue-on-error: true
+        uses: ./
+        with:
+          manifest: fixtures/mcp/vulnerable.json
+          fail-on-severity: high
+          format: markdown
+          output: vulnerable-results.md
+      - name: Assert the gate actually failed
+        run: |
+          if [ "${{ steps.scan.outcome }}" != "failure" ]; then
+            echo "Expected the vulnerable fixture to fail the severity gate, but it did not."
+            exit 1
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vulnerable-results
+          path: vulnerable-results.md

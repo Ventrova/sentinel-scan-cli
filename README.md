@@ -205,6 +205,45 @@ a bounded, self-serve check, not a guarantee: it will miss anything that
 doesn't match these patterns and can't judge what the server actually does
 at runtime.
 
+## GitHub Action
+
+Run the MCP manifest scan in CI on every PR and fail the build on your
+severity threshold, no PyPI/npm install step required - the action installs
+straight from this repo:
+
+```yaml
+name: MCP security scan
+on: [pull_request]
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Ventrova/sentinel-scan-cli@v1
+        with:
+          manifest: mcp.json          # path to your MCP tool manifest
+          fail-on-severity: high      # high | medium | low | none
+          format: sarif               # sarif | markdown | json
+          output: sentinel-scan-results.sarif
+      - uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: sentinel-scan-results.sarif
+```
+
+| Input | Default | Description |
+|---|---|---|
+| `manifest` | `mcp.json` | Path to the MCP tool manifest to scan |
+| `fail-on-severity` | `high` | Fail the step at this severity or above: `high`, `medium`, `low`, `none` |
+| `format` | `sarif` | Report format: `sarif` (for GitHub code scanning), `markdown` (for a PR comment/summary), or `json` (raw results) |
+| `output` | `sentinel-scan-results.sarif` | Where to write the report |
+
+Outputs: `results-file` (path to the report) and `finding-count` (total
+findings). No network calls, no secrets required - it's the same static
+heuristic scanner described above, just wired into CI. See
+[`action.yml`](./action.yml).
+
 ## Want the real thing
 
 This CLI is the free, self-serve version of what we do as a paid managed

@@ -1,0 +1,67 @@
+name: 'Sentinel Scan (MCP/LLM security)'
+description: 'Scan an MCP tool manifest for prompt-injection, excessive-agency, and OWASP LLM Top 10 risks. Fails the build on your severity threshold, no network calls.'
+author: 'Ventrova'
+branding:
+  icon: 'shield'
+  color: 'red'
+
+inputs:
+  manifest:
+    description: 'Path to the MCP tool manifest (mcp.json) to scan, relative to the repo root.'
+    required: true
+    default: 'mcp.json'
+  fail-on-severity:
+    description: "Fail the step if any finding is at or above this severity: high, medium, low, or none to never fail."
+    required: false
+    default: 'high'
+  format:
+    description: "Report format to write: sarif, markdown, or json."
+    required: false
+    default: 'sarif'
+  output:
+    description: 'Path to write the converted report to.'
+    required: false
+    default: 'sentinel-scan-results.sarif'
+
+outputs:
+  results-file:
+    description: 'Path to the generated report file.'
+    value: ${{ steps.convert.outputs.results-file }}
+  finding-count:
+    description: 'Total number of findings.'
+    value: ${{ steps.convert.outputs.finding-count }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
+    - name: Install sentinel-scan-cli
+      shell: bash
+      run: pip install "${{ github.action_path }}"
+
+    - name: Run sentinel-scan mcp
+      id: scan
+      shell: bash
+      run: |
+        sentinel-scan mcp --manifest "${{ inputs.manifest }}" --output "${{ runner.temp }}/sentinel-scan-raw.json"
+        echo "raw-file=${{ runner.temp }}/sentinel-scan-raw.json" >> "$GITHUB_OUTPUT"
+
+    - name: Convert results and apply severity gate
+      id: convert
+      shell: bash
+      run: |
+        python "${{ github.action_path }}/scripts/action/convert_results.py" \
+          --input "${{ runner.temp }}/sentinel-scan-raw.json" \
+          --manifest "${{ inputs.manifest }}" \
+          --format "${{ inputs.format }}" \
+          --output "${{ inputs.output }}" \
+          --fail-on-severity "${{ inputs.fail-on-severity }}"
+        exit_code=$?
+        echo "results-file=${{ inputs.output }}" >> "$GITHUB_OUTPUT"
+        count=$(python -c "import json; print(json.load(open('${{ runner.temp }}/sentinel-scan-raw.json'))['summary']['num_findings'])")
+        echo "finding-count=$count" >> "$GITHUB_OUTPUT"
+        exit $exit_code
