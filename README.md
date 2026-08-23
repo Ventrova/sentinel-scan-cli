@@ -209,11 +209,18 @@ at runtime.
 
 Run the MCP manifest scan in CI on every PR and fail the build on your
 severity threshold, no PyPI/npm install step required - the action installs
-straight from this repo:
+straight from this repo. When `format` is `sarif` (the default), the action
+also uploads the report to the repo's code-scanning/Security tab itself, via
+`github/codeql-action/upload-sarif`, so findings show up as native GitHub
+annotations on the PR without any extra step:
 
 ```yaml
 name: MCP security scan
 on: [pull_request]
+
+permissions:
+  contents: read
+  security-events: write   # required for the SARIF upload to code scanning
 
 jobs:
   scan:
@@ -226,10 +233,7 @@ jobs:
           fail-on-severity: high      # high | medium | low | none
           format: sarif               # sarif | markdown | json
           output: sentinel-scan-results.sarif
-      - uses: github/codeql-action/upload-sarif@v3
-        if: always()
-        with:
-          sarif_file: sentinel-scan-results.sarif
+          upload-sarif: 'true'        # auto-upload to the Security tab when format is sarif
 ```
 
 | Input | Default | Description |
@@ -238,11 +242,20 @@ jobs:
 | `fail-on-severity` | `high` | Fail the step at this severity or above: `high`, `medium`, `low`, `none` |
 | `format` | `sarif` | Report format: `sarif` (for GitHub code scanning), `markdown` (for a PR comment/summary), or `json` (raw results) |
 | `output` | `sentinel-scan-results.sarif` | Where to write the report |
+| `upload-sarif` | `true` | Auto-upload the report to code scanning via `github/codeql-action/upload-sarif` when `format` is `sarif`. Requires `security-events: write` permission on the job. Set to `false` to handle the upload yourself (e.g. custom `category`). |
 
 Outputs: `results-file` (path to the report) and `finding-count` (total
 findings). No network calls, no secrets required - it's the same static
-heuristic scanner described above, just wired into CI. See
-[`action.yml`](./action.yml).
+heuristic scanner described above, just wired into CI.
+
+Each SARIF result maps to a rule ID (the heuristic name, e.g.
+`tool_description_injection`), an OWASP LLM Top 10 category
+(`shortDescription`/`properties.owasp_category` on the rule, e.g. `LLM01:
+Prompt Injection`), a `level` derived from severity (`error`/`warning`/`note`
+for `HIGH`/`MEDIUM`/`LOW`), and a `physicalLocation` pointing at the scanned
+manifest file, so GitHub's Security tab groups and displays findings
+natively. See [`action.yml`](./action.yml) and
+[`scripts/action/convert_results.py`](./scripts/action/convert_results.py).
 
 ## Want the real thing
 

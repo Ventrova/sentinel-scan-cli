@@ -22,6 +22,10 @@ inputs:
     description: 'Path to write the converted report to.'
     required: false
     default: 'sentinel-scan-results.sarif'
+  upload-sarif:
+    description: "Whether to automatically upload the SARIF report to the GitHub code-scanning/Security tab via github/codeql-action/upload-sarif. Only applies when format is 'sarif'. Requires the calling job to have 'security-events: write' permission."
+    required: false
+    default: 'true'
 
 outputs:
   results-file:
@@ -65,3 +69,10 @@ runs:
         count=$(python -c "import json; print(json.load(open('${{ runner.temp }}/sentinel-scan-raw.json'))['summary']['num_findings'])")
         echo "finding-count=$count" >> "$GITHUB_OUTPUT"
         exit $exit_code
+
+    - name: Upload SARIF to code scanning
+      if: always() && inputs.format == 'sarif' && inputs.upload-sarif == 'true'
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: ${{ inputs.output }}
+        category: sentinel-scan-mcp
