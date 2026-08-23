@@ -24,6 +24,11 @@ built-in target with zero network calls). When you point it at your own
 endpoint, the only network traffic is your machine talking directly to your
 endpoint - nothing is sent to Ventrova.
 
+Also includes `sentinel-scan mcp`, a static heuristic scanner for MCP tool
+manifests (`mcp.json`) that flags tool-description prompt injection,
+tool-name shadowing, excessive-agency schema patterns, and indirect-injection
+surface area - see [MCP tool manifest scan](#mcp-tool-manifest-scan) below.
+
 ## Why this exists
 
 We ran this exact 15-attack corpus against a disposable local test bot (an
@@ -155,6 +160,34 @@ phrase) and false negatives (a response that leaks information without
 including your exact marker string, or that leaks in a paraphrase, follow-up
 turn, or tool call your own app makes downstream). It is a smoke test, not a
 guarantee.
+
+## MCP tool manifest scan
+
+`sentinel-scan mcp` is a second, separate check: a static heuristic scanner
+for MCP tool manifests (`mcp.json`, or the `tools` array returned by an
+MCP server's `tools/list`). It reads the manifest text and JSON schema only
+- no server execution, no network calls, no LLM calls - and flags the
+patterns that show up in real MCP tool-poisoning and excessive-agency
+reports:
+
+| Heuristic | OWASP | What it flags |
+|---|---|---|
+| `tool_description_injection` | LLM01 | Imperative/override language, fake `[SYSTEM]` tags, zero-width/invisible characters, or HTML comments hidden in a tool's `description` field, aimed at the calling agent rather than a human reader |
+| `tool_name_shadowing` | LLM01 | Tool names that collide or near-collide (edit distance <= 2) with common sensitive/builtin tool names, or descriptions that claim to override/replace another tool |
+| `excessive_agency_schema` | LLM06 | Input schemas granting broad power: free-form `command`/`shell`/`code` string parameters, `sudo`/`admin`/`bypass` boolean flags, or wide-open schemas (`additionalProperties: true`, no declared properties) |
+| `indirect_injection_surface` | LLM01 | A manifest that both ingests untrusted external content (fetch/browse/read-inbox) and can take action (send/write/execute) - the "toxic flow" combination indirect prompt injection needs to do damage |
+
+```bash
+sentinel-scan mcp --demo
+sentinel-scan mcp --manifest mcp.json
+```
+
+Full findings (heuristic, OWASP category, severity, tool, evidence,
+recommendation) are written to `sentinel_scan_mcp_results.json` (or
+`--output <path>`) every run. Like the prompt-injection suite above, this is
+a bounded, self-serve check, not a guarantee: it will miss anything that
+doesn't match these patterns and can't judge what the server actually does
+at runtime.
 
 ## Want the real thing
 

@@ -32,6 +32,7 @@ const OWASP_LLM_TOP10 = {
   LLM01: 'Prompt Injection',
   LLM02: 'Sensitive Information Disclosure',
   LLM05: 'Improper Output Handling',
+  LLM06: 'Excessive Agency',
   LLM07: 'System Prompt Leakage',
 };
 
