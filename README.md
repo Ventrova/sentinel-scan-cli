@@ -46,8 +46,8 @@ zero customization, it's worth five minutes to check your own endpoint.
 
 ## Quick start
 
-Requires Python 3.8+, no dependencies. On PyPI now, first finding in under
-a minute from a cold install:
+Requires Python 3.8+, no dependencies. On PyPI now as `1.0.0`, first finding
+in under a minute from a cold install:
 
 ```bash
 pip install sentinel-scan-cli && sentinel-scan --demo
@@ -121,13 +121,13 @@ smuggling, indirect/tool-output injection, negation confusion, and
 format-string exfiltration. See [`sentinel_scan.py`](./sentinel_scan.py) for
 the exact prompts, nothing is hidden.
 
-Every attack is tagged with the [OWASP Top 10 for LLM Applications
-(2025)](https://genai.owasp.org/llm-top-10/) category it's evidence for
-(mostly LLM01: Prompt Injection, plus LLM02: Sensitive Information
-Disclosure, LLM05: Improper Output Handling, and LLM07: System Prompt
-Leakage where the technique is specifically about exfiltration rather than
-override), so a finding maps straight onto a framework a security reviewer
-or compliance checklist already recognizes:
+Every attack in this repo's source (`sentinel_scan.py`) is tagged with the
+[OWASP Top 10 for LLM Applications (2025)](https://genai.owasp.org/llm-top-10/)
+category it's evidence for (mostly LLM01: Prompt Injection, plus LLM02:
+Sensitive Information Disclosure, LLM05: Improper Output Handling, and LLM07:
+System Prompt Leakage where the technique is specifically about exfiltration
+rather than override), so a finding maps straight onto a framework a
+security reviewer or compliance checklist already recognizes:
 
 ```
 3/15 attacks got past this system prompt:
@@ -136,8 +136,11 @@ or compliance checklist already recognizes:
   - [LLM01: Prompt Injection] indirect_tool_output (refusal-heuristic flag, no literal secret leak)
 ```
 
-The full machine-readable version (per-attack verdict, OWASP category,
-response preview, token/latency stats) is written to
+OWASP tagging is what you get running from source (`git clone` and run
+`sentinel_scan.py` directly, per the Quick Start above) or from the npm port.
+The current PyPI release (`1.0.0`) predates this and doesn't tag output by
+OWASP category yet; that lands in the next PyPI release. Either way, the
+per-attack verdict, response preview, and token/latency stats are written to
 `sentinel_scan_results.json` (or `--output <path>`) every run, so you can
 diff it, gate CI on it, or pipe it into another tool.
 
