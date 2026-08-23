@@ -4,5 +4,5 @@ __pycache__/
 build/
 dist/
 *.egg-info/
-npm/node_modules/
-npm/*.tgz
+node_modules/
+*.tgz
