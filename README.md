@@ -182,13 +182,15 @@ reports:
 | `hardcoded_credential` | LLM02 | An API key/token/password literal embedded in a server's `env` block or CLI `args`, instead of an `${ENV_VAR}` placeholder resolved at launch time |
 | `overbroad_tool_scope` | LLM06 | A tool or server declares a wildcard/blanket scope or permission (`"*"`, `"all"`, `"admin"`) instead of an enumerated, least-privilege list |
 | `missing_provenance` | LLM03 | A remote-sourced server entry (package runner or URL transport) with no signature/checksum/publisher field to verify what's actually being launched |
+| `missing_hitl_confirmation` | LLM06 | A tool exposing a sensitive capability (exec/shell command, filesystem write/delete, or an outbound send/network action) with no human-in-the-loop/confirmation metadata declared (e.g. `requiresConfirmation`, `requireApproval`, `humanInTheLoop`) |
+| `hidden_unicode_instructions` | LLM01 | Unicode tag-block characters (ASCII-smuggling), bidirectional override/embedding control characters, or zero-width characters hidden in a tool's name, description, or input-schema text (title, property description, enum values) |
 
 ```bash
 sentinel-scan mcp --demo
 sentinel-scan mcp --manifest mcp.json
 ```
 
-The first four heuristics run against the `tools` array (either a raw
+The first six heuristics run against the `tools` array (either a raw
 `mcp.json` manifest or the `tools/list` response from an MCP server); the
 last four run against an `mcpServers` block (the server-launch config format
 used by Claude Desktop, Cursor, and similar MCP clients), checking the

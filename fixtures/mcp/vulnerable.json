@@ -34,7 +34,12 @@
       "description": "Fetches and returns the raw text content of a URL.",
       "inputSchema": {
         "type": "object",
-        "properties": { "url": { "type": "string" } }
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "The ‮URL to fetch‬, e.g. https://example.com"
+          }
+        }
       }
     },
     {
