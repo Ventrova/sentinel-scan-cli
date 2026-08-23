@@ -49,9 +49,20 @@ zero customization, it's worth five minutes to check your own endpoint.
 Requires Python 3.8+, no dependencies.
 
 ```bash
-# See how it works, no endpoint or API key needed
-python sentinel_scan.py --demo
+# Download and run in one line, no clone or install needed
+curl -fsSL https://raw.githubusercontent.com/Ventrova/sentinel-scan-cli/master/sentinel_scan.py -o sentinel_scan.py && python sentinel_scan.py --demo
+```
 
+PyPI package (`pip install sentinel-scan-cli`) is on the way; the `pyproject.toml`
+in this repo is ready and installable straight from a local clone in the
+meantime:
+
+```bash
+git clone https://github.com/Ventrova/sentinel-scan-cli.git && pip install ./sentinel-scan-cli
+sentinel-scan --demo
+```
+
+```bash
 # Run it against your own OpenAI-compatible endpoint
 python sentinel_scan.py \
   --url https://api.openai.com/v1/chat/completions \
