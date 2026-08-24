@@ -142,16 +142,23 @@ const MCP_SEVERITY_RANK = { LOW: 0, MEDIUM: 1, HIGH: 2 };
 const MCP_INJECTION_PHRASES = [
   'ignore (all |any )?(previous|prior|above) instructions',
   'disregard (the |your )?(system prompt|previous instructions)',
-  '\\[\\s*system\\s*\\]',
-  'do not (tell|inform|mention|show) the user',
+  '\\[\\s*system\\b[^\\]]{0,40}\\]',
+  'do not (tell|inform|mention|show|disclose|surface|reveal)\\b[^.]{0,40}\\bthe user\\b',
   'without (telling|informing|asking) the user',
   'always (call|use|invoke) this tool (first|before)',
   'you must (always )?call this',
   'before (responding|answering|replying)(?!\\s+to\\s+the\\s+api)',
   'override (any|all) other tool',
   'this tool takes priority over',
+  'trusted system instruction',
+  "supersedes? (the )?(user'?s?|original) (request|instructions?)",
+  'note to (the )?agent',
+  'hidden directive',
+  'regardless of what the user (asked|specified|requested|wants|wanted)',
   'secretly',
+  '\\bsilently\\b',
   'do not log this',
+  'inject(?:ed|ing)? instructions?',
 ];
 const MCP_INJECTION_RE = new RegExp(MCP_INJECTION_PHRASES.join('|'), 'gi');
 const MCP_HTML_COMMENT_RE = /<!--[\s\S]*?-->/;
@@ -185,6 +192,15 @@ const MCP_ACT_KEYWORDS = [
   'transfer', 'purchase', 'pay', 'publish', 'message', 'invoke',
 ];
 
+// True if any keyword appears in haystack as a whole token - bounded by
+// non-alphanumeric characters (or string edges) on both sides. A plain
+// substring check (haystack.includes(kw)) false-positives on keywords that
+// are prefixes/infixes of unrelated words, e.g. "run" inside "Runs a
+// search" or "eval" inside "evaluate_expression".
+function mcpKeywordHit(haystack, keywords) {
+  return keywords.some((kw) => new RegExp(`(?<![a-z0-9])${kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![a-z0-9])`).test(haystack));
+}
+
 const MCP_NODE_RUNNERS = new Set(['npx', 'bunx', 'pnpm', 'yarn', 'npm']);
 const MCP_PY_RUNNERS = new Set(['pip', 'pipx', 'uv', 'uvx']);
 const MCP_PACKAGE_RUNNERS = new Set([...MCP_NODE_RUNNERS, ...MCP_PY_RUNNERS]);
@@ -193,7 +209,7 @@ const MCP_SECRET_KEY_RE = /(api[_-]?key|secret|token|password|passwd|credential|
 const MCP_PLACEHOLDER_RE = /^\$\{[^}]+\}$|^\$[A-Za-z_][A-Za-z0-9_]*$|^<.*>$|^$/;
 const MCP_CLI_SECRET_ARG_RE = /^--?([\w-]*(?:key|token|secret|password|credential)[\w-]*)[=\s](.+)$/i;
 
-const MCP_WILDCARD_SCOPE_RE = /^(\*|all|admin|full[_-]?access|god[_-]?mode)$/i;
+const MCP_WILDCARD_SCOPE_RE = /(^|[:./])(\*|all|admin|full[_-]?access|god[_-]?mode)($|[:./])/i;
 
 const MCP_PROVENANCE_FIELDS = ['signature', 'sha256', 'checksum', 'integrity', 'publisher', 'provenance', 'attestation'];
 
@@ -235,6 +251,9 @@ const OWASP_MCP_TOP10 = {
   missing_provenance: 'MCP04: Supply Chain Risk',
   missing_hitl_confirmation: 'MCP06: Excessive Agency / Permissions',
   hidden_unicode_instructions: 'MCP01: Prompt Injection via Tool Descriptions',
+  command_injection_risk: 'MCP06: Excessive Agency / Permissions',
+  cross_origin_exfiltration: 'MCP05: Cross-Origin / Third-Party Data Exfiltration',
+  dos_resource_exhaustion: 'MCP08: Denial of Service / Unbounded Consumption',
 };
 
 function mcpEditDistanceLe(a, b, limit) {
@@ -312,6 +331,205 @@ function mcpScanDescription(toolName, description) {
       'Confirm this blob is not a smuggled instruction payload; descriptions ' +
       'should not carry encoded data.',
       0.35,
+    ));
+  }
+  return findings;
+}
+
+function mcpScanSchemaTextInjection(tool) {
+  // LLM01: the same imperative/override-language injection vector as
+  // mcpScanDescription, but scanned across input- and output-schema text
+  // (property/title descriptions, enum values) rather than just the
+  // top-level tool description. A malicious schema can smuggle a directive
+  // aimed at the calling agent inside a parameter's description just as
+  // easily as the tool description itself ("tool poisoning" via schema).
+  const findings = [];
+  const name = tool.name !== undefined ? tool.name : '<unnamed>';
+  const [inSchema] = mcpGetSchemaProperties(tool);
+  const fields = mcpCollectSchemaStrings(inSchema, 'inputSchema');
+  const outSchema = tool.outputSchema || tool.output_schema;
+  if (outSchema && typeof outSchema === 'object' && !Array.isArray(outSchema)) {
+    fields.push(...mcpCollectSchemaStrings(outSchema, 'outputSchema'));
+  }
+
+  for (const [fieldLabel, text] of fields) {
+    if (typeof text !== 'string' || !text) continue;
+    const matchSet = new Set();
+    for (const m of text.matchAll(MCP_INJECTION_RE)) {
+      matchSet.add(m[0].toLowerCase());
+    }
+    const matches = [...matchSet].sort();
+    const zeroWidthHit = MCP_ZERO_WIDTH_CHARS.some((ch) => text.includes(ch));
+    if (!matches.length && !zeroWidthHit) continue;
+    const severity = zeroWidthHit || matches.length >= 2 ? 'HIGH' : 'MEDIUM';
+    const confidence = zeroWidthHit || matches.length >= 2 ? 0.9 : 0.6;
+    const evidenceBits = [];
+    if (matches.length) evidenceBits.push('phrases: ' + matches.join(', '));
+    if (zeroWidthHit) evidenceBits.push('zero-width/invisible characters present');
+    findings.push(mcpFinding(
+      'tool_description_injection', 'LLM01', severity, name,
+      `${fieldLabel} ` + evidenceBits.join('; ') + ` | text: "${sliceCp(text, 200)}"`,
+      'Strip imperative/override language directed at the calling agent from ' +
+      'schema property descriptions and titles, not just the top-level tool ' +
+      'description - the same prompt-injection vector applies anywhere an LLM ' +
+      'reads text from the manifest.',
+      confidence,
+    ));
+  }
+  return findings;
+}
+
+// Shell/exec function calls and process-spawn patterns commonly referenced
+// in a tool's description or implementation-annotation text when it shells
+// out to run a command.
+const MCP_SHELL_EXEC_RE = new RegExp(
+  'os\\.system\\(|subprocess\\.(?:run|call|popen|check_output)\\(|shell_exec\\(|' +
+  '\\beval\\(|\\bexec\\(|Runtime\\.getRuntime\\(\\)\\.exec|ProcessBuilder\\(|' +
+  '\\bshell(?:ing)? out\\b',
+  'i',
+);
+// Phrases indicating a parameter is concatenated/interpolated into that
+// shell/exec call without validation or escaping.
+const MCP_UNSANITIZED_INPUT_RE = new RegExp(
+  'unsanitiz\\w*|without sanitiz\\w*|no sanitiz\\w*|not sanitiz\\w*|' +
+  'passed through (?:raw|unsanitized)|appended directly to the shell',
+  'i',
+);
+
+function mcpScanCommandInjection(tool) {
+  // LLM06: a tool description or implementation annotation documents that a
+  // caller-supplied parameter is interpolated into a shell/exec call
+  // without sanitization - a command-injection primitive exposed straight
+  // through the tool's declared surface.
+  const findings = [];
+  const name = tool.name !== undefined ? tool.name : '<unnamed>';
+  const textParts = [tool.description || ''];
+  const [, properties] = mcpGetSchemaProperties(tool);
+  if (properties && typeof properties === 'object') {
+    for (const propSchema of Object.values(properties)) {
+      if (propSchema && typeof propSchema === 'object' && typeof propSchema.description === 'string') {
+        textParts.push(propSchema.description);
+      }
+    }
+  }
+  const annotations = tool.annotations;
+  if (annotations && typeof annotations === 'object' && !Array.isArray(annotations)) {
+    for (const value of Object.values(annotations)) {
+      if (typeof value === 'string') textParts.push(value);
+    }
+  }
+  const haystack = textParts.filter((t) => typeof t === 'string').join(' ');
+
+  if (MCP_SHELL_EXEC_RE.test(haystack) && MCP_UNSANITIZED_INPUT_RE.test(haystack)) {
+    findings.push(mcpFinding(
+      'command_injection_risk', 'LLM06', 'HIGH', name,
+      'tool description/annotations indicate a caller-supplied parameter is ' +
+      `interpolated into a shell/exec call without sanitization: "${sliceCp(haystack, 200)}"`,
+      'Never build a shell command string by interpolating caller-supplied ' +
+      'input. Use an argument-vector API (no shell=True/os.system), an ' +
+      'allow-listed enum of operations, or strict validation before any ' +
+      'exec/shell call the tool makes.',
+      0.8,
+    ));
+  }
+  return findings;
+}
+
+const MCP_URL_RE = /https?:\/\/[^\s'"]+/g;
+const MCP_URL_PLACEHOLDER_RE = /\{(\w+)\}/g;
+// Schema-property-name fragments that suggest the parameter carries bulk or
+// sensitive content, as opposed to a small identifier/flag.
+const MCP_CONTENT_PARAM_MARKERS = [
+  'content', 'document', 'body', 'secret', 'password', 'token',
+  'credential', 'history', 'message', 'transcript',
+];
+
+function mcpScanCrossOriginExfiltration(tool) {
+  // LLM02: description text builds an outbound URL that embeds a
+  // content-bearing tool parameter as a query-string placeholder - fetching
+  // or even just rendering/previewing that link forwards the parameter's
+  // contents to whatever third-party host the URL points at.
+  const findings = [];
+  const name = tool.name !== undefined ? tool.name : '<unnamed>';
+  const [, properties] = mcpGetSchemaProperties(tool);
+  const propNames = properties && typeof properties === 'object' ? Object.keys(properties) : [];
+
+  const textParts = [tool.description || ''];
+  if (properties && typeof properties === 'object') {
+    for (const propSchema of Object.values(properties)) {
+      if (propSchema && typeof propSchema === 'object' && typeof propSchema.description === 'string') {
+        textParts.push(propSchema.description);
+      }
+    }
+  }
+  const haystack = textParts.filter((t) => typeof t === 'string').join(' ');
+
+  const seen = new Set();
+  for (const urlMatch of haystack.matchAll(MCP_URL_RE)) {
+    const url = urlMatch[0];
+    for (const phMatch of url.matchAll(MCP_URL_PLACEHOLDER_RE)) {
+      const placeholder = phMatch[1];
+      const phLower = placeholder.toLowerCase();
+      for (const prop of propNames) {
+        const propLower = prop.toLowerCase();
+        if (!propLower.includes(phLower) && !phLower.includes(propLower)) continue;
+        if (!MCP_CONTENT_PARAM_MARKERS.some((marker) => propLower.includes(marker))) continue;
+        const key = `${prop} ${url}`;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        findings.push(mcpFinding(
+          'cross_origin_exfiltration', 'LLM02', 'HIGH', name,
+          `description embeds content-bearing parameter "${prop}" (via ` +
+          `placeholder "{${placeholder}}") into an outbound URL: ` +
+          `"${sliceCp(url, 150)}"`,
+          'Never construct an outbound URL by interpolating raw tool ' +
+          'input, especially content/credential-bearing parameters, into ' +
+          'a query string - that lets the manifest silently exfiltrate ' +
+          'data to a third-party endpoint whenever the link is fetched, ' +
+          'previewed, or clicked.',
+          0.75,
+        ));
+      }
+    }
+  }
+  return findings;
+}
+
+// Phrases documenting that a tool has no bound on how much work it does or
+// data it returns per call - the static self-report of an unbounded-
+// consumption / resource-exhaustion primitive.
+const MCP_DOS_PHRASES = [
+  'no (?:depth|size|row|pagination|rate|output)[\\w\\s-]{0,25}(?:limit|cap)s?',
+  'without (?:any )?(?:depth|size|row|output)?[\\w\\s-]{0,15}(?:limit|cap)s?',
+  '\\bunbounded\\b',
+  '\\bno pagination\\b',
+  "exhaust\\w*\\s+(?:the\\s+)?(?:caller'?s?\\s+)?(?:memory|context|resources?|cpu)",
+  '\\b(?:hang|crash) (?:or (?:crash|hang) )?the (?:host|server|process)\\b',
+];
+const MCP_DOS_RE = new RegExp(MCP_DOS_PHRASES.join('|'), 'gi');
+
+function mcpScanDosResourceExhaustion(tool) {
+  // LLM10: a tool description documents that it has no depth/size/row/
+  // pagination limit or output cap - a single call can exhaust memory, CPU,
+  // or the calling model's context window (unbounded consumption).
+  const findings = [];
+  const name = tool.name !== undefined ? tool.name : '<unnamed>';
+  const description = tool.description;
+  if (typeof description !== 'string' || !description) return findings;
+  const matchSet = new Set();
+  for (const m of description.matchAll(MCP_DOS_RE)) {
+    matchSet.add(m[0].toLowerCase());
+  }
+  const matches = [...matchSet].sort();
+  if (matches.length) {
+    findings.push(mcpFinding(
+      'dos_resource_exhaustion', 'LLM10', 'MEDIUM', name,
+      'description documents unbounded resource consumption: ' +
+      matches.join(', ') + ` | description: "${sliceCp(description, 200)}"`,
+      'Enforce a depth/size/row limit and pagination server-side, and cap ' +
+      "output size before returning it to the caller, so a single call " +
+      "can't exhaust memory, CPU, or the model's context window.",
+      0.7,
     ));
   }
   return findings;
@@ -448,8 +666,8 @@ function mcpScanSchemaAgency(tool) {
 
 function mcpToolCapabilityTags(tool) {
   const haystack = `${tool.name || ''} ${tool.description || ''}`.toLowerCase();
-  const fetches = MCP_FETCH_KEYWORDS.some((kw) => haystack.includes(kw));
-  const acts = MCP_ACT_KEYWORDS.some((kw) => haystack.includes(kw));
+  const fetches = mcpKeywordHit(haystack, MCP_FETCH_KEYWORDS);
+  const acts = mcpKeywordHit(haystack, MCP_ACT_KEYWORDS);
   return [fetches, acts];
 }
 
@@ -623,7 +841,7 @@ function mcpToolSensitiveCapability(tool) {
   const propNames = properties && typeof properties === 'object' ? Object.keys(properties).join(' ') : '';
   const haystack = `${tool.name || ''} ${tool.description || ''} ${propNames}`.toLowerCase();
   for (const [capability, severity, keywords] of MCP_SENSITIVE_CAPABILITY_GROUPS) {
-    if (keywords.some((kw) => haystack.includes(kw))) return [capability, severity];
+    if (mcpKeywordHit(haystack, keywords)) return [capability, severity];
   }
   return [null, null];
 }
@@ -760,7 +978,11 @@ function scanMcpManifest(manifest) {
     if (!tool || typeof tool !== 'object' || Array.isArray(tool)) continue;
     const name = tool.name !== undefined ? tool.name : '<unnamed>';
     findings.push(...mcpScanDescription(name, tool.description));
+    findings.push(...mcpScanSchemaTextInjection(tool));
     findings.push(...mcpScanSchemaAgency(tool));
+    findings.push(...mcpScanCommandInjection(tool));
+    findings.push(...mcpScanCrossOriginExfiltration(tool));
+    findings.push(...mcpScanDosResourceExhaustion(tool));
     findings.push(...mcpScanWildcardScope(name, tool.scopes || tool.permissions));
     findings.push(...mcpScanHitlConfirmation(tool));
     findings.push(...mcpScanHiddenUnicode(tool));

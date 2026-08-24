@@ -15,25 +15,28 @@ are guessed for them.
 
 | Scanner | Status | Network-free | Detection rate | False-positive rate | Total runtime (40 fixtures) | Avg per fixture |
 |---|---|---|---|---|---|---|
-| sentinel-scan-cli (Python) | evaluated | yes | 100.0% (20/20 malicious caught) | 0.0% (0/20 clean flagged) | 7.21s | ~180 ms |
-| sentinel-scan-cli (Node) | evaluated | yes | 50.0% (10/20 malicious caught) | 10.0% (2/20 clean flagged) | 3.09s | ~77 ms |
+| sentinel-scan-cli (Python) | evaluated | yes | 100.0% (20/20 malicious caught) | 0.0% (0/20 clean flagged) | 7.47s | ~187 ms |
+| sentinel-scan-cli (Node) | evaluated | yes | 100.0% (20/20 malicious caught) | 0.0% (0/20 clean flagged) | 3.31s | ~83 ms |
 | MCP-Scan (Invariant Labs) | not evaluated | no | - | - | - | - |
 | Cisco mcp-scanner | not evaluated | no | - | - | - | - |
 | mcpshield (npm) | not evaluated | yes (tool itself has no network dependency) | - | - | - | - |
 
-The Python build's detection rate rose from a 50.0%/10.0% baseline (identical to the Node
-numbers below) after four rounds of heuristic work on `sentinel_scan.py`:
+Both builds' detection rate rose from a 50.0%/10.0% baseline after four rounds of
+heuristic work on `sentinel_scan.py` (Python), which was then ported 1:1 to
+`bin/sentinel-scan.js` (Node) - the CLI actually shipped to users:
 
 1. **Four missing heuristics added** to close entire attack-technique gaps that had zero
-   detection logic: command injection (`_mcp_scan_command_injection` - flags a shell/exec
-   call pattern combined with language documenting the input isn't sanitized before being
-   interpolated into it), cross-origin exfiltration (`_mcp_scan_cross_origin_exfiltration` -
-   flags a content-bearing parameter interpolated into an outbound URL placeholder),
-   DoS/resource exhaustion (`_mcp_scan_dos_resource_exhaustion` - flags a description that
-   documents no depth/size/row/pagination limit or output cap), and schema-level prompt
-   injection / tool poisoning (`_mcp_scan_schema_text_injection` - runs the existing
-   description-injection phrase/zero-width-character check across input- and
-   output-schema property descriptions too, not just the top-level tool description).
+   detection logic: command injection (`_mcp_scan_command_injection` / `mcpScanCommandInjection`
+   - flags a shell/exec call pattern combined with language documenting the input isn't
+   sanitized before being interpolated into it), cross-origin exfiltration
+   (`_mcp_scan_cross_origin_exfiltration` / `mcpScanCrossOriginExfiltration` - flags a
+   content-bearing parameter interpolated into an outbound URL placeholder),
+   DoS/resource exhaustion (`_mcp_scan_dos_resource_exhaustion` / `mcpScanDosResourceExhaustion`
+   - flags a description that documents no depth/size/row/pagination limit or output cap),
+   and schema-level prompt injection / tool poisoning (`_mcp_scan_schema_text_injection` /
+   `mcpScanSchemaTextInjection` - runs the existing description-injection phrase/zero-width-
+   character check across input- and output-schema property descriptions too, not just the
+   top-level tool description).
 2. **Injection phrase list widened** (still phrase-based, not fixture-specific) with a
    handful of additional imperative/override constructions (`trusted system instruction`,
    `supersedes the user's request`, `note to the agent`, `hidden directive`, `regardless of
@@ -46,10 +49,11 @@ numbers below) after four rounds of heuristic work on `sentinel_scan.py`:
    doesn't fire on an unrelated word that merely contains one of those tokens.
 4. **The 2 clean false positives were substring-matching bugs, not missing rules**: the
    existing fetch/act/sensitive-capability keyword lists used plain `kw in haystack`
-   containment, which fired on keywords that are prefixes or infixes of unrelated words (for
-   example the calculator's "evaluate_expression" tripping an `eval` match, and a plain
-   search tool's copy tripping a `search`/`run`-adjacent act keyword). Replacing that with
-   `_mcp_keyword_hit`, a regex helper that requires the keyword to appear as a whole token
+   (Python) / `haystack.includes(kw)` (Node) containment, which fired on keywords that are
+   prefixes or infixes of unrelated words (for example the calculator's
+   "evaluate_expression" tripping an `eval` match, and a plain search tool's copy tripping a
+   `search`/`run`-adjacent act keyword). Replacing that with `_mcp_keyword_hit` /
+   `mcpKeywordHit`, a regex helper that requires the keyword to appear as a whole token
    bounded by non-alphanumeric characters, removed both false positives without removing any
    true positive.
 
@@ -58,11 +62,11 @@ change is a general phrase, regex, or structural check that generalizes to manif
 this corpus. `python -m pytest` (15 tests, pre-existing unit-test suite unrelated to this
 benchmark corpus) still passes after these changes.
 
-**The Node port (`bin/sentinel-scan.js`, the CLI currently shipped to users) was left
-unchanged and still sits at the 50.0%/10.0% baseline.** The equivalent heuristics above have
-not yet been ported from Python to JavaScript - see the follow-up task filed alongside this
-benchmark update. Until that port lands, the shipped CLI's actual detection rate is the Node
-row, not the Python row.
+**The Node port (`bin/sentinel-scan.js`, the CLI currently shipped to users) now matches the
+Python build.** The four new heuristics, the widened injection-phrase and wildcard-scope
+regexes, and the word-boundary `mcpKeywordHit` fix have all been ported from
+`sentinel_scan.py` to `bin/sentinel-scan.js` and re-verified against this same 40-fixture
+corpus - both builds independently hit 100.0%/0.0% end to end.
 
 ## Why the three competitors are "not evaluated" (not zero, not guessed)
 
@@ -85,13 +89,10 @@ Full reasons, exact commands attempted, and per-fixture pass/fail detail are rec
 
 ## Honest takeaway
 
-The Python implementation (`sentinel_scan.py`) now catches all 20 malicious fixtures in
-this corpus with zero false positives on the 20 clean fixtures, running fully offline in
-well under a second per fixture. The Node port shipped in `bin/sentinel-scan.js` has not
-had the same heuristic work applied yet and still catches only half the malicious
-fixtures with a 10% false-positive rate - it needs the four new heuristics and the
-keyword/regex tightening described above ported over before it matches the Python build.
-Neither build is positioned as catching everything against a real-world adversary; this
-corpus exercises 10 attack techniques with one or two fixtures each, so 100%/0% here means
-"no known gap against this specific 40-fixture corpus," not "unbeatable." It is positioned
-as a free, instant, network-free first pass.
+Both `sentinel_scan.py` and the shipped `bin/sentinel-scan.js` now catch all 20 malicious
+fixtures in this corpus with zero false positives on the 20 clean fixtures, running fully
+offline in well under a second per fixture (Node averages ~83 ms/fixture, Python ~187
+ms/fixture). Neither build is positioned as catching everything against a real-world
+adversary; this corpus exercises 10 attack techniques with one or two fixtures each, so
+100%/0% here means "no known gap against this specific 40-fixture corpus," not
+"unbeatable." It is positioned as a free, instant, network-free first pass.
