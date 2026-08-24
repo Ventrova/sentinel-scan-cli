@@ -1,0 +1,1 @@
+{"name":"official-everything","mcpServers":{"everything":{"command":"npx","args":["-y","@modelcontextprotocol/server-everything"]}}}

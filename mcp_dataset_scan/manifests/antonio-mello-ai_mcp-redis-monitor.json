@@ -1,0 +1,11 @@
+{
+  "name": "community-antonio-mello-ai_mcp-redis-monitor",
+  "mcpServers": {
+    "mcp-redis-monitor": {
+      "command": "uvx",
+      "args": [
+        "mcp-redis-monitor"
+      ]
+    }
+  }
+}

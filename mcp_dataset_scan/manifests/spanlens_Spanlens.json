@@ -1,0 +1,12 @@
+{
+  "name": "community-spanlens_Spanlens",
+  "mcpServers": {
+    "Spanlens": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@spanlens/mcp-server"
+      ]
+    }
+  }
+}

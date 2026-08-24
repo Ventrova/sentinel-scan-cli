@@ -1,0 +1,11 @@
+{
+  "name": "community-risha-max_0xpdf-mcp",
+  "mcpServers": {
+    "0xpdf-mcp": {
+      "command": "uvx",
+      "args": [
+        "oxpdf-mcp"
+      ]
+    }
+  }
+}

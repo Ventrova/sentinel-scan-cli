@@ -1,0 +1,12 @@
+{
+  "name": "community-yamantaka520_Agent-Memory-OS",
+  "mcpServers": {
+    "Agent-Memory-OS": {
+      "command": "pip",
+      "args": [
+        "install",
+        "'agent-memory-os[mcp]'"
+      ]
+    }
+  }
+}

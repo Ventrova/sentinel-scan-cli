@@ -1,0 +1,12 @@
+{
+  "name": "community-jayasukuv11-beep_agenthelm",
+  "mcpServers": {
+    "agenthelm": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "agenthelm-mcp"
+      ]
+    }
+  }
+}

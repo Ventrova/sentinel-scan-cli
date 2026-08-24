@@ -1,0 +1,11 @@
+{
+  "name": "community-saranshbamania_mobile-device-mcp",
+  "mcpServers": {
+    "mobile-device-mcp": {
+      "command": "npx",
+      "args": [
+        "mobile-device-mcp"
+      ]
+    }
+  }
+}

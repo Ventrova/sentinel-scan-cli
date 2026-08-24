@@ -1,0 +1,12 @@
+{
+  "name": "community-aradar46_reuse-before-generate",
+  "mcpServers": {
+    "reuse-before-generate": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "reuse-before-generate"
+      ]
+    }
+  }
+}

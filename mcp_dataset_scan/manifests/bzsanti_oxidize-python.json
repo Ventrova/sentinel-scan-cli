@@ -1,0 +1,11 @@
+{
+  "name": "community-bzsanti_oxidize-python",
+  "mcpServers": {
+    "oxidize-python": {
+      "command": "uvx",
+      "args": [
+        "oxidize-mcp"
+      ]
+    }
+  }
+}

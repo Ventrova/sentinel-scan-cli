@@ -1,0 +1,11 @@
+{
+  "name": "community-mrslbt_rippr",
+  "mcpServers": {
+    "rippr": {
+      "command": "npx",
+      "args": [
+        "rippr-mcp"
+      ]
+    }
+  }
+}

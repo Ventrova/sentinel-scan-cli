@@ -1,0 +1,16 @@
+{
+  "name": "community-omniologynow-rgb_scout-intel-mcp",
+  "mcpServers": {
+    "scout-mcp": {
+      "command": "python",
+      "args": [
+        "-m",
+        "scout_mcp.mcp_server"
+      ],
+      "cwd": "/path/to/scout-mcp/src",
+      "env": {
+        "NEWS_API_KEY": "your-newsapi-key"
+      }
+    }
+  }
+}

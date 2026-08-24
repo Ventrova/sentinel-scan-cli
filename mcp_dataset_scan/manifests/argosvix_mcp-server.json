@@ -1,0 +1,12 @@
+{
+  "name": "community-argosvix_mcp-server",
+  "mcpServers": {
+    "mcp-server": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@argosvix/mcp-server"
+      ]
+    }
+  }
+}

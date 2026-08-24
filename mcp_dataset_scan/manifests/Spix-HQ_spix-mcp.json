@@ -1,0 +1,12 @@
+{
+  "name": "community-Spix-HQ_spix-mcp",
+  "mcpServers": {
+    "spix-mcp": {
+      "command": "pip",
+      "args": [
+        "install",
+        "spix-mcp"
+      ]
+    }
+  }
+}

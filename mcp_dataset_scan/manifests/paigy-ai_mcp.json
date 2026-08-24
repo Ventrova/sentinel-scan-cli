@@ -1,0 +1,15 @@
+{
+  "name": "community-paigy-ai_mcp",
+  "mcpServers": {
+    "paigy": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@paigy/mcp@latest"
+      ],
+      "env": {
+        "PAIGY_AGENT": "local"
+      }
+    }
+  }
+}

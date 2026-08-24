@@ -1,0 +1,12 @@
+{
+  "name": "community-ScrapeUnblocker_scrapeunblocker-mcp",
+  "mcpServers": {
+    "scrapeunblocker-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "scrapeunblocker-mcp"
+      ]
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "community-appcreationsca_bumpguard-mcp",
+  "mcpServers": {
+    "bumpguard-mcp": {
+      "command": "pip",
+      "args": [
+        "install",
+        "bumpguard-mcp"
+      ]
+    }
+  }
+}

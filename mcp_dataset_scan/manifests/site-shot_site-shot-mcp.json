@@ -1,0 +1,15 @@
+{
+  "name": "community-site-shot_site-shot-mcp",
+  "mcpServers": {
+    "site-shot": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "site-shot-mcp"
+      ],
+      "env": {
+        "SITESHOT_API_KEY": "YOUR_API_KEY"
+      }
+    }
+  }
+}

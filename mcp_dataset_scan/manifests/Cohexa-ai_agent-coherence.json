@@ -1,0 +1,13 @@
+{
+  "name": "community-Cohexa-ai_agent-coherence",
+  "mcpServers": {
+    "agent-coherence": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "\"agent-coherence[mcp]\"",
+        "stale-write-guard-fs"
+      ]
+    }
+  }
+}

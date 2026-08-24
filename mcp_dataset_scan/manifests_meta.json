@@ -1,0 +1,499 @@
+[
+  {
+    "name": "ScrapeUnblocker/scrapeunblocker-mcp",
+    "url": "https://github.com/ScrapeUnblocker/scrapeunblocker-mcp",
+    "category": "Browser Automation",
+    "manifest_file": "manifests/ScrapeUnblocker_scrapeunblocker-mcp.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "scrapeunblocker-mcp"
+      ]
+    }
+  },
+  {
+    "name": "site-shot/site-shot-mcp",
+    "url": "https://github.com/site-shot/site-shot-mcp",
+    "category": "Browser Automation",
+    "manifest_file": "manifests/site-shot_site-shot-mcp.json",
+    "config_source": "published_json_config",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "site-shot-mcp"
+      ],
+      "env": {
+        "SITESHOT_API_KEY": "YOUR_API_KEY"
+      }
+    }
+  },
+  {
+    "name": "Focus-GTS/eds-mcp-server",
+    "url": "https://github.com/Focus-GTS/eds-mcp-server",
+    "category": "Cloud Platforms",
+    "manifest_file": "manifests/Focus-GTS_eds-mcp-server.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "@focusgts/eds-mcp-server"
+      ]
+    }
+  },
+  {
+    "name": "anythink-cloud/anythink-cli",
+    "url": "https://github.com/anythink-cloud/anythink-cli",
+    "category": "Cloud Platforms",
+    "manifest_file": "manifests/anythink-cloud_anythink-cli.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@anythink-cloud/mcp"
+      ]
+    }
+  },
+  {
+    "name": "chaandannn/finopsmcp",
+    "url": "https://github.com/chaandannn/finopsmcp",
+    "category": "Cloud Platforms",
+    "manifest_file": "manifests/chaandannn_finopsmcp.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "uvx",
+      "args": [
+        "nable"
+      ]
+    }
+  },
+  {
+    "name": "musharna/jobd",
+    "url": "https://github.com/musharna/jobd",
+    "category": "Code Execution",
+    "manifest_file": "manifests/musharna_jobd.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "pip",
+      "args": [
+        "install",
+        "\"jobd[mcp]\""
+      ]
+    }
+  },
+  {
+    "name": "cygnussystems/cygnus-ssh-mcp",
+    "url": "https://github.com/cygnussystems/cygnus-ssh-mcp",
+    "category": "Command Line",
+    "manifest_file": "manifests/cygnussystems_cygnus-ssh-mcp.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "pip",
+      "args": [
+        "install",
+        "cygnus-ssh-mcp"
+      ]
+    }
+  },
+  {
+    "name": "faizbawa/mcp-remote-ssh",
+    "url": "https://github.com/faizbawa/mcp-remote-ssh",
+    "category": "Command Line",
+    "manifest_file": "manifests/faizbawa_mcp-remote-ssh.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "uvx",
+      "args": [
+        "mcp-remote-ssh"
+      ]
+    }
+  },
+  {
+    "name": "agenticmail/agenticmail",
+    "url": "https://github.com/agenticmail/agenticmail",
+    "category": "Communication",
+    "manifest_file": "manifests/agenticmail_agenticmail.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "@agenticmail/mcp"
+      ]
+    }
+  },
+  {
+    "name": "anypost/emailmd",
+    "url": "https://github.com/anypost/emailmd",
+    "category": "Communication",
+    "manifest_file": "manifests/anypost_emailmd.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "emailmd",
+        "mcp"
+      ]
+    }
+  },
+  {
+    "name": "clawaimail/mcp",
+    "url": "https://github.com/joansongjr/clawaimail",
+    "category": "Communication",
+    "manifest_file": "manifests/joansongjr_clawaimail.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "clawaimail-mcp"
+      ]
+    }
+  },
+  {
+    "name": "csitte/mailwarden",
+    "url": "https://github.com/csitte/mailwarden",
+    "category": "Communication",
+    "manifest_file": "manifests/csitte_mailwarden.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mailwarden"
+      ]
+    }
+  },
+  {
+    "name": "FROWNINGdev/django-orm-lens",
+    "url": "https://github.com/FROWNINGdev/django-orm-lens",
+    "category": "Databases",
+    "manifest_file": "manifests/FROWNINGdev_django-orm-lens.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "pip",
+      "args": [
+        "install",
+        "django-orm-lens[mcp]"
+      ]
+    }
+  },
+  {
+    "name": "mahAnuj/mcp-multi-db",
+    "url": "https://github.com/mahAnuj/mcp-multi-db",
+    "category": "Databases",
+    "manifest_file": "manifests/mahAnuj_mcp-multi-db.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-multi-db"
+      ]
+    }
+  },
+  {
+    "name": "croc100/Litescope",
+    "url": "https://github.com/croc100/Litescope",
+    "category": "Databases",
+    "manifest_file": "manifests/croc100_Litescope.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "litescope",
+        "mcp"
+      ]
+    }
+  },
+  {
+    "name": "hivemindunit/llmintel-mcp",
+    "url": "https://github.com/hivemindunit/llmintel-mcp",
+    "category": "Developer Tools",
+    "manifest_file": "manifests/hivemindunit_llmintel-mcp.json",
+    "config_source": "published_json_config",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@llmintel/mcp"
+      ]
+    }
+  },
+  {
+    "name": "rm-rf-prod/GroundTruth-MCP",
+    "url": "https://github.com/rm-rf-prod/GroundTruth-MCP",
+    "category": "Developer Tools",
+    "manifest_file": "manifests/rm-rf-prod_GroundTruth-MCP.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@groundtruth-mcp/gt-mcp"
+      ]
+    }
+  },
+  {
+    "name": "scarletkc/vexor",
+    "url": "https://github.com/scarletkc/vexor",
+    "category": "Developer Tools",
+    "manifest_file": "manifests/scarletkc_vexor.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "uvx",
+      "args": [
+        "vexor",
+        "mcp"
+      ]
+    }
+  },
+  {
+    "name": "aradar46/reuse-before-generate",
+    "url": "https://github.com/aradar46/reuse-before-generate",
+    "category": "Developer Tools",
+    "manifest_file": "manifests/aradar46_reuse-before-generate.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "reuse-before-generate"
+      ]
+    }
+  },
+  {
+    "name": "hernaninverso/eleata-verify-mcp",
+    "url": "https://github.com/hernaninverso/eleata-verify-mcp",
+    "category": "Developer Tools",
+    "manifest_file": "manifests/hernaninverso_eleata-verify-mcp.json",
+    "config_source": "published_json_config",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "eleata-verify-mcp"
+      ],
+      "env": {
+        "EVERIFY_API_KEY": "your_key"
+      }
+    }
+  },
+  {
+    "name": "appcreationsca/bumpguard-mcp",
+    "url": "https://github.com/appcreationsca/bumpguard-mcp",
+    "category": "Developer Tools",
+    "manifest_file": "manifests/appcreationsca_bumpguard-mcp.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "pip",
+      "args": [
+        "install",
+        "bumpguard-mcp"
+      ]
+    }
+  },
+  {
+    "name": "bzsanti/oxidize-python",
+    "url": "https://github.com/bzsanti/oxidize-python",
+    "category": "File Systems",
+    "manifest_file": "manifests/bzsanti_oxidize-python.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "uvx",
+      "args": [
+        "oxidize-mcp"
+      ]
+    }
+  },
+  {
+    "name": "risha-max/0xpdf-mcp",
+    "url": "https://github.com/risha-max/0xpdf-mcp",
+    "category": "File Systems",
+    "manifest_file": "manifests/risha-max_0xpdf-mcp.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "uvx",
+      "args": [
+        "oxpdf-mcp"
+      ]
+    }
+  },
+  {
+    "name": "Cohexa-ai/agent-coherence",
+    "url": "https://github.com/Cohexa-ai/agent-coherence",
+    "category": "File Systems",
+    "manifest_file": "manifests/Cohexa-ai_agent-coherence.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "\"agent-coherence[mcp]\"",
+        "stale-write-guard-fs"
+      ]
+    }
+  },
+  {
+    "name": "AkashGoenka/coldstart",
+    "url": "https://github.com/AkashGoenka/coldstart",
+    "category": "Knowledge & Memory",
+    "manifest_file": "manifests/AkashGoenka_coldstart.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npm",
+      "args": [
+        "i",
+        "-g",
+        "@cstart/coldstart"
+      ]
+    }
+  },
+  {
+    "name": "jayasukuv11-beep/agenthelm",
+    "url": "https://github.com/jayasukuv11-beep/agenthelm",
+    "category": "Knowledge & Memory",
+    "manifest_file": "manifests/jayasukuv11-beep_agenthelm.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "agenthelm-mcp"
+      ]
+    }
+  },
+  {
+    "name": "jmpdsevilla/BovedIA",
+    "url": "https://github.com/jmpdsevilla/BovedIA",
+    "category": "Knowledge & Memory",
+    "manifest_file": "manifests/jmpdsevilla_BovedIA.json",
+    "config_source": "published_json_config",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "bovedia"
+      ],
+      "env": {
+        "KB_MEMORY_ROOT": "/ruta/absoluta/a/tu/boveda"
+      }
+    }
+  },
+  {
+    "name": "lumayapartners/memini",
+    "url": "https://github.com/lumayapartners/memini",
+    "category": "Knowledge & Memory",
+    "manifest_file": "manifests/lumayapartners_memini.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "memini",
+        "mcp"
+      ]
+    }
+  },
+  {
+    "name": "jessedu29260-netizen/booboo",
+    "url": "https://github.com/jessedu29260-netizen/booboo",
+    "category": "Knowledge & Memory",
+    "manifest_file": "manifests/jessedu29260-netizen_booboo.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "create-booboo"
+      ]
+    }
+  },
+  {
+    "name": "soolaugust/0CompactMem",
+    "url": "https://github.com/soolaugust/0CompactMem",
+    "category": "Knowledge & Memory",
+    "manifest_file": "manifests/soolaugust_0CompactMem.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/soolaugust/0CompactMem",
+        "memory-os"
+      ]
+    }
+  },
+  {
+    "name": "agentkitai/agentlens",
+    "url": "https://github.com/agentkitai/agentlens",
+    "category": "Monitoring",
+    "manifest_file": "manifests/agentkitai_agentlens.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@agentlensai/mcp"
+      ]
+    }
+  },
+  {
+    "name": "antonio-mello-ai/mcp-redis-monitor",
+    "url": "https://github.com/antonio-mello-ai/mcp-redis-monitor",
+    "category": "Monitoring",
+    "manifest_file": "manifests/antonio-mello-ai_mcp-redis-monitor.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "uvx",
+      "args": [
+        "mcp-redis-monitor"
+      ]
+    }
+  },
+  {
+    "name": "argosvix/mcp-server",
+    "url": "https://github.com/argosvix/mcp-server",
+    "category": "Monitoring",
+    "manifest_file": "manifests/argosvix_mcp-server.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@argosvix/mcp-server"
+      ]
+    }
+  },
+  {
+    "name": "pgalyen1987/gate402-mcp",
+    "url": "https://github.com/pgalyen1987/gate402-mcp",
+    "category": "Search & Data Extraction",
+    "manifest_file": "manifests/pgalyen1987_gate402-mcp.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "gate402-mcp"
+      ]
+    }
+  },
+  {
+    "name": "KnockOutEZ/wigolo",
+    "url": "https://github.com/KnockOutEZ/wigolo",
+    "category": "Search & Data Extraction",
+    "manifest_file": "manifests/KnockOutEZ_wigolo.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "wigolo",
+        "init",
+        "--non-interactive",
+        "--agents=<agent>"
+      ]
+    }
+  }
+]

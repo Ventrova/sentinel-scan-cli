@@ -1,0 +1,11 @@
+{
+  "name": "community-michielinksee_linksee-memory",
+  "mcpServers": {
+    "linksee-memory": {
+      "command": "npx",
+      "args": [
+        "linksee-memory"
+      ]
+    }
+  }
+}

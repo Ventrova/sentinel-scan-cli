@@ -1,0 +1,14 @@
+{
+  "name": "community-KnockOutEZ_wigolo",
+  "mcpServers": {
+    "wigolo": {
+      "command": "npx",
+      "args": [
+        "wigolo",
+        "init",
+        "--non-interactive",
+        "--agents=<agent>"
+      ]
+    }
+  }
+}

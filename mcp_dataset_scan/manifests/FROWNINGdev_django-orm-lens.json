@@ -1,0 +1,12 @@
+{
+  "name": "community-FROWNINGdev_django-orm-lens",
+  "mcpServers": {
+    "django-orm-lens": {
+      "command": "pip",
+      "args": [
+        "install",
+        "django-orm-lens[mcp]"
+      ]
+    }
+  }
+}

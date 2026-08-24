@@ -1,0 +1,11 @@
+{
+  "name": "community-faizbawa_mcp-remote-ssh",
+  "mcpServers": {
+    "mcp-remote-ssh": {
+      "command": "uvx",
+      "args": [
+        "mcp-remote-ssh"
+      ]
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "summary": {
+    "tool": "sentinel-scan-cli mcp",
+    "version": "1.3.0",
+    "num_tools_scanned": 0,
+    "num_servers_scanned": 1,
+    "num_findings": 0,
+    "findings_by_severity": {},
+    "findings_by_heuristic": {},
+    "manifest": "manifests/sebastienrousseau_rlg.json"
+  },
+  "results": []
+}

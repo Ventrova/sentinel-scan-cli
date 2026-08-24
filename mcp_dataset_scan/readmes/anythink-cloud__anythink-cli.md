@@ -1,0 +1,971 @@
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/anythink-logo-dark.svg">
+  <img alt="Anythink" src="assets/anythink-logo.svg" height="40">
+</picture>
+
+# Anythink CLI
+
+The official command-line interface for [Anythink](https://anythink.cloud) — the headless backend platform for developers and founders. Manage your projects, entities, data, workflows, users, files, and payments without leaving the terminal.
+
+[![NuGet](https://img.shields.io/nuget/v/anythink-mcp?logo=nuget&label=anythink-mcp)](https://www.nuget.org/packages/anythink-mcp)
+[![Release](https://img.shields.io/github/v/release/anythink-cloud/anythink-cli?logo=github&label=release)](https://github.com/anythink-cloud/anythink-cli/releases/latest)
+[![Homebrew](https://img.shields.io/badge/homebrew-anythink--cloud%2Ftap-F9A825?logo=homebrew&logoColor=white)](https://github.com/anythink-cloud/homebrew-tap)
+[![MCP Registry](https://img.shields.io/badge/MCP_registry-cloud.anythink%2Fanythink-0098FF)](https://registry.modelcontextprotocol.io)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+
+```
+   ░███                             ░██    ░██        ░██           ░██
+  ░██░██                            ░██    ░██                      ░██
+ ░██  ░██  ░████████  ░██    ░██ ░████████ ░████████  ░██░████████  ░██    ░██
+░█████████ ░██    ░██ ░██    ░██    ░██    ░██    ░██ ░██░██    ░██ ░██   ░██
+░██    ░██ ░██    ░██ ░██    ░██    ░██    ░██    ░██ ░██░██    ░██ ░███████
+░██    ░██ ░██    ░██ ░██   ░███    ░██    ░██    ░██ ░██░██    ░██ ░██   ░██
+░██    ░██ ░██    ░██  ░█████░██     ░████ ░██    ░██ ░██░██    ░██ ░██    ░██
+                             ░██
+                       ░███████
+```
+
+---
+
+## Contents
+
+- [Installation](#installation)
+- [Getting started](#getting-started)
+- [Command reference](#command-reference)
+  - [signup / login / logout](#signup--login--logout)
+  - [accounts](#accounts)
+  - [projects](#projects)
+  - [config](#config)
+  - [entities](#entities)
+  - [fields](#fields)
+  - [data](#data)
+  - [search](#search)
+  - [workflows](#workflows)
+  - [users](#users)
+  - [files](#files)
+  - [roles](#roles)
+  - [api-keys](#api-keys)
+  - [menus](#menus)
+  - [integrations](#integrations)
+  - [pay](#pay)
+  - [oauth](#oauth)
+  - [api](#api)
+  - [docs](#docs)
+  - [migrate](#migrate)
+  - [plans](#plans)
+- [MCP server](#mcp-server)
+- [Contributing](#contributing)
+- [License](#license)
+
+---
+
+## Installation
+
+Both the `anythink` CLI and the `anythink-mcp` server are distributed together. The quickest way to get both is Homebrew.
+
+### Homebrew (macOS / Linux) — recommended
+
+```bash
+brew install anythink-cloud/tap/anythink
+```
+
+This installs **both** commands onto your `PATH`:
+
+- `anythink` — the CLI
+- `anythink-mcp` — the MCP server (see [MCP server](#mcp-server))
+
+Upgrade later with `brew upgrade anythink`.
+
+### macOS / Linux — download binary
+
+Grab the latest release for your platform from the [Releases](https://github.com/anythink-cloud/anythink-cli/releases/latest) page:
+
+| Platform              | Binary                 |
+| --------------------- | ---------------------- |
+| macOS (Apple Silicon) | `anythink-osx-arm64`   |
+| macOS (Intel)         | `anythink-osx-x64`     |
+| Linux (x86_64)        | `anythink-linux-x64`   |
+| Linux (ARM64)         | `anythink-linux-arm64` |
+
+```bash
+# Example — macOS Apple Silicon
+curl -Lo anythink https://github.com/anythink-cloud/anythink-cli/releases/latest/download/anythink-osx-arm64
+chmod +x anythink
+sudo mv anythink /usr/local/bin/
+```
+
+The MCP server ships as a matching `anythink-mcp-<platform>` binary on the same release — download and install it the same way (e.g. `anythink-mcp-osx-arm64`).
+
+Verify the download against `checksums.txt` in the release assets:
+
+```bash
+sha256sum -c checksums.txt --ignore-missing
+```
+
+### .NET global tool
+
+If you have the [.NET 8 SDK](https://dotnet.microsoft.com/download) installed:
+
+```bash
+dotnet tool install --global anythink-cli
+```
+
+### Build from source
+
+```bash
+git clone https://github.com/anythink-cloud/anythink-cli
+cd anythink-cli
+dotnet build
+dotnet run -- --help
+```
+
+---
+
+## Getting started
+
+```bash
+# 1. Create an account (or log in if you already have one)
+anythink signup
+
+# 2. Create a billing account
+anythink accounts create --name "My Company"
+
+# 3. Create a project
+anythink projects create "My App" --region lon1
+
+# 4. Connect to the project
+anythink projects use <project-id>
+
+# 5. Start building
+anythink entities list
+anythink workflows list
+```
+
+Your credentials and project profiles are stored in `~/.anythink/config.json`. You can manage multiple projects by running `projects use` to switch between them.
+
+---
+
+## Command reference
+
+### signup / login / logout
+
+```
+anythink signup                        Create a new Anythink account
+anythink login                         Log in to the platform
+anythink logout                        Remove saved credentials for a project profile
+```
+
+`signup` and `login` are interactive — they prompt for email and password and walk you through connecting to a billing account and project on first run.
+
+---
+
+### accounts
+
+Manage billing accounts. A billing account is the container for one or more projects and holds your subscription and payment details.
+
+```
+anythink accounts list                 List your billing accounts
+anythink accounts create               Create a new billing account
+anythink accounts use <id>             Set the active billing account
+```
+
+**Examples**
+
+```bash
+anythink accounts create --name "Acme Ltd" --email billing@acme.com
+anythink accounts use a1b2c3d4
+```
+
+---
+
+### projects
+
+Create and manage Anythink projects. Each project is an isolated backend instance with its own database, auth, files, and workflows.
+
+```
+anythink projects list                 List projects in the active billing account
+anythink projects create <name>        Create a new project
+anythink projects use <id>             Connect to a project (sets it as the active profile)
+anythink projects delete <id>          Delete a project
+```
+
+**Options — `projects create`**
+
+| Flag            | Description                     |
+| --------------- | ------------------------------- |
+| `--region <id>` | Deployment region (e.g. `lon1`) |
+| `--plan <id>`   | Plan ID (see `anythink plans`)  |
+
+**Examples**
+
+```bash
+anythink projects create "My App" --region lon1
+anythink projects use a1b2c3d4
+anythink projects delete a1b2c3d4 --yes
+```
+
+---
+
+### config
+
+View and manage saved CLI profiles.
+
+```
+anythink config show                   List all profiles and platform settings
+anythink config use <profile>          Set the active project profile
+anythink config remove <profile>       Remove a profile
+```
+
+Profiles are named by project alias or ID and stored in `~/.anythink/config.json`.
+
+---
+
+### entities
+
+Manage entities (database tables) in the active project.
+
+```
+anythink entities list                 List all entities
+anythink entities get <name>           Get entity details and fields
+anythink entities create <name>        Create a new entity
+anythink entities update <name>        Update entity settings
+anythink entities delete <name>        Delete an entity and all its data
+```
+
+**Options — `entities create`**
+
+| Flag         | Description                                |
+| ------------ | ------------------------------------------ |
+| `--rls`      | Enable row-level security                  |
+| `--public`   | Make the entity publicly readable          |
+| `--lock`     | Lock new records (prevent direct creation) |
+| `--junction` | Mark as a junction (many-to-many) table    |
+
+**Examples**
+
+```bash
+anythink entities create orders --rls
+anythink entities get customers
+anythink entities delete temp_data --yes
+```
+
+---
+
+### fields
+
+Manage fields on an entity. Fields map directly to database columns.
+
+```
+anythink fields list <entity>          List fields on an entity
+anythink fields add <entity> <name>    Add a field
+anythink fields delete <entity> <id>   Delete a field
+```
+
+**Options — `fields add`**
+
+| Flag                | Description                                                                       |
+| ------------------- | --------------------------------------------------------------------------------- |
+| `--type <type>`     | Field type: `varchar`, `text`, `int`, `float`, `bool`, `datetime`, `json`, `uuid` |
+| `--required`        | Mark the field as required                                                        |
+| `--unique`          | Enforce a unique constraint                                                       |
+| `--indexed`         | Add a database index                                                              |
+| `--default <value>` | Default value                                                                     |
+
+**Examples**
+
+```bash
+anythink fields list customers
+anythink fields add customers email --type varchar --unique --required
+anythink fields add products price --type float --required
+anythink fields delete customers 1234 --yes
+```
+
+---
+
+### data
+
+CRUD operations on entity records.
+
+```
+anythink data list <entity>            List records
+anythink data get <entity> <id>        Get a single record by ID
+anythink data create <entity>          Create a new record
+anythink data update <entity> <id>     Update a record
+anythink data delete <entity> <id>     Delete a record
+```
+
+**Options — `data list`**
+
+| Flag              | Description                                                                        |
+| ----------------- | ---------------------------------------------------------------------------------- |
+| `--limit <n>`     | Records per page (default: 20)                                                     |
+| `--page <n>`      | Page number (default: 1)                                                           |
+| `--filter <json>` | Filter expression (JSON)                                                           |
+| `--json`          | Output raw JSON instead of table                                                   |
+| `--all`           | Stream all pages as sequential JSON objects (requires `--json`, constant memory)    |
+
+**Options — `data create` / `data update`**
+
+| Flag            | Description                 |
+| --------------- | --------------------------- |
+| `--data <json>` | JSON object of field values |
+
+**Examples**
+
+```bash
+anythink data list blog_posts --limit 10
+anythink data get blog_posts 42
+anythink data create blog_posts --data '{"title":"Hello World","status":"draft"}'
+anythink data update blog_posts 42 --data '{"status":"approved"}'
+anythink data delete blog_posts 42 --yes
+```
+
+---
+
+### search
+
+Full-text search across your entities, plus index lifecycle management.
+
+```
+anythink search query <text>                          Run a search
+anythink search similar <entity> <id>                 Find similar documents
+anythink search rehydrate [<entity>]                  Rebuild the search index (admin)
+anythink search purge [<entity>]                      Wipe the search index (admin)
+anythink search audit <entity>                        Compare configured public-searchable fields
+                                                       with what public search actually returns
+```
+
+**Options — `search query`**
+
+| Flag                  | Description                                                                            |
+| --------------------- | -------------------------------------------------------------------------------------- |
+| `--entities <list>`   | Comma-separated entity names. Default: all indexed entities.                           |
+| `--filter <expr>`     | Filter expression, e.g. `"status=published AND category=news"`. Supports `_geoRadius`. |
+| `--sort <list>`       | Comma-separated sort fields, e.g. `"created_at:desc,id:asc"`.                          |
+| `--facet <fields>`    | Comma-separated fields to compute facet counts on.                                     |
+| `--highlight`         | Highlight matched terms in results.                                                    |
+| `--page N`            | Page number (default: 1).                                                              |
+| `--limit N`           | Results per page (1-100, default: 20).                                                 |
+| `--public`            | Use the unauthenticated `/search/public` endpoint (only public-marked fields).         |
+| `--json`              | Print the raw response JSON.                                                           |
+
+**Index lifecycle**
+
+`rehydrate` and `purge` are admin operations on the search index:
+
+- `search rehydrate` — rebuilds the index from the database (no data loss; just resyncs)
+- `search purge` — deletes the index (run `rehydrate` after to repopulate)
+
+Both confirm by default; pass `-y` / `--yes` to skip the prompt for automation.
+
+**`search audit` — public-search data leak check**
+
+Compares what the entity's schema *says* should be public-searchable (fields with `publicly_searchable=true` and the entity's own `is_public=true`) against what `/search/public` actually returns. Any field appearing in public results that isn't on the allowlist is reported as a leak.
+
+Exits with code 1 if a leak is detected — useful for CI/CD.
+
+**Examples**
+
+```bash
+# Browse everything
+anythink search query "*"
+
+# Filtered search with sorting
+anythink search query "anythink" --filter "status=published" --sort "created_at:desc"
+
+# Compare what public visitors see vs what's in the database
+anythink search audit posts
+anythink search audit users --query "alice" --sample 10
+
+# Reindex after a schema change
+anythink search rehydrate posts
+anythink search rehydrate --yes        # everything (admin)
+
+# Geo search (radius in metres)
+anythink search query "*" --filter "_geoRadius(51.5074,-0.1278,5000)"
+```
+
+---
+
+### workflows
+
+Manage automation workflows. Workflows can be triggered on a cron schedule, when entities are created or updated, or manually.
+
+```
+anythink workflows list                List all workflows
+anythink workflows get <id>            Get workflow details and steps
+anythink workflows create <name>       Create a new workflow
+anythink workflows enable <id>         Enable a workflow
+anythink workflows disable <id>        Disable a workflow
+anythink workflows trigger <id>        Manually trigger a workflow
+anythink workflows delete <id>         Delete a workflow
+```
+
+**Options — `workflows create`**
+
+| Flag               | Description                                                       |
+| ------------------ | ----------------------------------------------------------------- |
+| `--trigger <type>` | Trigger type: `Timed`, `EntityCreated`, `EntityUpdated`, `Manual` |
+| `--cron <expr>`    | Cron expression (for `Timed` trigger, e.g. `0 6 * * *`)           |
+| `--entity <name>`  | Entity name (for `EntityCreated` / `EntityUpdated` triggers)      |
+
+**Examples**
+
+```bash
+anythink workflows create daily-sync --trigger Timed --cron "0 6 * * *"
+anythink workflows trigger 76
+anythink workflows disable 83
+```
+
+---
+
+### users
+
+Manage users in the active project.
+
+```
+anythink users list                    List all users
+anythink users me                      Show the currently authenticated user
+anythink users get <id>                Get a user by ID
+anythink users invite <email> <first> <last>   Create a user and send an invitation email
+anythink users delete <id>             Delete a user
+```
+
+**Options — `users invite`**
+
+| Flag             | Description                   |
+| ---------------- | ----------------------------- |
+| `--role-id <id>` | Assign a role to the new user |
+
+**Examples**
+
+```bash
+anythink users list
+anythink users invite alice@example.com Alice Smith --role-id 3
+anythink users delete 42 --yes
+```
+
+---
+
+### files
+
+Manage uploaded files in the active project.
+
+```
+anythink files list                    List uploaded files
+anythink files get <id>                Get file metadata by ID
+anythink files upload <path>           Upload a file
+anythink files delete <id>             Delete a file
+```
+
+**Options — `files list`**
+
+| Flag          | Description                  |
+| ------------- | ---------------------------- |
+| `--page <n>`  | Page number                  |
+| `--limit <n>` | Files per page (default: 25) |
+
+**Options — `files upload`**
+
+| Flag       | Description                       |
+| ---------- | --------------------------------- |
+| `--public` | Make the file publicly accessible |
+
+**Examples**
+
+```bash
+anythink files list
+anythink files upload logo.png --public
+anythink files upload export.csv
+anythink files delete 12 --yes
+```
+
+---
+
+### roles
+
+Manage roles in the active project. Roles control what authenticated users can access.
+
+```
+anythink roles list                    List all roles
+anythink roles create <name>           Create a new role
+anythink roles delete <id>             Delete a role
+```
+
+**Options — `roles create`**
+
+| Flag                   | Description                            |
+| ---------------------- | -------------------------------------- |
+| `--description <text>` | Human-readable description of the role |
+
+**Examples**
+
+```bash
+anythink roles list
+anythink roles create editor --description "Can edit content"
+anythink roles delete 5 --yes
+```
+
+---
+
+### api-keys
+
+Issue and manage API keys for non-interactive access (CI pipelines, scripts, integrations). Each key is scoped to a permission set, has an expiry, and is tied to the user that created it.
+
+The raw key is shown **once** on creation and never retrievable — save it immediately or use `--save-as` to write it directly into a CLI profile.
+
+```
+anythink api-keys list                              List your API keys
+anythink api-keys create <name> --permissions ...   Create a new key
+anythink api-keys revoke <id>                       Revoke a key
+```
+
+**Options — `api-keys create`**
+
+| Flag                    | Description                                                                  |
+| ----------------------- | ---------------------------------------------------------------------------- |
+| `--permissions <list>`  | Required. Comma-separated permission names, e.g. `data:read,data:create`     |
+| `--expires-in <days>`   | Days until expiry (default: 90, max: 365)                                    |
+| `--no-expiry-cap`       | Allow `--expires-in` greater than 365 days                                   |
+| `--save-as <profile>`   | Save the new key directly to a CLI profile instead of printing it            |
+| `--json`                | Print the response as JSON to stdout (the key is in this output — handle carefully) |
+| `-y, --yes`             | Skip the confirmation prompt                                                 |
+
+**Output behaviour**
+
+By default, the success message goes to **stdout** and the raw key goes to **stderr** on its own line. This makes it easy to capture only the key:
+
+```bash
+anythink api-keys create ci-deploy --permissions data:read --yes 2> key.txt
+```
+
+If the server drops any of the requested permissions because the current user does not hold them, the CLI surfaces a loud warning so you do not end up with a quietly under-scoped key.
+
+**Examples**
+
+```bash
+# Create a 90-day key for CI
+anythink api-keys create github-actions --permissions "data:read,data:create" --yes 2> key.txt
+
+# Create a key and save it directly into a profile (key never echoes)
+anythink api-keys create scraper --permissions data:read --save-as scraper-bot --yes
+anythink --profile scraper-bot data list posts
+
+# Revoke a key
+anythink api-keys revoke 42 --yes
+```
+
+---
+
+### menus
+
+Manage dashboard sidebar menus in the active project. Menus control what entities appear in the Anythink dashboard and how they are grouped.
+
+```
+anythink menus list                              List all menus with tree structure
+anythink menus add-item <menu_id> <entity>       Add an entity to a dashboard menu
+```
+
+**Options — `menus add-item`**
+
+| Flag              | Description                                          |
+| ----------------- | ---------------------------------------------------- |
+| `--icon <name>`   | Lucide icon name (e.g. `MessageCircle`, `Target`)    |
+| `--name <text>`   | Display name (defaults to entity name, title-cased)  |
+| `--parent <id>`   | Parent menu item ID for nesting under a group        |
+
+**Examples**
+
+```bash
+# List all menus and their items
+anythink menus list
+
+# Add "Check-ins" under the Profiles group (parent 168) in admin menu (250)
+anythink menus add-item 250 check_ins --icon MessageCircle --parent 168
+
+# Add a top-level menu item
+anythink menus add-item 250 badges --icon Award
+```
+
+---
+
+### integrations
+
+Manage integrations — both the catalog of available providers (Claude, OpenAI, Slack, Google, etc.) and the active connections that hold credentials for them.
+
+```
+anythink integrations list                                  List available providers
+anythink integrations get <provider>                        Show details and operations for one provider
+anythink integrations connections list [--provider <p>]     List your active connections
+
+anythink integrations connect <provider>                    Create an API-key connection (Claude, OpenAI, etc.)
+anythink integrations oauth status <provider>               Show OAuth client setup status
+anythink integrations oauth configure <provider>            Set the OAuth client ID + secret
+anythink integrations oauth connect <provider>              Connect via the browser OAuth flow
+
+anythink integrations test <connection-id>                  Test a connection
+anythink integrations enable <connection-id>                Enable a connection
+anythink integrations disable <connection-id>               Disable a connection
+anythink integrations disconnect <connection-id>            Delete a connection
+
+anythink integrations execute <provider> <operation>        Run an operation on a connected provider
+```
+
+**API-key providers — `integrations connect`**
+
+| Flag                 | Description                                                                              |
+| -------------------- | ---------------------------------------------------------------------------------------- |
+| `--api-key <key>`    | API key for the provider. If omitted, you'll be prompted (input is hidden).              |
+| `--name <name>`      | Friendly name for this connection (default: `<provider> connection`)                    |
+| `--user-connection`  | Make this a user-scoped connection (only the current user sees it). Default: tenant-wide. |
+
+**OAuth providers — `integrations oauth connect`**
+
+The CLI starts a local HTTP listener on `http://localhost:8745/callback`, opens your browser to the provider's authorisation URL, and exchanges the returned code for a connection — no copy/paste of auth codes required.
+
+| Flag                 | Description                                                              |
+| -------------------- | ------------------------------------------------------------------------ |
+| `--name <name>`      | Friendly name for this connection                                       |
+| `--user-connection`  | Make this a user-scoped connection                                       |
+| `--port <n>`         | Local callback port (default: `8745`)                                    |
+| `--no-open`          | Don't try to open the browser — just print the URL                       |
+| `--timeout <secs>`   | How long to wait for the callback (default: `300`)                       |
+
+OAuth credentials need to be set up once per provider before you can connect:
+
+```bash
+anythink integrations oauth configure slack          # prompts for client_id + secret (hidden)
+anythink integrations oauth connect slack --name main
+```
+
+**Running operations — `integrations execute`**
+
+| Flag                | Description                                                                         |
+| ------------------- | ----------------------------------------------------------------------------------- |
+| `--input <k=v>`     | Input parameter as `key=value`. Repeatable.                                         |
+| `--inputs <json>`   | All inputs as a JSON object.                                                        |
+| `--json`            | Print the full JSON response (default: just the `content` field if present).        |
+
+**Examples**
+
+```bash
+# Browse what's available
+anythink integrations list
+anythink integrations get claude
+
+# API-key flow (Claude, OpenAI)
+anythink integrations connect claude --name "main"
+anythink integrations execute claude generate-text --input "prompt=Tell me a haiku"
+
+# OAuth flow (Slack, Google, GitHub)
+anythink integrations oauth configure slack
+anythink integrations oauth connect slack --name main
+
+# Manage connections
+anythink integrations connections list
+anythink integrations test <connection-id>
+anythink integrations disable <connection-id>
+anythink integrations disconnect <connection-id> --yes
+```
+
+---
+
+### pay
+
+Configure and manage Anythink Pay — the built-in Stripe Connect integration for accepting payments in your project.
+
+```
+anythink pay status                    Show Stripe Connect account status
+anythink pay connect                   Set up a Stripe Connect account and start onboarding
+anythink pay payments                  List recent payments
+anythink pay methods                   List saved payment methods
+```
+
+**Options — `pay payments`**
+
+| Flag          | Description                     |
+| ------------- | ------------------------------- |
+| `--page <n>`  | Page number                     |
+| `--limit <n>` | Payments per page (default: 25) |
+
+`pay connect` is interactive — it prompts for business type, country, and contact email, creates a Stripe Connect account, then opens the Stripe onboarding URL in your browser.
+
+**Examples**
+
+```bash
+anythink pay status
+anythink pay connect
+anythink pay payments --limit 50
+```
+
+---
+
+### oauth
+
+Configure OAuth social sign-in providers for the active project.
+
+```
+anythink oauth google status           Show Google OAuth configuration status
+anythink oauth google configure        Set Google OAuth client ID and secret
+```
+
+Google OAuth lets your project's users sign in with their Google account. You'll need a Google Cloud project with the OAuth 2.0 credentials created — see the [Google Cloud Console](https://console.cloud.google.com/apis/credentials).
+
+Set the authorised redirect URI in your Google Cloud credentials to:
+
+```
+https://api.my.anythink.cloud/org/<your-org-id>/auth/v1/google/callback
+```
+
+**Examples**
+
+```bash
+anythink oauth google status
+anythink oauth google configure
+```
+
+---
+
+### api
+
+List all API endpoints available for the active project — both platform routes and the dynamically generated REST routes for your entities.
+
+```
+anythink api                           List all endpoints
+anythink api --json                    Output as JSON (useful for AI tooling)
+```
+
+---
+
+### docs
+
+Print the full CLI reference.
+
+```
+anythink docs                          Print reference as markdown
+anythink docs --json                   Print reference as JSON (for AI/tooling consumption)
+```
+
+---
+
+### migrate
+
+Copy the entity schema (entities + fields) from one project profile to another. Useful for promoting a schema from staging to production.
+
+```
+anythink migrate --from <profile> --to <profile>
+```
+
+**Options**
+
+| Flag               | Description                                        |
+| ------------------ | -------------------------------------------------- |
+| `--from <profile>` | Source profile name (required)                     |
+| `--to <profile>`   | Destination profile name (required)                |
+| `--dry-run`        | Show what would be migrated without making changes |
+
+**Examples**
+
+```bash
+anythink migrate --from my-app-staging --to my-app-prod
+anythink migrate --from my-app-staging --to my-app-prod --dry-run
+```
+
+---
+
+### plans
+
+List available Anythink plans.
+
+```
+anythink plans                         List plans
+anythink plans --json                  Output as JSON
+```
+
+---
+
+## MCP server
+
+The Anythink MCP server exposes the platform to AI assistants (Claude, Cursor, etc.) via the [Model Context Protocol](https://modelcontextprotocol.io).
+
+### Install
+
+No install needed — the recommended way is to run it on demand with `npx`:
+
+```bash
+npx -y @anythink-cloud/mcp
+```
+
+Prefer a native binary on your `PATH`? Any of:
+
+```bash
+# Homebrew (bundled with the CLI — see Installation above)
+brew install anythink-cloud/tap/anythink
+
+# .NET global tool (requires the .NET 8 SDK)
+dotnet tool install -g anythink-mcp
+
+# Or download the anythink-mcp-<platform> binary from the Releases page
+```
+
+### Configure
+
+[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en/install-mcp?name=anythink&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkBhbnl0aGluay1jbG91ZC9tY3AiXX0%3D)
+[![Install in VS Code](https://img.shields.io/badge/Install-VS_Code-007ACC?logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect/mcp/install?name=anythink&config=%7B%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22%40anythink-cloud%2Fmcp%22%5D%7D)
+
+For **Claude Code**, register it in one command:
+
+```bash
+claude mcp add anythink -- npx -y @anythink-cloud/mcp
+```
+
+Or add it to your MCP client config manually (e.g. `.mcp.json`):
+
+```json
+{
+  "mcpServers": {
+    "anythink": {
+      "command": "npx",
+      "args": ["-y", "@anythink-cloud/mcp"]
+    }
+  }
+}
+```
+
+To pin a profile, add it to `args`: `["-y", "@anythink-cloud/mcp", "--profile", "my-project"]`
+
+Works in any MCP client. Most use the same `mcpServers` JSON shown above — just add it to the client's config file:
+
+| Client | Config file |
+| --- | --- |
+| Claude Code | `claude mcp add anythink -- npx -y @anythink-cloud/mcp` (or `.mcp.json`) |
+| Claude Desktop | `claude_desktop_config.json` (Settings → Developer → Edit Config) |
+| Cursor | `~/.cursor/mcp.json` (or the **Add to Cursor** button above) |
+| VS Code | `.vscode/mcp.json` (or the **Install in VS Code** button above) |
+| Cline | `cline_mcp_settings.json` (MCP Servers → Configure) |
+| Windsurf | `~/.codeium/windsurf/mcp_config.json` |
+
+A couple of clients use a different config shape:
+
+<details>
+<summary><strong>Continue</strong> (YAML — <code>mcpServers</code> is a list)</summary>
+
+```yaml
+mcpServers:
+  - name: anythink
+    command: npx
+    args:
+      - -y
+      - "@anythink-cloud/mcp"
+```
+</details>
+
+<details>
+<summary><strong>Zed</strong> (uses <code>context_servers</code>, not <code>mcpServers</code>)</summary>
+
+```json
+{
+  "context_servers": {
+    "anythink": {
+      "source": "custom",
+      "command": "npx",
+      "args": ["-y", "@anythink-cloud/mcp"]
+    }
+  }
+}
+```
+</details>
+
+(Using a native binary instead of `npx`? Use `"command": "anythink-mcp"` with no `args`.)
+
+Once connected, run the `login` tool, then `accounts_use` / `projects_use` to pick your working context.
+
+### Available tools
+
+The MCP server provides dedicated tools for authentication, account/project management, and configuration — plus a generic `cli` tool that can run any CLI command:
+
+| Tool | Description |
+| --- | --- |
+| `signup` | Create a new Anythink account |
+| `login` | Log in with email and password |
+| `login_direct` | Store credentials directly (org ID + API key or JWT) |
+| `logout` | Remove a saved profile |
+| `config_show` | List all profiles |
+| `config_use` | Switch active profile |
+| `config_remove` | Remove a profile |
+| `accounts_list` | List billing accounts |
+| `accounts_create` | Create a billing account |
+| `accounts_use` | Set the active billing account |
+| `projects_list` | List projects |
+| `projects_create` | Create a project |
+| `projects_use` | Connect to a project |
+| `projects_delete` | Delete a project |
+| `cli` | Run any CLI command (entities, data, workflows, roles, etc.) |
+
+---
+
+## Contributing
+
+### Prerequisites
+
+- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8)
+- An Anythink account (free tier works)
+
+### Setup
+
+```bash
+git clone https://github.com/anythink-cloud/anythink-cli
+cd anythink-cli
+dotnet build
+```
+
+### Running locally
+
+```bash
+dotnet run -- --help
+dotnet run -- projects list
+dotnet run -- entities list
+```
+
+
+### Releases
+
+Releases are automated via GitHub Actions. Push a version tag to trigger a build:
+
+```bash
+git tag v1.2.0
+git push origin v1.2.0
+```
+
+The workflow builds self-contained binaries for macOS (arm64, x64) and Linux (x64, arm64), computes SHA256 checksums, and publishes them as a GitHub release.
+
+### Project structure
+
+```
+anythink-cli/
+├── src/                        # CLI source
+│   ├── Commands/               # Command implementations (signup, login, etc)
+│   ├── Config/                 # CliConfig.cs, Profile, ConfigService
+│   ├── Models/                 # ApiModels.cs, BillingModels.cs
+│   ├── Client/                 # HttpApiClient.cs, AnythinkClient.cs, BillingClient.cs
+│   ├── Output/                 # Renderer.cs (Spectre.Console helpers)
+│   └── Program.cs              # Application entry point & .env loader
+├── mcp/                        # MCP server source
+│   ├── Tools/                  # MCP tool implementations
+│   ├── McpClientFactory.cs     # Auth + client resolution
+│   └── Program.cs              # MCP server entry point
+├── tests/                      # CLI unit tests
+├── mcp-tests/                  # MCP unit tests
+├── AnythinkCli.sln             # Solution file
+└── .gitignore
+```
+
+---
+
+## License
+
+MIT — see [LICENSE](LICENSE). This covers the Anythink CLI and MCP server source in this repository; it does not grant rights to the Anythink platform, APIs, or services, which are governed by separate terms at [anythink.cloud](https://anythink.cloud).
+
+---
+
+Built with [Spectre.Console](https://spectreconsole.net) · Powered by [Anythink](https://anythink.cloud)

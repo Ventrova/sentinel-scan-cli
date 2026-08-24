@@ -1,0 +1,12 @@
+{
+  "name": "community-hugoles_langfuse-mcp",
+  "mcpServers": {
+    "langfuse-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "langfuse-mcp"
+      ]
+    }
+  }
+}

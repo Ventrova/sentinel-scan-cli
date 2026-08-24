@@ -1,0 +1,309 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/brand/qai_logo_horizontal_dark_1680.png">
+    <img alt="QAI Consultant" src="assets/brand/qai_logo_horizontal_1680.png" width="360">
+  </picture>
+</p>
+
+# QAI Consultant
+
+An open-source AI agent that acts as a senior QA Architect — automatically generating a **Test Strategy**, **Risk Register**, **Effort Estimation Report**, and **Test Plan** from a simple project description, plus deterministic **QA Document Quality Review** and **Test Results Analysis** for evaluating what already exists. Also available as an **MCP server** so Claude Code, Claude Desktop, and claude.ai can ground their own QA work in the same standards and numbers.
+
+> 🌐 **Live demo:** [quality-ai-consultant.streamlit.app](https://quality-ai-consultant.streamlit.app)
+
+> 🔌 **New:** QAI Consultant is now also an MCP server — `uvx qai-consultant-mcp`. No API keys, no Pinecone. See [MCP Server](#mcp-server-for-claude-code-claude-desktop-claudeai) below or the [package on PyPI](https://pypi.org/project/qai-consultant-mcp/).
+
+> 🤖 Built with [Claude Code](https://claude.ai/code) by Anthropic.
+
+![CI](https://github.com/gvasile29/qai-consultant/actions/workflows/ci.yml/badge.svg)
+![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)
+![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)
+![Version](https://img.shields.io/badge/version-3.4.3-green.svg)
+![PyPI](https://img.shields.io/pypi/v/qai-consultant-mcp?label=qai-consultant-mcp&color=blue)
+![Built with Claude](https://img.shields.io/badge/Built%20with-Claude-orange?logo=anthropic)
+
+---
+
+## Screenshots
+
+### Web UI (Streamlit)
+![Streamlit Intro](docs/screenshots/streamlit_intro.png)
+![Streamlit MCP announcement in sidebar](docs/screenshots/streamlit_mcp_sidebar.png)
+![Streamlit Project Discovery dialogue](docs/screenshots/streamlit_dialogue.png)
+![Streamlit Risk Register](docs/screenshots/streamlit_risk_register.png)
+![Streamlit Effort Estimation](docs/screenshots/streamlit_effort.png)
+![Streamlit Test Strategy](docs/screenshots/streamlit_strategy.png)
+![Streamlit Test Plan](docs/screenshots/streamlit_test_plan.png)
+
+### CLI
+![CLI Banner](docs/screenshots/cli_banner.svg)
+![CLI Project Discovery dialogue](docs/screenshots/cli_dialogue.svg)
+
+---
+
+## Quick Start
+
+### Option A — Use the live app (no setup)
+
+👉 [quality-ai-consultant.streamlit.app](https://quality-ai-consultant.streamlit.app)
+
+### Option B — Run locally
+
+```bash
+# 1. Clone and install
+git clone https://github.com/gvasile29/qai-consultant.git
+cd qai-consultant
+pip install -r requirements.txt
+
+# 2. Set up API keys
+cp .env.example .env
+# Edit .env and fill in the 4 keys (see Prerequisites below)
+
+# 3. Build the knowledge base (one-time, pushes to Pinecone)
+python src/ingest.py
+
+# 4. Run
+python src/cli.py            # Terminal UI
+streamlit run src/app.py     # Web UI → http://localhost:8501
+```
+
+> 📖 Full installation guide: [INSTALL.md](INSTALL.md)
+
+---
+
+## The Problem
+
+Creating a Test Strategy from scratch is time-consuming and requires deep QA expertise. Most teams either skip it, do it superficially, or spend days researching methodologies.
+
+QAI Consultant eliminates this bottleneck by combining established QA methodologies, industry standards (ISTQB, OWASP, ISO 26262, A-SPICE), and expert knowledge into an AI agent that thinks like a seasoned QA Architect.
+
+---
+
+## Who Is This For?
+
+- **QA Engineers** who need structured guidance on test strategy
+- **Engineering Managers** who need effort estimations and resource planning
+- **Development teams** without a dedicated QA Architect
+- **QA Consultants** who want to accelerate their delivery
+
+---
+
+## What QAI Consultant Generates
+
+From a single 11-question dialogue, QAI Consultant automatically generates **four documents**:
+
+| Document | What it contains |
+|---|---|
+| ⚠️ **Risk Register** | Risk matrix, likelihood/impact analysis, mitigations per risk |
+| 📊 **Effort Estimation Report** | PERT-based breakdown, team capacity analysis, confidence score |
+| 📋 **Test Strategy** | ISTQB-aligned strategy tailored to your stack, methodology, and compliance |
+| 📝 **Test Plan** | IEEE 829-aligned plan with entry/exit criteria, schedule, and AI tool oversight |
+
+All outputs are saved as Markdown files and available for PDF download.
+
+---
+
+## Knowledge Base
+
+QAI Consultant's recommendations are grounded in real QA standards and methodologies:
+
+- 📘 **ISTQB** — 14 certification syllabuses (CTFL, CTAL-TA, CTAL-TM, CTAL-TAE, CT-AI, and more)
+- 🔒 **OWASP** — WSTG v4.2, MASTG, Top 10 2021
+- 🚗 **ISO 26262** — Automotive functional safety (ASIL levels, HARA, V&V)
+- 🏭 **A-SPICE** — Automotive SPICE process reference model (SWE.4, SWE.5, SWE.6)
+- 📋 **IEEE 829** — Test documentation standard
+- ⚙️ **ISO/IEC 25010** — Software product quality model
+- 🤖 **AI Test Planning** — 17 real-world AI SDLC case studies (2024–2025)
+- 🧠 **Expert Knowledge** — Real QA scenarios and lessons learned from practitioners
+
+---
+
+## Prerequisites
+
+QAI Consultant v2.0 runs on cloud APIs — no local GPU or Ollama required.
+
+You need four API keys in a `.env` file (all have free tiers):
+
+| Key | Where to get it |
+|-----|----------------|
+| `MISTRAL_API_KEY` | [console.mistral.ai](https://console.mistral.ai/) → API Keys |
+| `OPENROUTER_API_KEY` | [openrouter.ai/keys](https://openrouter.ai/keys) |
+| `PINECONE_API_KEY` | [pinecone.io](https://www.pinecone.io/) → API Keys |
+| `PINECONE_INDEX_NAME` | Name of your Pinecone index (e.g. `qai-consultant`, dimensions: 384, metric: cosine) |
+
+```bash
+cp .env.example .env
+# Edit .env and fill in all four values
+```
+
+---
+
+## Architecture
+
+![QAI Consultant Architecture](docs/screenshots/architecture.svg)
+
+## How It Works
+
+```
+You describe your project (11 questions)
+        ↓
+QAI retrieves relevant knowledge from Pinecone (parallel RAG, 3 threads)
+        ↓
+QAI analyzes risks from your context → Risk Register (Mistral API)
+        ↓
+QAI estimates effort using PERT + industry benchmarks → Effort Report
+        ↓
+QAI generates a Test Strategy backed by QA standards → Test Strategy (Mistral API)
+        ↓
+QAI generates an IEEE 829-aligned Test Plan → Test Plan (Mistral API)
+        ↓
+Four documents ready for Markdown + PDF download
+```
+
+LLM calls use **Mistral API** as the primary provider, with **OpenRouter** as automatic fallback.
+
+---
+
+## Interfaces
+
+### Web UI (Browser — recommended)
+
+```bash
+streamlit run src/app.py
+```
+
+Or use the **live hosted version**: [quality-ai-consultant.streamlit.app](https://quality-ai-consultant.streamlit.app)
+
+### CLI (Terminal)
+
+```bash
+python src/cli.py
+```
+
+### MCP Server (for Claude Code, Claude Desktop, claude.ai)
+
+[![qai-consultant MCP server](https://glama.ai/mcp/servers/gvasile29/qai-consultant/badges/card.svg)](https://glama.ai/mcp/servers/gvasile29/qai-consultant)
+[![qai-consultant MCP server](https://glama.ai/mcp/servers/gvasile29/qai-consultant/badges/score.svg)](https://glama.ai/mcp/servers/gvasile29/qai-consultant)
+![MCP Registry](https://img.shields.io/badge/MCP%20Registry-listed-6B46C1?logo=anthropic)
+![Awesome MCP Servers](https://img.shields.io/badge/Awesome%20MCP%20Servers-listed-blue?logo=github)
+
+Listed on the [official MCP registry](https://registry.modelcontextprotocol.io) (`io.github.gvasile29/qai-consultant-mcp`), [Glama](https://glama.ai/mcp/servers/gvasile29/qai-consultant), and [Awesome MCP Servers](https://github.com/punkpeye/awesome-mcp-servers).
+
+QAI Consultant is also available as a local, fully keyless MCP server —
+`qai-consultant-mcp`. No Pinecone, no Mistral/OpenRouter API keys: it runs a
+local embedding index over the same knowledge base and exposes deterministic
+QA effort estimation, so your own AI coding assistant can ground its QA
+planning directly, no separate LLM call needed.
+
+![qai-consultant-mcp answering a retrieve_qa_knowledge call in MCP Inspector](assets/demo/qai-consultant-mcp-demo.gif)
+
+```bash
+uvx qai-consultant-mcp
+```
+
+**Claude Code:**
+
+```bash
+claude mcp add qai-consultant -- uvx qai-consultant-mcp
+```
+
+**Claude Desktop** (`claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "qai-consultant": {
+      "command": "uvx",
+      "args": ["qai-consultant-mcp"]
+    }
+  }
+}
+```
+
+**Tools:**
+
+| Tool | What it does |
+|---|---|
+| `retrieve_qa_knowledge` | Grounding chunks from the KB (ISTQB, OWASP, IEEE, ISO, EU AI Act), filterable by category |
+| `list_kb_sources` | Every document in the KB, grouped by category |
+| `estimate_qa_effort` | Deterministic PERT-based effort estimate (no LLM narrative — you write your own from the numbers) |
+| `review_qa_document` | Deterministic 0–100 quality score for an existing Test Plan/Strategy/test case list across six ISTQB/IEEE-829 dimensions, with findings + KB citations |
+| `analyze_test_results` | Deterministic health metrics from JUnit XML/CSV test execution data — flaky tests, ever-failing tests, slowest tests, failure clustering |
+
+**Prompts:** `qa_project_interview` (the same 11-question intake this app uses), `risk_register_structure`, `test_strategy_structure`, `test_plan_structure` — each grounds the client's generation in `retrieve_qa_knowledge` with `[Source N]` citations.
+
+**Privacy:** usage telemetry is off by default. Set `QAI_TELEMETRY=1` to opt in; even then, only tool name/success/duration/category and an anonymous install ID are sent — never your query text or project details.
+
+---
+
+## Feedback Loop
+
+After each generation, QAI asks: *"Was this strategy useful?"*
+
+- **Yes** → strategy saved to `knowledge_base/generated_strategies/` and included in the next re-ingestion
+- **Partially** → strategy saved with your improvement notes
+- **No** → discarded
+
+This creates a **feedback loop** where QAI learns from validated real-world outputs over time.
+
+---
+
+## Roadmap
+
+- **v0.1** ✅ Core agent + CLI + Streamlit Web UI
+- **v0.2** ✅ Feedback loop — validated strategies grow the knowledge base
+- **v0.3** ✅ Risk Register — automatic risk analysis alongside Test Strategy
+- **v0.4** ✅ Effort Estimation Report — PERT-based with team capacity analysis
+- **v0.5** ✅ Auto re-ingest — file watcher + incremental ingest + manifest tracking
+- **v0.6** ✅ Confidence level algorithm — score-based (0-100): PERT spread + capacity gap + data quality + multiplier magnitude
+- **v1.0** ✅ MVP — error handling, input validation, logging, full documentation, tests, Apache 2.0 license
+- **v2.0** ✅ Cloud migration — Ollama → Mistral API + OpenRouter fallback; ChromaDB → Pinecone; deployed to Streamlit Cloud
+- **v2.0.1** ✅ Stability — 27 bugs fixed: PERT normalization, template application, PDF caching, session state, filename sanitization, RAG fallback, per-step exception isolation
+- **v2.0.2** ✅ Stability — release-gate evals (estimate integrity + RAG metrics), 5 estimation/validation defects fixed, session-state crash fix, narrative duplication/truncation fixes, per-step generation isolation from LLM outages
+- **v2.5.0** ✅ In-app Release Notes — sidebar panel + one-time "what's new" banner
+- **v2.5.1** ✅ Knowledge base — new `evaluation_audit/` pillar: process/test maturity models, audit methodology, security/compliance audit, real public failure case studies
+- **v2.5.2** ✅ EU AI Act Article 50 transparency patch — sidebar AI-interaction notice + visible "AI-generated content" label on every generated document
+- **v2.6.0** ✅ EU AI Act knowledge base pillar — risk tiers, provider/deployer obligations, Article 50 transparency, Articles 9-15 testing implications, conformity assessment, timeline
+- **v3.0.0** ✅ MCP server MVP — local, keyless `qai-consultant-mcp` (standards-grounded retrieval + deterministic effort estimation), in-app announcement, and machine-readable AI-generated marking (EU AI Act Article 50(2))
+- **v3.1.0** ✅ Evaluation Package — QA Document Quality Review (deterministic ISTQB/IEEE-829 rubric scoring an existing Test Plan/Strategy/test case list, with an optional AI narrative) and Test Results Analysis (flaky/ever-failing/slowest/failure-clustering metrics from JUnit XML/CSV, grounding the Risk Register in real execution data); available in the web app, CLI (`--review`, `--results`), and the MCP server (`review_qa_document`, `analyze_test_results`)
+- **v3.1.1** ✅ Visit counter — a running total of app visits now shows in the sidebar, persisted in Pinecone so it survives redeploys
+- **v3.1.2** ✅ Fix — the 3.1.1 visit counter never actually incremented (Pinecone rejected its all-zero placeholder vector); now works correctly
+- **v3.1.3** ✅ Fix — the visit counter's label was in Romanian ("vizite") instead of English; now reads "visits" to match the rest of the app's UI copy
+- **v3.1.4** ✅ Added the `mcp-name` marker to `README_MCP.md` (PyPI long description) — a prerequisite for listing `qai-consultant-mcp` in the official Anthropic MCP registry; no functional change
+- **v3.1.5** ✅ Fix — `qai-consultant-mcp` failed to start (`ModuleNotFoundError: mcp.server.fastmcp`) after the upstream `mcp` SDK's breaking 2.0.0 release removed the `FastMCP` module the server depends on; `mcp` is now pinned to `>=1.8.0,<2.0.0`
+- **v3.1.6** ✅ Fix — `qai-consultant-mcp` could fail to attach in Claude Desktop on a cold cache (a client-side handshake timeout, since the server used to fully embed the whole knowledge base before responding to `initialize`); the full index build is now lazy, deferred until the first real request
+- **v3.2** ✅ CI quality gates completion — a separate, always-green-by-construction nightly workflow exercising real Pinecone/Mistral/OpenRouter contract tests, isolated from the blocking PR checks
+- **v3.3** ✅ Adopted the EU's official AI-generated-content icon (Code of Practice, AI Act Article 50(4)) in the Streamlit sidebar and all generated-document PDF exports, reinforcing the existing text/metadata disclosure
+- **v3.3.1** ✅ Fix — `qai-consultant-mcp` could intermittently fail to attach in Claude Desktop because 4 of its 6 runtime dependencies had loose version bounds, letting `uv` re-resolve and reinstall on any unrelated upstream release; all dependencies are now exact-pinned
+- **v3.4** ✅ App visual redesign ("Calibration Bench") — token-based color/typography system (IBM Plex fonts, no font CDN) and a reusable "Signal Ledger" score/severity component, applied to Document Review, Effort confidence, Results Analysis, Risk Register, and the Project Discovery question list
+- **v3.4.1** ✅ Distribution links (official MCP registry, Glama, Awesome MCP Servers) now shown in the app's own MCP panel, not just the READMEs; landing page redesign started (Phase 1 of 3 — see the CHANGELOG)
+- **v3.4.2** ✅ Interactive flow redesign (Phase 2 of 3 — see the CHANGELOG): the Project Discovery dialogue, review screen, and sidebar now share the landing page's "Power-On Sequence" visual language (animated progress bar, one-time entrance-animated summary tiles, hover feedback)
+- **v3.4.3** ✅ Output screens redesign (Phase 3 of 3, completing the "Power-On Sequence" redesign — see the CHANGELOG): the Test Strategy results view and the document review screen now share the same visual language (live 4-stage sequence status, entrance-animated score tiles, hover feedback), plus a "What you get in ~2 minutes" addendum on the landing screen
+- **v4.0** Remote MCP + distribution — hosted server connectable from claude.ai, registry submissions
+
+---
+
+## Contributing
+
+QAI Consultant is built by the QA community, for the QA community.
+
+Contributions are welcome:
+- 📚 Add new knowledge sources to `knowledge_base/`
+- 🧠 Share expert knowledge using the prompts in `knowledge_base/expert_knowledge/`
+- 🐛 Report bugs or suggest features via GitHub Issues
+- 🔧 Submit pull requests
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
+
+---
+
+## Troubleshooting
+
+| Problem | Solution |
+|---|---|
+| "Missing required secret: 'MISTRAL_API_KEY'" | Add your key to `.env` or Streamlit Cloud secrets |
+| "Missing required secret: 'PINECONE_API_KEY'" | Add your Pinecone key to `.env` |
+| "Knowledge base is empty" | Run `python src/ingest.py` to push documents to Pinecone |
+| "Both Mistral API and OpenRouter are unavailable" | Check API keys are valid and have credits |
+
+> 📖 Full troubleshooting guide: [INSTALL.md](INSTALL.md#troubleshooting)

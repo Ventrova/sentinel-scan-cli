@@ -1,0 +1,12 @@
+{
+  "name": "community-musharna_jobd",
+  "mcpServers": {
+    "jobd": {
+      "command": "pip",
+      "args": [
+        "install",
+        "\"jobd[mcp]\""
+      ]
+    }
+  }
+}

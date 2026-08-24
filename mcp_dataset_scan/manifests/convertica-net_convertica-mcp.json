@@ -1,0 +1,11 @@
+{
+  "name": "community-convertica-net_convertica-mcp",
+  "mcpServers": {
+    "convertica-mcp": {
+      "command": "npx",
+      "args": [
+        "convertica-mcp"
+      ]
+    }
+  }
+}

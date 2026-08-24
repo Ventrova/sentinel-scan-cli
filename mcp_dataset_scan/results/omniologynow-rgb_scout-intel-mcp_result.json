@@ -1,0 +1,28 @@
+{
+  "summary": {
+    "tool": "sentinel-scan-cli mcp",
+    "version": "1.3.0",
+    "num_tools_scanned": 0,
+    "num_servers_scanned": 1,
+    "num_findings": 1,
+    "findings_by_severity": {
+      "HIGH": 1
+    },
+    "findings_by_heuristic": {
+      "hardcoded_credential": 1
+    },
+    "manifest": "manifests/omniologynow-rgb_scout-intel-mcp.json"
+  },
+  "results": [
+    {
+      "heuristic": "hardcoded_credential",
+      "owasp_category": "LLM02: Sensitive Information Disclosure",
+      "owasp_mcp_category": "MCP03: Credential / Secret Exposure",
+      "severity": "HIGH",
+      "confidence": 0.75,
+      "tool": "scout-mcp",
+      "evidence": "env var \"NEWS_API_KEY\" holds a literal value (not an \"${ENV_VAR}\" placeholder): \"your-new...\"",
+      "recommendation": "Reference credentials via an environment-variable placeholder (e.g. \"${OPENAI_API_KEY}\") resolved from a secret store at launch time - never commit a literal secret value into mcp.json."
+    }
+  ]
+}

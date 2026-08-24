@@ -1,0 +1,40 @@
+{
+  "summary": {
+    "tool": "sentinel-scan-cli mcp",
+    "version": "1.3.0",
+    "num_tools_scanned": 0,
+    "num_servers_scanned": 1,
+    "num_findings": 2,
+    "findings_by_severity": {
+      "MEDIUM": 1,
+      "LOW": 1
+    },
+    "findings_by_heuristic": {
+      "unpinned_remote_source": 1,
+      "missing_provenance": 1
+    },
+    "manifest": "mcp_dataset_scan/manifests/appcreationsca_bumpguard-mcp.json"
+  },
+  "results": [
+    {
+      "heuristic": "unpinned_remote_source",
+      "owasp_category": "LLM03: Supply Chain Vulnerabilities",
+      "owasp_mcp_category": "MCP04: Supply Chain Risk",
+      "severity": "MEDIUM",
+      "confidence": 0.75,
+      "tool": "bumpguard-mcp",
+      "evidence": "server launches package \"bumpguard-mcp\" via 'pip' with no pinned version (no @version/==version suffix) - it fetches whatever the registry serves at run time",
+      "recommendation": "Pin an exact version (e.g. package@1.2.3, package==1.2.3) so the server can't be silently swapped for a malicious update between runs."
+    },
+    {
+      "heuristic": "missing_provenance",
+      "owasp_category": "LLM03: Supply Chain Vulnerabilities",
+      "owasp_mcp_category": "MCP04: Supply Chain Risk",
+      "severity": "LOW",
+      "confidence": 0.75,
+      "tool": "bumpguard-mcp",
+      "evidence": "server config launches a remote-sourced package or endpoint but declares no provenance metadata (no signature/checksum/publisher field)",
+      "recommendation": "Record and verify a publisher identity, signature, or checksum for remote-sourced MCP servers so a swapped or compromised package/build can be detected before use."
+    }
+  ]
+}

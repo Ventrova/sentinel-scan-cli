@@ -1,0 +1,11 @@
+{
+  "name": "community-dnotitia_akb",
+  "mcpServers": {
+    "akb": {
+      "command": "npx",
+      "args": [
+        "akb-mcp"
+      ]
+    }
+  }
+}

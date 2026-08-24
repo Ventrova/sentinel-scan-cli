@@ -1,0 +1,13 @@
+{
+  "name": "community-soolaugust_0CompactMem",
+  "mcpServers": {
+    "0CompactMem": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/soolaugust/0CompactMem",
+        "memory-os"
+      ]
+    }
+  }
+}

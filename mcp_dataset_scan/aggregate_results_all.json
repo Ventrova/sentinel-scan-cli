@@ -1,0 +1,667 @@
+{
+  "n": 83,
+  "hit_counts_target_classes": {
+    "missing_provenance": 77,
+    "unpinned_remote_source": 71,
+    "hardcoded_credential": 4,
+    "overbroad_tool_scope": 0
+  },
+  "all_heuristic_counts": {
+    "unpinned_remote_source": 77,
+    "missing_provenance": 77,
+    "hardcoded_credential": 4
+  },
+  "per_server": [
+    {
+      "manifest": "results\\AkashGoenka_coldstart_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 3
+    },
+    {
+      "manifest": "results\\Cohexa-ai_agent-coherence_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\Declade_lucairn-sdks_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\FROWNINGdev_django-orm-lens_result.json",
+      "findings": [
+        "missing_provenance"
+      ],
+      "num_findings": 1
+    },
+    {
+      "manifest": "results\\FacundoLucci_plsreadme_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\Focus-GTS_eds-mcp-server_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\Goldentrii_AgentRecall_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\HughesCuit_heventure-search-mcp_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\KnockOutEZ_wigolo_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 3
+    },
+    {
+      "manifest": "results\\Piccolo123_url-manager-mcp_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\ScrapeUnblocker_scrapeunblocker-mcp_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\Sequenzy_mcp_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\Spix-HQ_spix-mcp_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\aeoess_agent-passport-mcp_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\agenticmail_agenticmail_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\agentkitai_agentlens_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\antonio-mello-ai_mcp-redis-monitor_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\anypost_emailmd_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 3
+    },
+    {
+      "manifest": "results\\anythink-cloud_anythink-cli_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\appcreationsca_bumpguard-mcp_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\aradar46_reuse-before-generate_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\argosvix_mcp-server_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\bzsanti_oxidize-python_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\chaandannn_finopsmcp_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\chasdaddy_basescope_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\convertica-net_convertica-mcp_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\croc100_Litescope_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 3
+    },
+    {
+      "manifest": "results\\csitte_mailwarden_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\cygnussystems_cygnus-ssh-mcp_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\dnotitia_akb_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\faizbawa_mcp-remote-ssh_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\getpoststack_mcp_result.json",
+      "findings": [
+        "hardcoded_credential",
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 3
+    },
+    {
+      "manifest": "results\\gvasile29_qai-consultant_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\hernaninverso_eleata-verify-mcp_result.json",
+      "findings": [
+        "hardcoded_credential",
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 3
+    },
+    {
+      "manifest": "results\\hivemindunit_llmintel-mcp_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\huangdun_tempmd-mcp_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\hugoles_langfuse-mcp_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\jabbawocky_statuscraft_result.json",
+      "findings": [
+        "missing_provenance"
+      ],
+      "num_findings": 1
+    },
+    {
+      "manifest": "results\\jamesdfinance-dev_lazaretto-mcp_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\jayasukuv11-beep_agenthelm_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\jessedu29260-netizen_booboo_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\jiezeng2004-design_PatchWarden_result.json",
+      "findings": [
+        "missing_provenance"
+      ],
+      "num_findings": 1
+    },
+    {
+      "manifest": "results\\jmpdsevilla_BovedIA_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\joansongjr_clawaimail_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\jonnybottles_patch-tuesday-mcp_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\kensaurus_mushi-mushi_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\knaisoma_data-olympus_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\lorenzo-cambiaghi_LynxMCP_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\lumayapartners_memini_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 3
+    },
+    {
+      "manifest": "results\\mahAnuj_mcp-multi-db_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\michielinksee_linksee-memory_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\mrslbt_rippr_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\musharna_jobd_result.json",
+      "findings": [
+        "missing_provenance"
+      ],
+      "num_findings": 1
+    },
+    {
+      "manifest": "results\\nagameTW_mcp-server-malcolm_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\official_everything_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\official_fetch_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\official_filesystem_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\official_git_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\official_gitlab_result.json",
+      "findings": [],
+      "num_findings": 0
+    },
+    {
+      "manifest": "results\\official_google-maps_result.json",
+      "findings": [],
+      "num_findings": 0
+    },
+    {
+      "manifest": "results\\official_memory_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\official_postgres_result.json",
+      "findings": [],
+      "num_findings": 0
+    },
+    {
+      "manifest": "results\\official_puppeteer_result.json",
+      "findings": [],
+      "num_findings": 0
+    },
+    {
+      "manifest": "results\\official_sqlite_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\omniologynow-rgb_scout-intel-mcp_result.json",
+      "findings": [
+        "hardcoded_credential"
+      ],
+      "num_findings": 1
+    },
+    {
+      "manifest": "results\\paigy-ai_mcp_result.json",
+      "findings": [
+        "missing_provenance"
+      ],
+      "num_findings": 1
+    },
+    {
+      "manifest": "results\\pgalyen1987_gate402-mcp_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\pranciskus_newsmcp_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\quantakrypto_pqc-tools_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\risha-max_0xpdf-mcp_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\rm-rf-prod_GroundTruth-MCP_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\robbyczgw-cla_web-search-plus-mcp_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\sachitrafa_YourMemory_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\saranshbamania_mobile-device-mcp_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\scarletkc_vexor_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 3
+    },
+    {
+      "manifest": "results\\sebastienrousseau_rlg_result.json",
+      "findings": [],
+      "num_findings": 0
+    },
+    {
+      "manifest": "results\\sgateway_s-gw_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\site-shot_site-shot-mcp_result.json",
+      "findings": [
+        "hardcoded_credential",
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 3
+    },
+    {
+      "manifest": "results\\soolaugust_0CompactMem_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\spanlens_Spanlens_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\syndicalt_zaxy_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\tatavarthitarun_nowsecure-mcp-server_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "results\\yamantaka520_Agent-Memory-OS_result.json",
+      "findings": [
+        "missing_provenance"
+      ],
+      "num_findings": 1
+    }
+  ]
+}

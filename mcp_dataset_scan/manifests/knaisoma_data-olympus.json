@@ -1,0 +1,12 @@
+{
+  "name": "community-knaisoma_data-olympus",
+  "mcpServers": {
+    "data-olympus": {
+      "command": "pip",
+      "args": [
+        "install",
+        "data-olympus"
+      ]
+    }
+  }
+}

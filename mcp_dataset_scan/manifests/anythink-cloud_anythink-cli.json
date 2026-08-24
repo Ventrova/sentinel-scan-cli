@@ -1,0 +1,12 @@
+{
+  "name": "community-anythink-cloud_anythink-cli",
+  "mcpServers": {
+    "anythink-cli": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@anythink-cloud/mcp"
+      ]
+    }
+  }
+}

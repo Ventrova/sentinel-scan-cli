@@ -1,0 +1,11 @@
+{
+  "name": "community-chaandannn_finopsmcp",
+  "mcpServers": {
+    "finopsmcp": {
+      "command": "uvx",
+      "args": [
+        "nable"
+      ]
+    }
+  }
+}

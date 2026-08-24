@@ -1,0 +1,532 @@
+[
+  {
+    "name": "huangdun/tempmd-mcp",
+    "url": "https://github.com/huangdun/tempmd-mcp",
+    "category": "Cloud Platforms",
+    "manifest_file": "manifests/huangdun_tempmd-mcp.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "tempmd-mcp"
+      ]
+    }
+  },
+  {
+    "name": "Spix-HQ/spix-mcp",
+    "url": "https://github.com/Spix-HQ/spix-mcp",
+    "category": "Communication",
+    "manifest_file": "manifests/Spix-HQ_spix-mcp.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "pip",
+      "args": [
+        "install",
+        "spix-mcp"
+      ]
+    }
+  },
+  {
+    "name": "Sequenzy/mcp",
+    "url": "https://github.com/Sequenzy/mcp",
+    "category": "Communication",
+    "manifest_file": "manifests/Sequenzy_mcp.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@sequenzy/mcp"
+      ]
+    }
+  },
+  {
+    "name": "paigy-ai/mcp",
+    "url": "https://github.com/paigy-ai/mcp",
+    "category": "Communication",
+    "manifest_file": "manifests/paigy-ai_mcp.json",
+    "config_source": "published_json_config",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@paigy/mcp@latest"
+      ],
+      "env": {
+        "PAIGY_AGENT": "local"
+      }
+    }
+  },
+  {
+    "name": "getpoststack/mcp",
+    "url": "https://github.com/getpoststack/mcp",
+    "category": "Communication",
+    "manifest_file": "manifests/getpoststack_mcp.json",
+    "config_source": "published_json_config",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@poststack.dev/mcp"
+      ],
+      "env": {
+        "POSTSTACK_API_KEY": "sk_live_your_api_key_here"
+      }
+    }
+  },
+  {
+    "name": "kensaurus/mushi-mushi",
+    "url": "https://github.com/kensaurus/mushi-mushi",
+    "category": "Developer Tools",
+    "manifest_file": "manifests/kensaurus_mushi-mushi.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "@mushi-mushi/mcp"
+      ]
+    }
+  },
+  {
+    "name": "gvasile29/qai-consultant",
+    "url": "https://github.com/gvasile29/qai-consultant",
+    "category": "Developer Tools",
+    "manifest_file": "manifests/gvasile29_qai-consultant.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "uvx",
+      "args": [
+        "qai-consultant-mcp"
+      ]
+    }
+  },
+  {
+    "name": "jiezeng2004-design/PatchWarden",
+    "url": "https://github.com/jiezeng2004-design/PatchWarden",
+    "category": "Developer Tools",
+    "manifest_file": "manifests/jiezeng2004-design_PatchWarden.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "patchwarden@0.6.1"
+      ]
+    }
+  },
+  {
+    "name": "sebastienrousseau/rlg",
+    "url": "https://github.com/sebastienrousseau/rlg",
+    "category": "Developer Tools",
+    "manifest_file": "manifests/sebastienrousseau_rlg.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "cargo",
+      "args": [
+        "install",
+        "rlg-mcp"
+      ]
+    }
+  },
+  {
+    "name": "tatavarthitarun/nowsecure-mcp-server",
+    "url": "https://github.com/tatavarthitarun/nowsecure-mcp-server",
+    "category": "Developer Tools",
+    "manifest_file": "manifests/tatavarthitarun_nowsecure-mcp-server.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "nowsecure-mcp-server"
+      ]
+    }
+  },
+  {
+    "name": "saranshbamania/mobile-device-mcp",
+    "url": "https://github.com/saranshbamania/mobile-device-mcp",
+    "category": "Developer Tools",
+    "manifest_file": "manifests/saranshbamania_mobile-device-mcp.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "mobile-device-mcp"
+      ]
+    }
+  },
+  {
+    "name": "lorenzo-cambiaghi/LynxMCP",
+    "url": "https://github.com/lorenzo-cambiaghi/LynxMCP",
+    "category": "Developer Tools",
+    "manifest_file": "manifests/lorenzo-cambiaghi_LynxMCP.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "pipx",
+      "args": [
+        "install",
+        "lynx-mcp"
+      ]
+    }
+  },
+  {
+    "name": "convertica-net/convertica-mcp",
+    "url": "https://github.com/convertica-net/convertica-mcp",
+    "category": "File Systems",
+    "manifest_file": "manifests/convertica-net_convertica-mcp.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "convertica-mcp"
+      ]
+    }
+  },
+  {
+    "name": "FacundoLucci/plsreadme",
+    "url": "https://github.com/FacundoLucci/plsreadme",
+    "category": "File Systems",
+    "manifest_file": "manifests/FacundoLucci_plsreadme.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "plsreadme-mcp"
+      ]
+    }
+  },
+  {
+    "name": "michielinksee/linksee-memory",
+    "url": "https://github.com/michielinksee/linksee-memory",
+    "category": "Knowledge & Memory",
+    "manifest_file": "manifests/michielinksee_linksee-memory.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "linksee-memory"
+      ]
+    }
+  },
+  {
+    "name": "dnotitia/akb",
+    "url": "https://github.com/dnotitia/akb",
+    "category": "Knowledge & Memory",
+    "manifest_file": "manifests/dnotitia_akb.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "akb-mcp"
+      ]
+    }
+  },
+  {
+    "name": "Piccolo123/url-manager-mcp",
+    "url": "https://github.com/Piccolo123/url-manager-mcp",
+    "category": "Knowledge & Memory",
+    "manifest_file": "manifests/Piccolo123_url-manager-mcp.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "pip",
+      "args": [
+        "install",
+        "-r",
+        "requirements.txt"
+      ]
+    }
+  },
+  {
+    "name": "sachitrafa/YourMemory",
+    "url": "https://github.com/sachitrafa/YourMemory",
+    "category": "Knowledge & Memory",
+    "manifest_file": "manifests/sachitrafa_YourMemory.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "pip",
+      "args": [
+        "install",
+        "yourmemory"
+      ]
+    }
+  },
+  {
+    "name": "syndicalt/zaxy",
+    "url": "https://github.com/syndicalt/zaxy",
+    "category": "Knowledge & Memory",
+    "manifest_file": "manifests/syndicalt_zaxy.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "pip",
+      "args": [
+        "install",
+        "zaxy-memory"
+      ]
+    }
+  },
+  {
+    "name": "Goldentrii/AgentRecall",
+    "url": "https://github.com/Goldentrii/AgentRecall",
+    "category": "Knowledge & Memory",
+    "manifest_file": "manifests/Goldentrii_AgentRecall.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "agent-recall-mcp"
+      ]
+    }
+  },
+  {
+    "name": "knaisoma/data-olympus",
+    "url": "https://github.com/knaisoma/data-olympus",
+    "category": "Knowledge & Memory",
+    "manifest_file": "manifests/knaisoma_data-olympus.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "pip",
+      "args": [
+        "install",
+        "data-olympus"
+      ]
+    }
+  },
+  {
+    "name": "yamantaka520/Agent-Memory-OS",
+    "url": "https://github.com/yamantaka520/Agent-Memory-OS",
+    "category": "Knowledge & Memory",
+    "manifest_file": "manifests/yamantaka520_Agent-Memory-OS.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "pip",
+      "args": [
+        "install",
+        "'agent-memory-os[mcp]'"
+      ]
+    }
+  },
+  {
+    "name": "hugoles/langfuse-mcp",
+    "url": "https://github.com/hugoles/langfuse-mcp",
+    "category": "Monitoring",
+    "manifest_file": "manifests/hugoles_langfuse-mcp.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "langfuse-mcp"
+      ]
+    }
+  },
+  {
+    "name": "spanlens/Spanlens",
+    "url": "https://github.com/spanlens/Spanlens",
+    "category": "Monitoring",
+    "manifest_file": "manifests/spanlens_Spanlens.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@spanlens/mcp-server"
+      ]
+    }
+  },
+  {
+    "name": "jabbawocky/statuscraft",
+    "url": "https://github.com/jabbawocky/statuscraft",
+    "category": "Monitoring",
+    "manifest_file": "manifests/jabbawocky_statuscraft.json",
+    "config_source": "published_json_config",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "github:jabbawocky/statuscraft"
+      ]
+    }
+  },
+  {
+    "name": "mrslbt/rippr",
+    "url": "https://github.com/mrslbt/rippr",
+    "category": "Search & Data Extraction",
+    "manifest_file": "manifests/mrslbt_rippr.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "rippr-mcp"
+      ]
+    }
+  },
+  {
+    "name": "omniologynow-rgb/scout-intel-mcp",
+    "url": "https://github.com/omniologynow-rgb/scout-intel-mcp",
+    "category": "Search & Data Extraction",
+    "manifest_file": "manifests/omniologynow-rgb_scout-intel-mcp.json",
+    "config_source": "published_json_config",
+    "server_config": {
+      "command": "python",
+      "args": [
+        "-m",
+        "scout_mcp.mcp_server"
+      ],
+      "cwd": "/path/to/scout-mcp/src",
+      "env": {
+        "NEWS_API_KEY": "your-newsapi-key"
+      }
+    }
+  },
+  {
+    "name": "pranciskus/newsmcp",
+    "url": "https://github.com/pranciskus/newsmcp",
+    "category": "Search & Data Extraction",
+    "manifest_file": "manifests/pranciskus_newsmcp.json",
+    "config_source": "published_json_config",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@newsmcp/server"
+      ]
+    }
+  },
+  {
+    "name": "robbyczgw-cla/web-search-plus-mcp",
+    "url": "https://github.com/robbyczgw-cla/web-search-plus-mcp",
+    "category": "Search & Data Extraction",
+    "manifest_file": "manifests/robbyczgw-cla_web-search-plus-mcp.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "uvx",
+      "args": [
+        "web-search-plus-mcp"
+      ]
+    }
+  },
+  {
+    "name": "HughesCuit/heventure-search-mcp",
+    "url": "https://github.com/HughesCuit/heventure-search-mcp",
+    "category": "Search & Data Extraction",
+    "manifest_file": "manifests/HughesCuit_heventure-search-mcp.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "uvx",
+      "args": [
+        "heventure-search-mcp"
+      ]
+    }
+  },
+  {
+    "name": "quantakrypto/pqc-tools",
+    "url": "https://github.com/quantakrypto/pqc-tools",
+    "category": "Security",
+    "manifest_file": "manifests/quantakrypto_pqc-tools.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "@quantakrypto/mcp"
+      ]
+    }
+  },
+  {
+    "name": "jamesdfinance-dev/lazaretto-mcp",
+    "url": "https://github.com/jamesdfinance-dev/lazaretto-mcp",
+    "category": "Security",
+    "manifest_file": "manifests/jamesdfinance-dev_lazaretto-mcp.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "lazaretto-mcp"
+      ]
+    }
+  },
+  {
+    "name": "sgateway/s-gw",
+    "url": "https://github.com/sgateway/s-gw",
+    "category": "Security",
+    "manifest_file": "manifests/sgateway_s-gw.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npm",
+      "args": [
+        "install",
+        "-g",
+        "@s-gw/s-gw"
+      ]
+    }
+  },
+  {
+    "name": "Declade/lucairn-sdks",
+    "url": "https://github.com/Declade/lucairn-sdks",
+    "category": "Security",
+    "manifest_file": "manifests/Declade_lucairn-sdks.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@lucairn/mcp-server"
+      ]
+    }
+  },
+  {
+    "name": "aeoess/agent-passport-mcp",
+    "url": "https://github.com/aeoess/agent-passport-mcp",
+    "category": "Security",
+    "manifest_file": "manifests/aeoess_agent-passport-mcp.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "agent-passport-system-mcp"
+      ]
+    }
+  },
+  {
+    "name": "chasdaddy/basescope",
+    "url": "https://github.com/chasdaddy/basescope",
+    "category": "Security",
+    "manifest_file": "manifests/chasdaddy_basescope.json",
+    "config_source": "published_json_config",
+    "server_config": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "basescope"
+      ]
+    }
+  },
+  {
+    "name": "nagameTW/mcp-server-malcolm",
+    "url": "https://github.com/nagameTW/mcp-server-malcolm",
+    "category": "Security",
+    "manifest_file": "manifests/nagameTW_mcp-server-malcolm.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "pip",
+      "args": [
+        "install",
+        "mcp-server-malcolm"
+      ]
+    }
+  },
+  {
+    "name": "jonnybottles/patch-tuesday-mcp",
+    "url": "https://github.com/jonnybottles/patch-tuesday-mcp",
+    "category": "Security",
+    "manifest_file": "manifests/jonnybottles_patch-tuesday-mcp.json",
+    "config_source": "awesome_list_install_oneliner",
+    "server_config": {
+      "command": "uvx",
+      "args": [
+        "patch-tuesday-mcp"
+      ]
+    }
+  }
+]

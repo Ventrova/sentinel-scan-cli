@@ -1,0 +1,15 @@
+{
+  "name": "community-getpoststack_mcp",
+  "mcpServers": {
+    "poststack": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@poststack.dev/mcp"
+      ],
+      "env": {
+        "POSTSTACK_API_KEY": "sk_live_your_api_key_here"
+      }
+    }
+  }
+}

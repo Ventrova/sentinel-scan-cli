@@ -1,0 +1,11 @@
+{
+  "name": "community-gvasile29_qai-consultant",
+  "mcpServers": {
+    "qai-consultant": {
+      "command": "uvx",
+      "args": [
+        "qai-consultant-mcp"
+      ]
+    }
+  }
+}

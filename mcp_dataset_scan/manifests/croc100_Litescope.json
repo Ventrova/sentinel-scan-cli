@@ -1,0 +1,13 @@
+{
+  "name": "community-croc100_Litescope",
+  "mcpServers": {
+    "Litescope": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "litescope",
+        "mcp"
+      ]
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "community-FacundoLucci_plsreadme",
+  "mcpServers": {
+    "plsreadme": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "plsreadme-mcp"
+      ]
+    }
+  }
+}

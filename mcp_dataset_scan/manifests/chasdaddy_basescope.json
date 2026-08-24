@@ -1,0 +1,12 @@
+{
+  "name": "community-chasdaddy_basescope",
+  "mcpServers": {
+    "basescope": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "basescope"
+      ]
+    }
+  }
+}

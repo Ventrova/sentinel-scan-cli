@@ -1,0 +1,443 @@
+[
+  {
+    "name": "newageflyfish-max/volthq",
+    "url": "https://github.com/newageflyfish-max/volthq",
+    "category": "Cloud Platforms",
+    "installs": [
+      "npx volthq-mcp-server --setup"
+    ],
+    "line": "- [newageflyfish-max/volthq](https://github.com/newageflyfish-max/volthq) [![newageflyfish-max/volthq MCP server](https://glama.ai/mcp/servers/newageflyfish-max/volthq/badges/score.svg)](https://glama.ai/mcp/servers/newageflyfish-max/volthq) \ud83d\udcc7 \u2601\ufe0f \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Compute price oracle for AI agents. Compare inference pricing across 8 providers in real time with routing recommendations and spend tracking. One-command install: `npx volthq-mcp-server --setup`.",
+    "readme_fetched": false,
+    "readme_file": null
+  },
+  {
+    "name": "huangdun/tempmd-mcp",
+    "url": "https://github.com/huangdun/tempmd-mcp",
+    "category": "Cloud Platforms",
+    "installs": [
+      "npx tempmd-mcp"
+    ],
+    "line": "- [huangdun/tempmd-mcp](https://github.com/huangdun/tempmd-mcp) [![huangdun/tempmd-mcp MCP server](https://glama.ai/mcp/servers/huangdun/tempmd-mcp/badges/score.svg)](https://glama.ai/mcp/servers/huangdun/tempmd-mcp) \ud83d\udcc7 \u2601\ufe0f - Publish agent-made artifacts (HTML, Markdown, CSV, Mermaid) to temp.md \u2014 one stable public link that updates in place. Anonymous publish with no API key, activity-based expiry with restore. Install: `npx tempmd-mcp`.",
+    "readme_fetched": true,
+    "readme_file": "readmes/huangdun__tempmd-mcp.md"
+  },
+  {
+    "name": "Spix-HQ/spix-mcp",
+    "url": "https://github.com/Spix-HQ/spix-mcp",
+    "category": "Communication",
+    "installs": [
+      "pip install spix-mcp"
+    ],
+    "line": "- [Spix-HQ/spix-mcp](https://github.com/Spix-HQ/spix-mcp) [![Spix-HQ/spix-mcp MCP server](https://glama.ai/mcp/servers/Spix-HQ/spix-mcp/badges/score.svg)](https://glama.ai/mcp/servers/Spix-HQ/spix-mcp) \ud83d\udc0d \u2601\ufe0f - Give AI agents a real phone number and voice. Make outbound calls, handle inbound calls, send email, and manage contacts via 26 MCP tools. ~500ms voice latency (Deepgram Nova-3 + Claude + Cartesia Sonic-3). Install: `pip install spix-mcp`. [Free tier available](https://spix.sh).",
+    "readme_fetched": true,
+    "readme_file": "readmes/Spix-HQ__spix-mcp.md"
+  },
+  {
+    "name": "Sequenzy/mcp",
+    "url": "https://github.com/Sequenzy/mcp",
+    "category": "Communication",
+    "installs": [
+      "npx -y @sequenzy/mcp"
+    ],
+    "line": "- [Sequenzy/mcp](https://github.com/Sequenzy/mcp) [![Sequenzy/mcp MCP server](https://glama.ai/mcp/servers/Sequenzy/mcp/badges/score.svg)](https://glama.ai/mcp/servers/Sequenzy/mcp) \ud83d\udcc7 \u2601\ufe0f \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Email marketing automation MCP server for Sequenzy. Manage subscribers, lists, segments, templates, campaigns, sequences, transactional emails, analytics, and AI-generated email content. Install: `npx -y @sequenzy/mcp`.",
+    "readme_fetched": true,
+    "readme_file": "readmes/Sequenzy__mcp.md"
+  },
+  {
+    "name": "paigy-ai/mcp",
+    "url": "https://github.com/paigy-ai/mcp",
+    "category": "Communication",
+    "installs": [
+      "npx -y @paigy/mcp@latest"
+    ],
+    "line": "- [paigy-ai/mcp](https://github.com/paigy-ai/mcp) [![paigy-ai/mcp MCP server](https://glama.ai/mcp/servers/paigy-ai/mcp/badges/score.svg)](https://glama.ai/mcp/servers/paigy-ai/mcp) \ud83d\udcc7 \u2601\ufe0f - Call, text, or push the user's phone when an agent needs input mid-task \u2014 reply by voice instead of babysitting a long-running or blocked terminal. Works with any MCP client, not just Claude. Install: `npx -y @paigy/mcp@latest`.",
+    "readme_fetched": true,
+    "readme_file": "readmes/paigy-ai__mcp.md"
+  },
+  {
+    "name": "getpoststack/mcp",
+    "url": "https://github.com/getpoststack/mcp",
+    "category": "Communication",
+    "installs": [
+      "npx -y @poststack.dev/mcp"
+    ],
+    "line": "- [getpoststack/mcp](https://github.com/getpoststack/mcp) [![getpoststack/mcp MCP server](https://glama.ai/mcp/servers/getpoststack/mcp/badges/score.svg)](https://glama.ai/mcp/servers/getpoststack/mcp) \ud83d\udcc7 \u2601\ufe0f \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - EU-hosted email API exposed as MCP tools \u2014 send transactional and marketing email, manage contacts and segments, run broadcasts, render templates, and read analytics from Claude/Cursor. GDPR compliant, EU-only data residency (Germany + Finland). `npx -y @poststack.dev/mcp`.",
+    "readme_fetched": true,
+    "readme_file": "readmes/getpoststack__mcp.md"
+  },
+  {
+    "name": "kensaurus/mushi-mushi",
+    "url": "https://github.com/kensaurus/mushi-mushi",
+    "category": "Developer Tools",
+    "installs": [
+      "npx @mushi-mushi/mcp"
+    ],
+    "line": "- [kensaurus/mushi-mushi](https://github.com/kensaurus/mushi-mushi) [![kensaurus/mushi-mushi MCP server](https://glama.ai/mcp/servers/kensaurus/mushi-mushi/badges/score.svg)](https://glama.ai/mcp/servers/kensaurus/mushi-mushi) \ud83d\udcc7 \ud83c\udfe0 \u2601\ufe0f \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Bug-report triage and fix-dispatch MCP for vibe coders. Ask your AI coding agent for a plain-English diagnosis of any user-reported bug \u2014 with evidence, blast radius, and a paste-ready fix prompt \u2014 then dispatch an automated GitHub fix PR without a second LLM key. 80+ tools, Supabase-backed, MIT SDK. `npx @mushi-mushi/mcp`",
+    "readme_fetched": true,
+    "readme_file": "readmes/kensaurus__mushi-mushi.md"
+  },
+  {
+    "name": "ForeverTools/kiprio-mcp",
+    "url": "https://github.com/ForeverTools/kiprio-mcp",
+    "category": "Developer Tools",
+    "installs": [
+      "pip install kiprio-mcp"
+    ],
+    "line": "- [ForeverTools/kiprio-mcp](https://github.com/ForeverTools/kiprio-mcp) [![ForeverTools/kiprio-mcp MCP server](https://glama.ai/mcp/servers/ForeverTools/kiprio-mcp/badges/score.svg)](https://glama.ai/mcp/servers/ForeverTools/kiprio-mcp) \ud83d\udc0d \u2601\ufe0f - Multi-purpose API toolkit: email validation, DNS lookup, WHOIS, SSL certificate inspection, IBAN validation, business day calculator, hash encoding, and GPU pricing. Free tier included. `pip install kiprio-mcp`",
+    "readme_fetched": false,
+    "readme_file": null
+  },
+  {
+    "name": "gvasile29/qai-consultant",
+    "url": "https://github.com/gvasile29/qai-consultant",
+    "category": "Developer Tools",
+    "installs": [
+      "uvx qai-consultant-mcp"
+    ],
+    "line": "- [gvasile29/qai-consultant](https://github.com/gvasile29/qai-consultant) [![gvasile29/qai-consultant MCP server](https://glama.ai/mcp/servers/gvasile29/qai-consultant/badges/score.svg)](https://glama.ai/mcp/servers/gvasile29/qai-consultant) \ud83d\udc0d \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Keyless local MCP server bringing ISTQB / OWASP / IEEE / ISO / EU AI Act QA standards into your AI client: standards-grounded retrieval, deterministic QA effort estimation, and automated QA document quality review (0-100 rubric) plus JUnit/CSV test-results flakiness analysis. `uvx qai-consultant-mcp`",
+    "readme_fetched": true,
+    "readme_file": "readmes/gvasile29__qai-consultant.md"
+  },
+  {
+    "name": "jiezeng2004-design/PatchWarden",
+    "url": "https://github.com/jiezeng2004-design/PatchWarden",
+    "category": "Developer Tools",
+    "installs": [
+      "npx -y patchwarden@0.6.1"
+    ],
+    "line": "- [jiezeng2004-design/PatchWarden](https://github.com/jiezeng2004-design/PatchWarden) [![jiezeng2004-design/safe-bifrost MCP server](https://glama.ai/mcp/servers/jiezeng2004-design/safe-bifrost/badges/score.svg)](https://glama.ai/mcp/servers/jiezeng2004-design/safe-bifrost) \ud83d\udcc7 \ud83c\udfe0 \ud83e\ude9f - Local-first MCP safety and verification layer for AI coding agents with workspace confinement, command allowlists, scope-violation detection, and auditable task evidence. Install: `npx -y patchwarden@0.6.1`.",
+    "readme_fetched": true,
+    "readme_file": "readmes/jiezeng2004-design__PatchWarden.md"
+  },
+  {
+    "name": "sebastienrousseau/rlg",
+    "url": "https://github.com/sebastienrousseau/rlg",
+    "category": "Developer Tools",
+    "installs": [
+      "cargo install rlg-mcp",
+      "docker run -i ghcr.io/sebastienrousseau/rlg-mcp"
+    ],
+    "line": "- [sebastienrousseau/rlg](https://github.com/sebastienrousseau/rlg) [![sebastienrousseau/rlg-mcp MCP server](https://glama.ai/mcp/servers/sebastienrousseau/rlg/badges/score.svg)](https://glama.ai/mcp/servers/sebastienrousseau/rlg) \ud83e\udd80 \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - **Log-stream tools for on-call / SRE agent workflows** \u2014 expose `rlg` (RustLogs) log files as MCP tools. Three tools: `tail_log` (last N events, filtered by level/target), `filter_log` (JSON-path-style predicates), `summarize_errors` (grouped error taxonomy). Speaks JSON-RPC 2.0 over stdio; near-lock-free structured logging engine underneath (65k-slot ring buffer, 14 output formats, `os_log`/`journald` sinks). Install `cargo install rlg-mcp` or `docker run -i ghcr.io/sebastienrousseau/rlg-mcp`. Dual-licensed MIT OR Apache-2.0.",
+    "readme_fetched": true,
+    "readme_file": "readmes/sebastienrousseau__rlg.md"
+  },
+  {
+    "name": "tatavarthitarun/nowsecure-mcp-server",
+    "url": "https://github.com/tatavarthitarun/nowsecure-mcp-server",
+    "category": "Developer Tools",
+    "installs": [
+      "npx -y nowsecure-mcp-server"
+    ],
+    "line": "- [tatavarthitarun/nowsecure-mcp-server](https://github.com/tatavarthitarun/nowsecure-mcp-server) [![tatavarthitarun/nowsecure-mcp-server MCP server](https://glama.ai/mcp/servers/tatavarthitarun/nowsecure-mcp-server/badges/score.svg)](https://glama.ai/mcp/servers/tatavarthitarun/nowsecure-mcp-server) \ud83d\udcc7 \u2601\ufe0f \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - MCP server for NowSecure Platform mobile security testing. List applications, pull remediation findings via GraphQL, and generate PDF reports locally (bypasses broken UI export). Published as `nowsecure-mcp-server`. `npx -y nowsecure-mcp-server`",
+    "readme_fetched": true,
+    "readme_file": "readmes/tatavarthitarun__nowsecure-mcp-server.md"
+  },
+  {
+    "name": "saranshbamania/mobile-device-mcp",
+    "url": "https://github.com/saranshbamania/mobile-device-mcp",
+    "category": "Developer Tools",
+    "installs": [
+      "npx mobile-device-mcp"
+    ],
+    "line": "- [saranshbamania/mobile-device-mcp](https://github.com/saranshbamania/mobile-device-mcp) [![saranshbamania/mobile-device-mcp MCP server](https://glama.ai/mcp/servers/saranshbamania/mobile-device-mcp/badges/score.svg)](https://glama.ai/mcp/servers/saranshbamania/mobile-device-mcp) \ud83d\udcc7 \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f - 49-tool MCP server for AI control of Android devices and iOS simulators. AI visual analysis (Claude + Gemini), Flutter widget tree inspection, smart element finding (<1ms), video recording, and test script generation. `npx mobile-device-mcp`",
+    "readme_fetched": true,
+    "readme_file": "readmes/saranshbamania__mobile-device-mcp.md"
+  },
+  {
+    "name": "lorenzo-cambiaghi/LynxMCP",
+    "url": "https://github.com/lorenzo-cambiaghi/LynxMCP",
+    "category": "Developer Tools",
+    "installs": [
+      "pipx install lynx-mcp"
+    ],
+    "line": "- [lorenzo-cambiaghi/LynxMCP](https://github.com/lorenzo-cambiaghi/LynxMCP) [![lorenzo-cambiaghi/LynxMCP MCP server](https://glama.ai/mcp/servers/lorenzo-cambiaghi/LynxMCP/badges/score.svg)](https://glama.ai/mcp/servers/lorenzo-cambiaghi/LynxMCP) \ud83d\udc0d \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - 100% local semantic code search for AI agents: AST-aware chunking (tree-sitter), hybrid BM25+dense retrieval, and a code knowledge graph (callers, inheritance, imports) over codebases, docs sites, and PDFs. Install via `pipx install lynx-mcp`.",
+    "readme_fetched": true,
+    "readme_file": "readmes/lorenzo-cambiaghi__LynxMCP.md"
+  },
+  {
+    "name": "convertica-net/convertica-mcp",
+    "url": "https://github.com/convertica-net/convertica-mcp",
+    "category": "File Systems",
+    "installs": [
+      "npx convertica-mcp"
+    ],
+    "line": "- [convertica-net/convertica-mcp](https://github.com/convertica-net/convertica-mcp) [![convertica-net/convertica-mcp MCP server](https://glama.ai/mcp/servers/convertica-net/convertica-mcp/badges/score.svg)](https://glama.ai/mcp/servers/convertica-net/convertica-mcp) \ud83d\udcc7 \u2601\ufe0f - Convert PDF \u21c4 Word, Excel, PowerPoint, JPG, HTML, Markdown, EPUB and PDF/A, plus merge, split, compress, watermark, sign, and protect PDFs, and convert images (HEIC, WebP) \u2014 35+ tools from convertica.net. Zero-config via `npx convertica-mcp`.",
+    "readme_fetched": true,
+    "readme_file": "readmes/convertica-net__convertica-mcp.md"
+  },
+  {
+    "name": "FacundoLucci/plsreadme",
+    "url": "https://github.com/FacundoLucci/plsreadme",
+    "category": "File Systems",
+    "installs": [
+      "npx -y plsreadme-mcp"
+    ],
+    "line": "- [FacundoLucci/plsreadme](https://github.com/FacundoLucci/plsreadme) [![plsreadme MCP server](https://glama.ai/mcp/servers/@FacundoLucci/plsreadme/badges/score.svg)](https://glama.ai/mcp/servers/@FacundoLucci/plsreadme) \ud83d\udcc7 \u2601\ufe0f \ud83c\udfe0 - Share markdown files and text as clean, readable web links via `plsreadme_share_file` and `plsreadme_share_text`; zero setup (`npx -y plsreadme-mcp` or `https://plsreadme.com/mcp`).",
+    "readme_fetched": true,
+    "readme_file": "readmes/FacundoLucci__plsreadme.md"
+  },
+  {
+    "name": "michielinksee/linksee-memory",
+    "url": "https://github.com/michielinksee/linksee-memory",
+    "category": "Knowledge & Memory",
+    "installs": [
+      "npx linksee-memory"
+    ],
+    "line": "- [michielinksee/linksee-memory](https://github.com/michielinksee/linksee-memory) [![linksee-memory MCP server](https://glama.ai/mcp/servers/michielinksee/linksee-memory/badges/score.svg)](https://glama.ai/mcp/servers/michielinksee/linksee-memory) \ud83d\udcc7 \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Local-first cross-agent memory with a 6-layer structure, Ebbinghaus-style forgetting curve, and drift detection that catches when code diverges from past decisions. One SQLite file shared across Claude Code, Cursor, Codex, and Gemini \u2014 no account or API key. `npx linksee-memory`",
+    "readme_fetched": true,
+    "readme_file": "readmes/michielinksee__linksee-memory.md"
+  },
+  {
+    "name": "dnotitia/akb",
+    "url": "https://github.com/dnotitia/akb",
+    "category": "Knowledge & Memory",
+    "installs": [
+      "npx akb-mcp"
+    ],
+    "line": "- [dnotitia/akb](https://github.com/dnotitia/akb) [![dnotitia/akb MCP server](https://glama.ai/mcp/servers/dnotitia/akb/badges/score.svg)](https://glama.ai/mcp/servers/dnotitia/akb) \ud83d\udc0d \ud83d\udcc7 \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Organizational knowledge base for AI agents. Vault-scoped Markdown docs, structured PostgreSQL tables, and files unified by a URI graph. Hybrid semantic + BM25 search, Git-backed version history, multi-tenant ACL with public-share links. Works with Claude Code, Cursor, Windsurf via `npx akb-mcp`.",
+    "readme_fetched": true,
+    "readme_file": "readmes/dnotitia__akb.md"
+  },
+  {
+    "name": "Piccolo123/url-manager-mcp",
+    "url": "https://github.com/Piccolo123/url-manager-mcp",
+    "category": "Knowledge & Memory",
+    "installs": [
+      "pip install -r requirements.txt && python server.py"
+    ],
+    "line": "- [Piccolo123/url-manager-mcp](https://github.com/Piccolo123/url-manager-mcp) [![url-manager-mcp MCP server](https://glama.ai/mcp/servers/Piccolo123/url-manager-mcp/badges/score.svg)](https://glama.ai/mcp/servers/Piccolo123/url-manager-mcp) \ud83d\udcc7 \ud83d\udc0d \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Agent-first cross-platform bookmark & knowledge manager. AI agents collect web pages from any source (pairs naturally with Fetch, Firecrawl, Brave Search) and auto-categorize into organized collections with search, tags, and shared folders. 16 tools including `agent_register` (zero-config onboarding), `add_footprint`, `search_footprints`, `create_shared_category`. `pip install -r requirements.txt && python server.py`",
+    "readme_fetched": true,
+    "readme_file": "readmes/Piccolo123__url-manager-mcp.md"
+  },
+  {
+    "name": "sachitrafa/YourMemory",
+    "url": "https://github.com/sachitrafa/YourMemory",
+    "category": "Knowledge & Memory",
+    "installs": [
+      "pip install yourmemory"
+    ],
+    "line": "- [sachitrafa/YourMemory](https://github.com/sachitrafa/YourMemory) [![sachitrafa/YourMemory MCP server](https://glama.ai/mcp/servers/sachitrafa/YourMemory/badges/score.svg)](https://glama.ai/mcp/servers/sachitrafa/YourMemory) \ud83d\udc0d \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Persistent memory for AI agents with Ebbinghaus forgetting-curve decay, hybrid BM25+vector retrieval, and entity graph for multi-hop reasoning. Memories auto-prune by importance and recall rate. Built-in browser dashboard, multi-agent support, and `yourmemory ask` for zero-API-call local queries. `pip install yourmemory`",
+    "readme_fetched": true,
+    "readme_file": "readmes/sachitrafa__YourMemory.md"
+  },
+  {
+    "name": "syndicalt/zaxy",
+    "url": "https://github.com/syndicalt/zaxy",
+    "category": "Knowledge & Memory",
+    "installs": [
+      "pip install zaxy-memory"
+    ],
+    "line": "- [syndicalt/zaxy](https://github.com/syndicalt/zaxy) [![syndicalt/zaxy MCP server](https://glama.ai/mcp/servers/syndicalt/zaxy/badges/score.svg)](https://glama.ai/mcp/servers/syndicalt/zaxy) \ud83d\udc0d \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Event-sourced agent memory on a hash-chained append-only log with an embedded temporal knowledge graph (Kuzu, no sidecar). Cited Memory Checkout context, salience-based forgetting that attenuates instead of deleting, compaction-recovery hooks for Claude Code, token-budgeted checkout, and review-gated consolidation. 47 MCP tools with an 8-tool core profile default. `pip install zaxy-memory` [Docs](https://docs.zaxy.io)",
+    "readme_fetched": true,
+    "readme_file": "readmes/syndicalt__zaxy.md"
+  },
+  {
+    "name": "Goldentrii/AgentRecall",
+    "url": "https://github.com/Goldentrii/AgentRecall",
+    "category": "Knowledge & Memory",
+    "installs": [
+      "npx agent-recall-mcp"
+    ],
+    "line": "- [Goldentrii/AgentRecall](https://github.com/Goldentrii/AgentRecall) [![Goldentrii/AgentRecall-MCP MCP server](https://glama.ai/mcp/servers/Goldentrii/AgentRecall-MCP/badges/score.svg)](https://glama.ai/mcp/servers/Goldentrii/AgentRecall-MCP) \ud83d\udcc7 \u2601\ufe0f \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Persistent, compounding memory for AI agents across sessions. Uses the Intelligent Distance Protocol to surface the most contextually relevant past memories. Five tools: `session_start`, `remember`, `recall`, `check`, `session_end`. `npx agent-recall-mcp`",
+    "readme_fetched": true,
+    "readme_file": "readmes/Goldentrii__AgentRecall.md"
+  },
+  {
+    "name": "knaisoma/data-olympus",
+    "url": "https://github.com/knaisoma/data-olympus",
+    "category": "Knowledge & Memory",
+    "installs": [
+      "pip install data-olympus"
+    ],
+    "line": "- [knaisoma/data-olympus](https://github.com/knaisoma/data-olympus) [![knaisoma/data-olympus MCP server](https://glama.ai/mcp/servers/knaisoma/data-olympus/badges/score.svg)](https://glama.ai/mcp/servers/knaisoma/data-olympus) \ud83d\udc0d \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Governance-grade project knowledge MCP server for coding agents. Git-native Markdown knowledge base with proposed vs accepted guidance, validity windows, supersession chains, and status-aware retrieval of current in-force decisions and standards. `pip install data-olympus`",
+    "readme_fetched": true,
+    "readme_file": "readmes/knaisoma__data-olympus.md"
+  },
+  {
+    "name": "yamantaka520/Agent-Memory-OS",
+    "url": "https://github.com/yamantaka520/Agent-Memory-OS",
+    "category": "Knowledge & Memory",
+    "installs": [
+      "pip install 'agent-memory-os[mcp]'"
+    ],
+    "line": "- [yamantaka520/Agent-Memory-OS](https://github.com/yamantaka520/Agent-Memory-OS) [![yamantaka520/Agent-Memory-OS MCP server](https://glama.ai/mcp/servers/yamantaka520/Agent-Memory-OS/badges/score.svg)](https://glama.ai/mcp/servers/yamantaka520/Agent-Memory-OS) \ud83d\udc0d \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Local-first memory engine for AI-agent teams: private/team/project ACL (a hard gate before ranking), associative recall, and federated sync where revocation propagates across nodes. SQLite + FTS5, no LLM required; MCP server + web console included. `pip install 'agent-memory-os[mcp]'`",
+    "readme_fetched": true,
+    "readme_file": "readmes/yamantaka520__Agent-Memory-OS.md"
+  },
+  {
+    "name": "hugoles/langfuse-mcp",
+    "url": "https://github.com/hugoles/langfuse-mcp",
+    "category": "Monitoring",
+    "installs": [
+      "npx -y langfuse-mcp"
+    ],
+    "line": "- [hugoles/langfuse-mcp](https://github.com/hugoles/langfuse-mcp) [![hugoles/langfuse-mcp MCP server](https://glama.ai/mcp/servers/hugoles/langfuse-mcp/badges/score.svg)](https://glama.ai/mcp/servers/hugoles/langfuse-mcp) \ud83d\udcc7 \u2601\ufe0f \ud83c\udfe0 - TypeScript MCP server for the Langfuse Public API. 27 read tools covering traces, observations, sessions, scores, score-configs, prompts (with version/label), datasets, dataset items, dataset runs, metrics, models, projects, comments, media, and health. Distributed as `npx -y langfuse-mcp` with provenance-signed releases.",
+    "readme_fetched": true,
+    "readme_file": "readmes/hugoles__langfuse-mcp.md"
+  },
+  {
+    "name": "spanlens/Spanlens",
+    "url": "https://github.com/spanlens/Spanlens",
+    "category": "Monitoring",
+    "installs": [
+      "npx -y @spanlens/mcp-server"
+    ],
+    "line": "- [spanlens/Spanlens](https://github.com/spanlens/Spanlens) [![spanlens/Spanlens MCP server](https://glama.ai/mcp/servers/spanlens/Spanlens/badges/score.svg)](https://glama.ai/mcp/servers/spanlens/Spanlens) \ud83d\udcc7 \u2601\ufe0f \ud83c\udfe0 - Query your Spanlens LLM observability from any MCP client. 7 read tools for request logs, agent traces, cost stats, anomalies, model-savings, and per-user analytics across OpenAI, Anthropic, and Gemini. Open source, self-hostable. `npx -y @spanlens/mcp-server`",
+    "readme_fetched": true,
+    "readme_file": "readmes/spanlens__Spanlens.md"
+  },
+  {
+    "name": "jabbawocky/statuscraft",
+    "url": "https://github.com/jabbawocky/statuscraft",
+    "category": "Monitoring",
+    "installs": [
+      "npx -y github:jabbawocky/statuscraft"
+    ],
+    "line": "- [jabbawocky/statuscraft](https://github.com/jabbawocky/statuscraft) [![jabbawocky/statuscraft MCP server](https://glama.ai/mcp/servers/jabbawocky/statuscraft/badges/score.svg)](https://glama.ai/mcp/servers/jabbawocky/statuscraft) \ud83d\udcc7 \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - MCP server that checks the live status of 3831 software services in real time. Ask your AI agent \"is GitHub down?\" or \"what's wrong with Sentry?\" \u2014 and get a live answer pulled directly from official status pages, including full incident detail when something is broken. `npx -y github:jabbawocky/statuscraft`",
+    "readme_fetched": true,
+    "readme_file": "readmes/jabbawocky__statuscraft.md"
+  },
+  {
+    "name": "mrslbt/rippr",
+    "url": "https://github.com/mrslbt/rippr",
+    "category": "Search & Data Extraction",
+    "installs": [
+      "npx rippr-mcp"
+    ],
+    "line": "- [mrslbt/rippr](https://github.com/mrslbt/rippr) [![mrslbt/rippr MCP server](https://glama.ai/mcp/servers/mrslbt/rippr/badges/score.svg)](https://glama.ai/mcp/servers/mrslbt/rippr) \ud83d\udcc7 \ud83c\udfe0 - YouTube transcript extraction for AI agents. Clean text, timestamps, or structured JSON from any video. No API keys required. Install via `npx rippr-mcp`.",
+    "readme_fetched": true,
+    "readme_file": "readmes/mrslbt__rippr.md"
+  },
+  {
+    "name": "omniologynow-rgb/scout-intel-mcp",
+    "url": "https://github.com/omniologynow-rgb/scout-intel-mcp",
+    "category": "Search & Data Extraction",
+    "installs": [
+      "pip install scout-intel-mcp"
+    ],
+    "line": "- [omniologynow-rgb/scout-intel-mcp](https://github.com/omniologynow-rgb/scout-intel-mcp) [![scout-intel-mcp MCP server](https://glama.ai/mcp/servers/omniologynow-rgb/scout-intel-mcp/badges/score.svg)](https://glama.ai/mcp/servers/omniologynow-rgb/scout-intel-mcp) \ud83d\udc0d \u2601\ufe0f - Web intelligence MCP server for AI agents. 7 tools for SERP analysis, competitor research, market trends, content gap analysis, keyword insights, audience discovery, and citation tracking. Install via `pip install scout-intel-mcp`.",
+    "readme_fetched": true,
+    "readme_file": "readmes/omniologynow-rgb__scout-intel-mcp.md"
+  },
+  {
+    "name": "pranciskus/newsmcp",
+    "url": "https://github.com/pranciskus/newsmcp",
+    "category": "Search & Data Extraction",
+    "installs": [
+      "npx -y @newsmcp/server"
+    ],
+    "line": "- [pranciskus/newsmcp](https://github.com/pranciskus/newsmcp) [![news-mcp-world-news-for-ai-agents MCP server](https://glama.ai/mcp/servers/@pranciskus/news-mcp-world-news-for-ai-agents/badges/score.svg)](https://glama.ai/mcp/servers/@pranciskus/news-mcp-world-news-for-ai-agents) \ud83d\udcc7 \u2601\ufe0f - Real-time world news for AI agents \u2014 events clustered from hundreds of sources, classified by topic and geography, ranked by importance. Free, no API key. `npx -y @newsmcp/server`",
+    "readme_fetched": true,
+    "readme_file": "readmes/pranciskus__newsmcp.md"
+  },
+  {
+    "name": "robbyczgw-cla/web-search-plus-mcp",
+    "url": "https://github.com/robbyczgw-cla/web-search-plus-mcp",
+    "category": "Search & Data Extraction",
+    "installs": [
+      "uvx web-search-plus-mcp"
+    ],
+    "line": "- [robbyczgw-cla/web-search-plus-mcp](https://github.com/robbyczgw-cla/web-search-plus-mcp) [![web-search](https://glama.ai/mcp/servers/robbyczgw-cla/web-search-plus-mcp/badges/score.svg)](https://glama.ai/mcp/servers/robbyczgw-cla/web-search-plus-mcp) \ud83d\udc0d \u2601\ufe0f \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Multi-provider web search with intelligent auto-routing (Serper, Tavily, Exa). Available via `uvx web-search-plus-mcp`.",
+    "readme_fetched": true,
+    "readme_file": "readmes/robbyczgw-cla__web-search-plus-mcp.md"
+  },
+  {
+    "name": "HughesCuit/heventure-search-mcp",
+    "url": "https://github.com/HughesCuit/heventure-search-mcp",
+    "category": "Search & Data Extraction",
+    "installs": [
+      "uvx heventure-search-mcp"
+    ],
+    "line": "- [HughesCuit/heventure-search-mcp](https://github.com/HughesCuit/heventure-search-mcp) [![HughesCuit/heventure-search-mcp MCP server](https://glama.ai/mcp/servers/HughesCuit/heventure-search-mcp/badges/score.svg)](https://glama.ai/mcp/servers/HughesCuit/heventure-search-mcp) \ud83d\udc0d \u2601\ufe0f \ud83c\udfe0 - Free MCP web search server with 5 engines (DuckDuckGo, Bing, Google SerpAPI, Tavily). No API key required. Auto rate limiting, 300s cache, multi-language support. Install: `uvx heventure-search-mcp`.",
+    "readme_fetched": true,
+    "readme_file": "readmes/HughesCuit__heventure-search-mcp.md"
+  },
+  {
+    "name": "quantakrypto/pqc-tools",
+    "url": "https://github.com/quantakrypto/pqc-tools",
+    "category": "Security",
+    "installs": [
+      "npx @quantakrypto/mcp"
+    ],
+    "line": "- [quantakrypto/pqc-tools](https://github.com/quantakrypto/pqc-tools) [![quantakrypto/pqc-tools MCP server](https://glama.ai/mcp/servers/quantakrypto/pqc-tools/badges/score.svg)](https://glama.ai/mcp/servers/quantakrypto/pqc-tools) \ud83d\udcc7 \ud83c\udfe0 \u2601\ufe0f - Post-quantum readiness for AI coding agents: scan code for quantum-vulnerable cryptography (RSA/ECDH/ECDSA/DH), explain the harvest-now-decrypt-later exposure, get NIST ML-KEM/ML-DSA/SLH-DSA (and hybrid) migration guidance, verify fixes, and check dependencies. Content-based/advisory tools only. Run local (`npx @quantakrypto/mcp`) or the hosted OAuth endpoint at [mcp.quantakrypto.com](https://mcp.quantakrypto.com).",
+    "readme_fetched": true,
+    "readme_file": "readmes/quantakrypto__pqc-tools.md"
+  },
+  {
+    "name": "jamesdfinance-dev/lazaretto-mcp",
+    "url": "https://github.com/jamesdfinance-dev/lazaretto-mcp",
+    "category": "Security",
+    "installs": [
+      "npx lazaretto-mcp"
+    ],
+    "line": "- [jamesdfinance-dev/lazaretto-mcp](https://github.com/jamesdfinance-dev/lazaretto-mcp) [![jamesdfinance-dev/lazaretto-mcp MCP server](https://glama.ai/mcp/servers/jamesdfinance-dev/lazaretto-mcp/badges/score.svg)](https://glama.ai/mcp/servers/jamesdfinance-dev/lazaretto-mcp) \ud83d\udcc7 \u2601\ufe0f \ud83c\udfe0 - Check whether anything you depend on is known malware, before an agent installs it. `check_lockfile` takes a package-lock.json, yarn.lock or pnpm-lock.yaml and matches every pinned version against published malicious-package advisories in one call, free and with no API key, catching compromised releases like chalk@5.6.1 while leaving their clean releases alone. `scan_artifact` adds deterministic behavioral analysis (no LLM in the serving path) for credential theft, exfiltration, obfuscation, prompt injection and install-time droppers, with the file, line and evidence that triggered it; verdicts are SHA-256-bound so you can re-verify what landed on disk. Paid scans settle at $0.03 USDC on Base (x402) or prepaid credits. `npx lazaretto-mcp`",
+    "readme_fetched": true,
+    "readme_file": "readmes/jamesdfinance-dev__lazaretto-mcp.md"
+  },
+  {
+    "name": "sgateway/s-gw",
+    "url": "https://github.com/sgateway/s-gw",
+    "category": "Security",
+    "installs": [
+      "npm install -g @s-gw/s-gw"
+    ],
+    "line": "- [sgateway/s-gw](https://github.com/sgateway/s-gw) [![sgateway/s-gw MCP server](https://glama.ai/mcp/servers/sgateway/s-gw/badges/score.svg)](https://glama.ai/mcp/servers/sgateway/s-gw) \ud83d\udcc7 \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Local credential approval and execution gateway for AI coding agents. Agents receive typed handles instead of raw API tokens, SSH keys, and cloud credentials; one-time approvals bind the credential, command, arguments, working directory, environment bindings, and target. Injects credentials only into the approved child process, sanitizes output, and records a local audit trail. Install with `npm install -g @s-gw/s-gw`.",
+    "readme_fetched": true,
+    "readme_file": "readmes/sgateway__s-gw.md"
+  },
+  {
+    "name": "Declade/lucairn-sdks",
+    "url": "https://github.com/Declade/lucairn-sdks",
+    "category": "Security",
+    "installs": [
+      "npx -y @lucairn/mcp-server"
+    ],
+    "line": "- [Declade/lucairn-sdks](https://github.com/Declade/lucairn-sdks) [![Declade/lucairn-sdks MCP server](https://glama.ai/mcp/servers/Declade/lucairn-sdks/badges/score.svg)](https://glama.ai/mcp/servers/Declade/lucairn-sdks) \ud83d\udcc7 \u2601\ufe0f \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Privacy-preserving AI gateway. Sanitises PII (German + English; Microsoft Presidio + custom recognisers) before prompts reach Anthropic / OpenAI / your LLM, then emits a signed cryptographic certificate per call (Ed25519 + RFC 3161 timestamp + Sigstore Rekor anchoring). EU GDPR + AI Act ready. Free tier 500 calls/month, BYOK. Install: `npx -y @lucairn/mcp-server`. Docs: https://lucairn.eu/developer/mcp.",
+    "readme_fetched": true,
+    "readme_file": "readmes/Declade__lucairn-sdks.md"
+  },
+  {
+    "name": "aeoess/agent-passport-mcp",
+    "url": "https://github.com/aeoess/agent-passport-mcp",
+    "category": "Security",
+    "installs": [
+      "npx -y agent-passport-system-mcp"
+    ],
+    "line": "- [aeoess/agent-passport-mcp](https://github.com/aeoess/agent-passport-mcp) [![aeoess/agent-passport-mcp MCP server](https://glama.ai/mcp/servers/aeoess/agent-passport-mcp/badges/score.svg)](https://glama.ai/mcp/servers/aeoess/agent-passport-mcp) \ud83c\udf96\ufe0f \ud83d\udcc7 \u2601\ufe0f \ud83c\udfe0 - Agent identity, scoped delegation, and governance: issue passports, build and verify narrowing-only delegation chains, enforce policy at a gateway, and emit signed admission and outcome records. 150 tools. `npx -y agent-passport-system-mcp`",
+    "readme_fetched": true,
+    "readme_file": "readmes/aeoess__agent-passport-mcp.md"
+  },
+  {
+    "name": "chasdaddy/basescope",
+    "url": "https://github.com/chasdaddy/basescope",
+    "category": "Security",
+    "installs": [
+      "npx -y basescope"
+    ],
+    "line": "- [chasdaddy/basescope](https://github.com/chasdaddy/basescope) [![chasdaddy/basescope MCP server](https://glama.ai/mcp/servers/chasdaddy/basescope/badges/score.svg)](https://glama.ai/mcp/servers/chasdaddy/basescope) \ud83d\udcc7 \u2601\ufe0f - The read-only safety layer for onchain AI agents. 13 read-only tools on Base + EVM: token/contract safety (honeypot & rug-pull checks cross-referenced across GoPlus + honeypot.is), risky-approval detection, verified-source lookup, balances, ENS + Basenames, gas, and prices. No private keys, no required API keys. `npx -y basescope`",
+    "readme_fetched": true,
+    "readme_file": "readmes/chasdaddy__basescope.md"
+  },
+  {
+    "name": "nagameTW/mcp-server-malcolm",
+    "url": "https://github.com/nagameTW/mcp-server-malcolm",
+    "category": "Security",
+    "installs": [
+      "pip install mcp-server-malcolm"
+    ],
+    "line": "- [nagameTW/mcp-server-malcolm](https://github.com/nagameTW/mcp-server-malcolm) [![nagameTW/mcp-server-malcolm MCP server](https://glama.ai/mcp/servers/nagameTW/mcp-server-malcolm/badges/score.svg)](https://glama.ai/mcp/servers/nagameTW/mcp-server-malcolm) \ud83d\udc0d \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - The first MCP server for [Malcolm](https://malcolm.fyi), the open-source network traffic analysis suite (Zeek + Suricata + Arkime + OpenSearch + NetBox). Gives AI agents structured, threat-hunting access: search and aggregate traffic, discover fields, query Suricata alerts, browse Arkime sessions, and resolve NetBox assets. Read-only by default; opt-in, audited write classes for alerts, tagging, hunts, and PCAP upload. `pip install mcp-server-malcolm`",
+    "readme_fetched": true,
+    "readme_file": "readmes/nagameTW__mcp-server-malcolm.md"
+  },
+  {
+    "name": "jonnybottles/patch-tuesday-mcp",
+    "url": "https://github.com/jonnybottles/patch-tuesday-mcp",
+    "category": "Security",
+    "installs": [
+      "uvx patch-tuesday-mcp"
+    ],
+    "line": "- [jonnybottles/patch-tuesday-mcp](https://github.com/jonnybottles/patch-tuesday-mcp) [![jonnybottles/patch-tuesday-mcp MCP server](https://glama.ai/mcp/servers/jonnybottles/patch-tuesday-mcp/badges/score.svg)](https://glama.ai/mcp/servers/jonnybottles/patch-tuesday-mcp) \ud83d\udc0d \ud83c\udfe0 \u2601\ufe0f \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Microsoft Patch Tuesday triage from the official MSRC Security Update Guide. Monthly rollups, CVE/KB lookups, supersedence chains, product watchlists, and urgency-ranked results enriched with EPSS scores and the CISA KEV catalog. No API keys; also available as a free hosted remote endpoint. `uvx patch-tuesday-mcp`",
+    "readme_fetched": true,
+    "readme_file": "readmes/jonnybottles__patch-tuesday-mcp.md"
+  }
+]

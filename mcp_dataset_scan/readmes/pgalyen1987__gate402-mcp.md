@@ -1,0 +1,123 @@
+# gate402-mcp
+
+[![x402 trust](https://x402.fuchss.app/badge.svg?resource=https%3A%2F%2Fgate402.app%2Fv1%2Fproxy)](https://x402.fuchss.app/provider/gate402.app)
+
+MCP server for **[Gate402](https://gate402.app)** — pay-per-call agent APIs over HTTP 402 (x402 / USDC on Base). Gives any MCP client a full toolkit with **no signup and a free tier on first runs** — GPU/CPU compute, open-model LLM inference, a GPU marketplace, a complete Base trading loop (discover → vet → read → execute), and web tools:
+
+| Tool | What it does | Price |
+|---|---|---|
+| `gate402_infer` | Open-model LLM inference (Llama 3.1 8B/70B, Qwen 2.5, Mistral); billed on actual tokens, signed usage receipt | per-token (from $0.05/1M in) |
+| `gate402_compute` | Rent metered GPU/CPU to run a container job; signed execution receipt | per-second |
+| `gate402_scrape` | Fetch any public URL, render JS, strip nav/ads → clean LLM-ready Markdown | $0.002 |
+| `gate402_scrape_stealth` | Cloudflare/anti-bot fetch via residential proxies + CAPTCHA solving → clean Markdown | $0.05 |
+| `gate402_minify` | Compress text to cut downstream LLM token spend (~40%) | $0.005 / 10k tok |
+| `gate402_dedup` | Semantic vector-cache lookup (exact + cosine) | $0.001 hit / $0.003 miss |
+| `gate402_onchain` | On-chain wallet/token intel on Base (balances, EOA/contract, tx count, token metadata) | $0.01 |
+| `gate402_dex` | Live DEX price / liquidity / 24h volume for a Base token | $0.01 |
+| `gate402_news` | Recent news headlines + bull/bear sentiment for a ticker/topic | $0.02 |
+| `gate402_edgar` | Latest SEC EDGAR filings (10-K/10-Q/8-K) for a US ticker | $0.02 |
+| `gate402_token_risk` | Rug/tradeability verdict for a Base token (score + SAFE/CAUTION/AVOID; liquidity, honeypot sim, holder concentration) | $0.03 |
+| `gate402_momentum` | Momentum + order-flow signal for a Base token (RISING/FALLING + ACCUMULATION/DISTRIBUTION, honeypot-gated) | $0.02 |
+| `gate402_best_swap` | Best-execution intel: which DEX pool + estimated price impact for a trade size | $0.02 |
+| `gate402_launches` | Radar of the freshest Base token launches, lightly pre-screened | $0.02 |
+
+…plus three **free** tools that run **locally in this process** (pure compute — no payment, no key, no network):
+
+| Tool | What it does |
+|---|---|
+| `gate402_token_count` | Estimate the token count of a string (budget your context window) |
+| `gate402_html_to_md` | Convert an HTML string you already have into clean Markdown |
+| `gate402_json_repair` | Coerce malformed / LLM-mangled JSON into valid JSON |
+
+### GPU marketplace
+
+Gate402 also routes to **third-party GPU/compute providers** with **escrow-on-success** — the buyer is charged only if the provider delivers. Providers keep 85% of each call, paid out on-chain in USDC on Base.
+
+| Tool | What it does |
+|---|---|
+| `gate402_market_infer` | LLM inference via the marketplace, routed to the cheapest healthy provider. **x402-native** (settles on-chain per call — needs an x402 client, not the free-tier key) |
+| `gate402_providers` | **Free.** Browse active providers — model, per-call price, reliability |
+| `gate402_become_provider` | **Free.** List your own GPU and earn 85%/call — returns the exact sign-message + registration request |
+
+## How billing works
+
+On first use the server self-claims a **free-credit API key** from Gate402 and caches it at `~/.gate402-mcp/key.json`. Calls draw down that credit. When it runs out, tools return a top-up link instead of failing. To skip the free tier, set `GATE402_API_KEY` to a funded account ([top up](https://gate402.app/ops/billing/checkout)).
+
+The payment *is* the auth — there are no accounts to create.
+
+## Install
+
+```bash
+npm install -g gate402-mcp
+```
+
+Or run without installing via `npx gate402-mcp`.
+
+## Configure your MCP client
+
+### Claude Desktop / Claude Code
+
+Add to your MCP config (`claude_desktop_config.json`, or `claude mcp add`):
+
+```json
+{
+  "mcpServers": {
+    "gate402": {
+      "command": "npx",
+      "args": ["-y", "gate402-mcp"]
+    }
+  }
+}
+```
+
+### Cursor / Cline / Windsurf
+
+Same shape — point the MCP server `command` at `npx -y gate402-mcp`.
+
+### Agent frameworks (LangChain, CrewAI, LlamaIndex)
+
+gate402 is a standard stdio MCP server, so any framework with an MCP adapter can load all 17 tools:
+
+**LangChain / LangGraph** (`langchain-mcp-adapters`):
+```python
+from langchain_mcp_adapters.client import MultiServerMCPClient
+client = MultiServerMCPClient({"gate402": {"command": "npx", "args": ["-y", "gate402-mcp"], "transport": "stdio"}})
+tools = await client.get_tools()   # feed into your agent
+```
+
+**CrewAI** (`MCPServerAdapter`):
+```python
+from crewai_tools import MCPServerAdapter
+from mcp import StdioServerParameters
+params = StdioServerParameters(command="npx", args=["-y", "gate402-mcp"])
+with MCPServerAdapter(params) as tools:
+    ...  # pass tools to your Crew
+```
+
+**LlamaIndex** (`McpToolSpec`):
+```python
+from llama_index.tools.mcp import BasicMCPClient, McpToolSpec
+tools = McpToolSpec(client=BasicMCPClient("npx", args=["-y", "gate402-mcp"])).to_tool_list()
+```
+
+Once wired, the agent calls the tools autonomously; the free-credit key is claimed on first use, and paid tools draw down from it.
+
+## Environment variables
+
+| Var | Default | Purpose |
+|---|---|---|
+| `GATE402_API_KEY` | _(unset)_ | Use a funded account instead of the free tier. |
+| `GATE402_BASE_URL` | `https://gate402.app` | Override the gateway (self-hosting / testing). |
+| `GATE402_CONFIG_DIR` | `~/.gate402-mcp` | Where the cached free key is stored. |
+
+## Develop
+
+```bash
+npm install
+npm run build
+npm start          # or: npm run dev
+```
+
+## License
+
+MIT

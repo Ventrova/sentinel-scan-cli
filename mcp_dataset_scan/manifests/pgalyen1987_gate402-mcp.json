@@ -1,0 +1,12 @@
+{
+  "name": "community-pgalyen1987_gate402-mcp",
+  "mcpServers": {
+    "gate402-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "gate402-mcp"
+      ]
+    }
+  }
+}

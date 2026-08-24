@@ -1,0 +1,15 @@
+{
+  "tool": "sentinel-scan-cli mcp",
+  "version": "1.3.0",
+  "num_tools_scanned": 0,
+  "num_servers_scanned": 1,
+  "num_findings": 0,
+  "findings_by_severity": {},
+  "findings_by_heuristic": {},
+  "manifest": "mcp_dataset_scan/manifests/official_puppeteer.json"
+}
+
+Full results written to mcp_dataset_scan/results/official_puppeteer_result.json
+
+No heuristic findings on this manifest. This is a static pattern scan,
+not a guarantee - it does not execute the server or call an LLM.

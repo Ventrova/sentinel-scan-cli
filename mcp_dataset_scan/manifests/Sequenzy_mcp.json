@@ -1,0 +1,12 @@
+{
+  "name": "community-Sequenzy_mcp",
+  "mcpServers": {
+    "mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@sequenzy/mcp"
+      ]
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "community-jiezeng2004-design_PatchWarden",
+  "mcpServers": {
+    "PatchWarden": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "patchwarden@0.6.1"
+      ]
+    }
+  }
+}

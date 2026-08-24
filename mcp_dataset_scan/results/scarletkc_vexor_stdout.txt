@@ -1,0 +1,28 @@
+{
+  "tool": "sentinel-scan-cli mcp",
+  "version": "1.3.0",
+  "num_tools_scanned": 0,
+  "num_servers_scanned": 1,
+  "num_findings": 3,
+  "findings_by_severity": {
+    "MEDIUM": 2,
+    "LOW": 1
+  },
+  "findings_by_heuristic": {
+    "unpinned_remote_source": 2,
+    "missing_provenance": 1
+  },
+  "manifest": "mcp_dataset_scan/manifests/scarletkc_vexor.json"
+}
+
+Full results written to mcp_dataset_scan/results/scarletkc_vexor_result.json
+
+3 finding(s) in 0 tool(s):
+  - [MEDIUM] [LLM03: Supply Chain Vulnerabilities] unpinned_remote_source on vexor
+  - [MEDIUM] [LLM03: Supply Chain Vulnerabilities] unpinned_remote_source on vexor
+  - [LOW] [LLM03: Supply Chain Vulnerabilities] missing_provenance on vexor
+
+This is a static heuristic scan of the manifest text/schema only - it
+does not execute the MCP server or call an LLM, so it will miss
+injection payloads that don't match these patterns and cannot judge
+runtime behavior. For an LLM-judged review: https://ventrova.dev/audit

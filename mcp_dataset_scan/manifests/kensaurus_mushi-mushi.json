@@ -1,0 +1,11 @@
+{
+  "name": "community-kensaurus_mushi-mushi",
+  "mcpServers": {
+    "mushi-mushi": {
+      "command": "npx",
+      "args": [
+        "@mushi-mushi/mcp"
+      ]
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "community-scarletkc_vexor",
+  "mcpServers": {
+    "vexor": {
+      "command": "uvx",
+      "args": [
+        "vexor",
+        "mcp"
+      ]
+    }
+  }
+}

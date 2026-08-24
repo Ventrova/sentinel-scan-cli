@@ -1,0 +1,12 @@
+{
+  "name": "community-rm-rf-prod_GroundTruth-MCP",
+  "mcpServers": {
+    "GroundTruth-MCP": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@groundtruth-mcp/gt-mcp"
+      ]
+    }
+  }
+}

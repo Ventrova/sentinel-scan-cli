@@ -1,0 +1,11 @@
+{
+  "name": "community-quantakrypto_pqc-tools",
+  "mcpServers": {
+    "pqc-tools": {
+      "command": "npx",
+      "args": [
+        "@quantakrypto/mcp"
+      ]
+    }
+  }
+}

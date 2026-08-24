@@ -1,0 +1,11 @@
+{
+  "name": "community-agenticmail_agenticmail",
+  "mcpServers": {
+    "agenticmail": {
+      "command": "npx",
+      "args": [
+        "@agenticmail/mcp"
+      ]
+    }
+  }
+}

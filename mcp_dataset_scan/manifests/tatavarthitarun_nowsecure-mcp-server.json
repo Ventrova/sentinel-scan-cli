@@ -1,0 +1,12 @@
+{
+  "name": "community-tatavarthitarun_nowsecure-mcp-server",
+  "mcpServers": {
+    "nowsecure-mcp-server": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "nowsecure-mcp-server"
+      ]
+    }
+  }
+}

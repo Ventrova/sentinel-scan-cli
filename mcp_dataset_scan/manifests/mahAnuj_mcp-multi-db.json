@@ -1,0 +1,12 @@
+{
+  "name": "community-mahAnuj_mcp-multi-db",
+  "mcpServers": {
+    "mcp-multi-db": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-multi-db"
+      ]
+    }
+  }
+}

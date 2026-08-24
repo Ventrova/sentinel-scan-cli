@@ -1,0 +1,370 @@
+{
+  "n": 45,
+  "hit_counts_target_classes": {
+    "hardcoded_credential": 2,
+    "unpinned_remote_source": 39,
+    "overbroad_tool_scope": 0,
+    "missing_provenance": 41
+  },
+  "all_heuristic_counts": {
+    "missing_provenance": 41,
+    "unpinned_remote_source": 39,
+    "hardcoded_credential": 2
+  },
+  "per_server": [
+    {
+      "manifest": "mcp_dataset_scan/results\\AkashGoenka_coldstart_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 3
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\Cohexa-ai_agent-coherence_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\FROWNINGdev_django-orm-lens_result.json",
+      "findings": [
+        "missing_provenance"
+      ],
+      "num_findings": 1
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\Focus-GTS_eds-mcp-server_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\KnockOutEZ_wigolo_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 3
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\ScrapeUnblocker_scrapeunblocker-mcp_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\agenticmail_agenticmail_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\agentkitai_agentlens_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\antonio-mello-ai_mcp-redis-monitor_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\anypost_emailmd_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 3
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\anythink-cloud_anythink-cli_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\appcreationsca_bumpguard-mcp_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\aradar46_reuse-before-generate_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\argosvix_mcp-server_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\bzsanti_oxidize-python_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\chaandannn_finopsmcp_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\croc100_Litescope_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 3
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\csitte_mailwarden_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\cygnussystems_cygnus-ssh-mcp_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\faizbawa_mcp-remote-ssh_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\hernaninverso_eleata-verify-mcp_result.json",
+      "findings": [
+        "hardcoded_credential",
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 3
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\hivemindunit_llmintel-mcp_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\jayasukuv11-beep_agenthelm_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\jessedu29260-netizen_booboo_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\jmpdsevilla_BovedIA_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\joansongjr_clawaimail_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\lumayapartners_memini_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 3
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\mahAnuj_mcp-multi-db_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\musharna_jobd_result.json",
+      "findings": [
+        "missing_provenance"
+      ],
+      "num_findings": 1
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\official_everything_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\official_fetch_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\official_filesystem_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\official_git_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\official_gitlab_result.json",
+      "findings": [],
+      "num_findings": 0
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\official_google-maps_result.json",
+      "findings": [],
+      "num_findings": 0
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\official_memory_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\official_postgres_result.json",
+      "findings": [],
+      "num_findings": 0
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\official_puppeteer_result.json",
+      "findings": [],
+      "num_findings": 0
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\official_sqlite_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\pgalyen1987_gate402-mcp_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\risha-max_0xpdf-mcp_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\rm-rf-prod_GroundTruth-MCP_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\scarletkc_vexor_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 3
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\site-shot_site-shot-mcp_result.json",
+      "findings": [
+        "hardcoded_credential",
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 3
+    },
+    {
+      "manifest": "mcp_dataset_scan/results\\soolaugust_0CompactMem_result.json",
+      "findings": [
+        "unpinned_remote_source",
+        "missing_provenance"
+      ],
+      "num_findings": 2
+    }
+  ]
+}

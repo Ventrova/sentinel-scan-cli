@@ -1,0 +1,12 @@
+{
+  "name": "community-sebastienrousseau_rlg",
+  "mcpServers": {
+    "rlg": {
+      "command": "cargo",
+      "args": [
+        "install",
+        "rlg-mcp"
+      ]
+    }
+  }
+}

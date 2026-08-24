@@ -1,0 +1,15 @@
+{
+  "name": "community-jmpdsevilla_BovedIA",
+  "mcpServers": {
+    "bovedia": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "bovedia"
+      ],
+      "env": {
+        "KB_MEMORY_ROOT": "/ruta/absoluta/a/tu/boveda"
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "community-joansongjr_clawaimail",
+  "mcpServers": {
+    "mcp": {
+      "command": "npx",
+      "args": [
+        "clawaimail-mcp"
+      ]
+    }
+  }
+}

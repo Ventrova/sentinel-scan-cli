@@ -1,0 +1,389 @@
+[
+  {
+    "name": "ScrapeUnblocker/scrapeunblocker-mcp",
+    "url": "https://github.com/ScrapeUnblocker/scrapeunblocker-mcp",
+    "category": "Browser Automation",
+    "installs": [
+      "npx -y scrapeunblocker-mcp"
+    ],
+    "line": "- [ScrapeUnblocker/scrapeunblocker-mcp](https://github.com/ScrapeUnblocker/scrapeunblocker-mcp) [![ScrapeUnblocker/scrapeunblocker-mcp MCP server](https://glama.ai/mcp/servers/ScrapeUnblocker/scrapeunblocker-mcp/badges/score.svg)](https://glama.ai/mcp/servers/ScrapeUnblocker/scrapeunblocker-mcp) \ud83d\udcc7 \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Fetch any web page's HTML (or AI-parsed JSON, or Google results) through the ScrapeUnblocker anti-bot API (Cloudflare, DataDome, PerimeterX, Akamai, Shape), using your own API key. Three tools: `fetch_html`, `fetch_parsed`, `google_search`. Install: `npx -y scrapeunblocker-mcp`.",
+    "readme_fetched": true,
+    "readme_file": "readmes/ScrapeUnblocker__scrapeunblocker-mcp.md"
+  },
+  {
+    "name": "site-shot/site-shot-mcp",
+    "url": "https://github.com/site-shot/site-shot-mcp",
+    "category": "Browser Automation",
+    "installs": [
+      "npx -y site-shot-mcp"
+    ],
+    "line": "- [site-shot/site-shot-mcp](https://github.com/site-shot/site-shot-mcp) [![site-shot/site-shot-mcp MCP server](https://glama.ai/mcp/servers/site-shot/site-shot-mcp/badges/score.svg)](https://glama.ai/mcp/servers/site-shot/site-shot-mcp) \ud83d\udcc7 \u2601\ufe0f - Website screenshot API for AI agents. Real Chromium rendering, full-page capture up to 20,000px, country/geo proxies, and automatic ad & cookie-banner removal (cleaner images, fewer vision tokens). Two tools: `capture_screenshot`, `capture_full_page`. Install: `npx -y site-shot-mcp`.",
+    "readme_fetched": true,
+    "readme_file": "readmes/site-shot__site-shot-mcp.md"
+  },
+  {
+    "name": "Focus-GTS/eds-mcp-server",
+    "url": "https://github.com/Focus-GTS/eds-mcp-server",
+    "category": "Cloud Platforms",
+    "installs": [
+      "npx @focusgts/eds-mcp-server"
+    ],
+    "line": "- [Focus-GTS/eds-mcp-server](https://github.com/Focus-GTS/eds-mcp-server) [![Focus-GTS/eds-mcp-server MCP server](https://glama.ai/mcp/servers/Focus-GTS/eds-mcp-server/badges/score.svg)](https://glama.ai/mcp/servers/Focus-GTS/eds-mcp-server) \ud83d\udcc7 \u2601\ufe0f \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Adobe Edge Delivery Services (AEM EDS) management with 20 tools for preview, publish, bulk operations, content reading, Core Web Vitals, 404 tracking, A/B experiments, site configuration, and redirects. Install: `npx @focusgts/eds-mcp-server`.",
+    "readme_fetched": true,
+    "readme_file": "readmes/Focus-GTS__eds-mcp-server.md"
+  },
+  {
+    "name": "anythink-cloud/anythink-cli",
+    "url": "https://github.com/anythink-cloud/anythink-cli",
+    "category": "Cloud Platforms",
+    "installs": [
+      "npx -y @anythink-cloud/mcp"
+    ],
+    "line": "- [anythink-cloud/anythink-cli](https://github.com/anythink-cloud/anythink-cli) [![anythink-cloud/anythink-cli MCP server](https://glama.ai/mcp/servers/anythink-cloud/anythink-cli/badges/score.svg)](https://glama.ai/mcp/servers/anythink-cloud/anythink-cli) #\ufe0f \u2601\ufe0f \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Build and run a complete backend from your agent on the Anythink platform: relational data with row-/field-level security, full-text + semantic + geo search, RBAC + BYOK, a workflow/automation engine, a growth & retention engine (email, actionable push, promotions, per-user referral codes + rewards, points/credits), payments + marketplace billing, and a growing catalog of integrations (Claude, OpenAI, Slack, Google, GitHub\u2026) \u2014 driven through one CLI-backed MCP tool. Install with `npx -y @anythink-cloud/mcp`.",
+    "readme_fetched": true,
+    "readme_file": "readmes/anythink-cloud__anythink-cli.md"
+  },
+  {
+    "name": "chaandannn/finopsmcp",
+    "url": "https://github.com/chaandannn/finopsmcp",
+    "category": "Cloud Platforms",
+    "installs": [
+      "uvx nable"
+    ],
+    "line": "- [chaandannn/finopsmcp](https://github.com/chaandannn/finopsmcp) [![chaandannn/finopsmcp MCP server](https://glama.ai/mcp/servers/chaandannn/finopsmcp/badges/score.svg)](https://glama.ai/mcp/servers/chaandannn/finopsmcp) \ud83d\udc0d \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Local-first FinOps copilot. Connect AWS, Azure, GCP, Kubernetes, and 15+ SaaS and AI bills, then ask cost questions in Claude or Cursor, find waste, and get the fix as a pull request you approve. Read-only; your credentials and bill stay on your machine. `uvx nable`.",
+    "readme_fetched": true,
+    "readme_file": "readmes/chaandannn__finopsmcp.md"
+  },
+  {
+    "name": "musharna/jobd",
+    "url": "https://github.com/musharna/jobd",
+    "category": "Code Execution",
+    "installs": [
+      "pip install \"jobd[mcp]\""
+    ],
+    "line": "- [musharna/jobd](https://github.com/musharna/jobd) [![musharna/jobd MCP server](https://glama.ai/mcp/servers/musharna/jobd/badges/score.svg)](https://glama.ai/mcp/servers/musharna/jobd) \ud83d\udc0d \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Self-hostable GPU-aware job broker for your own machines. The MCP server exposes the queue as nine tools (submit, status, logs, list, cancel, preempt, workers, job-get, worker-delete) so an agent can dispatch long-running or GPU jobs that outlive the session, route them by VRAM tier, and babysit them across sessions. `pip install \"jobd[mcp]\"`.",
+    "readme_fetched": true,
+    "readme_file": "readmes/musharna__jobd.md"
+  },
+  {
+    "name": "cygnussystems/cygnus-ssh-mcp",
+    "url": "https://github.com/cygnussystems/cygnus-ssh-mcp",
+    "category": "Command Line",
+    "installs": [
+      "pip install cygnus-ssh-mcp",
+      "uvx cygnus-ssh-mcp"
+    ],
+    "line": "- [cygnussystems/cygnus-ssh-mcp](https://github.com/cygnussystems/cygnus-ssh-mcp) [![cygnussystems/cygnus-ssh-mcp MCP server](https://glama.ai/mcp/servers/cygnussystems/cygnus-ssh-mcp/badges/score.svg)](https://glama.ai/mcp/servers/cygnussystems/cygnus-ssh-mcp) \ud83d\udc0d \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - MCP server for SSH-based control of remote Linux, macOS, and Windows servers with 46 purpose-built tools instead of one generic command-runner: line-level file editing (no download/edit/upload round-trip), background task launch/monitor/kill, real sudo support, host aliases, recursive directory ops, archive create/extract, and full Unicode via SFTP (avoids PowerShell OEM code page corruption on Windows targets). `pip install cygnus-ssh-mcp` or `uvx cygnus-ssh-mcp`.",
+    "readme_fetched": true,
+    "readme_file": "readmes/cygnussystems__cygnus-ssh-mcp.md"
+  },
+  {
+    "name": "faizbawa/mcp-remote-ssh",
+    "url": "https://github.com/faizbawa/mcp-remote-ssh",
+    "category": "Command Line",
+    "installs": [
+      "uvx mcp-remote-ssh"
+    ],
+    "line": "- [faizbawa/mcp-remote-ssh](https://github.com/faizbawa/mcp-remote-ssh) [![faizbawa/mcp-remote-ssh MCP server](https://glama.ai/mcp/servers/faizbawa/mcp-remote-ssh/badges/score.svg)](https://glama.ai/mcp/servers/faizbawa/mcp-remote-ssh) \ud83d\udc0d \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Full SSH access for AI agents with secret-safe environment injection and automatic output redaction. Persistent sessions, structured execution, SFTP, port forwarding \u2014 secrets are fed via stdin (invisible to `ps`) and scrubbed from all tool responses before reaching the LLM. `uvx mcp-remote-ssh`",
+    "readme_fetched": true,
+    "readme_file": "readmes/faizbawa__mcp-remote-ssh.md"
+  },
+  {
+    "name": "agenticmail/agenticmail",
+    "url": "https://github.com/agenticmail/agenticmail",
+    "category": "Communication",
+    "installs": [
+      "npx @agenticmail/mcp"
+    ],
+    "line": "- [agenticmail/agenticmail](https://github.com/agenticmail/agenticmail) [![agenticmail/agenticmail MCP server](https://glama.ai/mcp/servers/agenticmail/agenticmail/badges/score.svg)](https://glama.ai/mcp/servers/agenticmail/agenticmail) \ud83d\udcc7 \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Real email and SMS for AI agents. Run a local mail server with disposable inboxes, send/receive real email, fetch verification codes, and drive a real inbox \u2014 all from your machine, no third-party email API. Install with `npx @agenticmail/mcp`.",
+    "readme_fetched": true,
+    "readme_file": "readmes/agenticmail__agenticmail.md"
+  },
+  {
+    "name": "anypost/emailmd",
+    "url": "https://github.com/anypost/emailmd",
+    "category": "Communication",
+    "installs": [
+      "npx emailmd mcp"
+    ],
+    "line": "- [anypost/emailmd](https://github.com/anypost/emailmd) [![anypost/emailmd MCP server](https://glama.ai/mcp/servers/anypost/emailmd/badges/score.svg)](https://glama.ai/mcp/servers/anypost/emailmd) \ud83d\udcc7 \u2601\ufe0f \ud83c\udfe0 - Write and preview emails from your assistant. Renders markdown into email-safe HTML that holds up in Outlook and Gmail, lints drafts for deliverability problems, and returns a live preview link. Hosted with no API key, or run it locally with `npx emailmd mcp`.",
+    "readme_fetched": true,
+    "readme_file": "readmes/anypost__emailmd.md"
+  },
+  {
+    "name": "clawaimail/mcp",
+    "url": "https://github.com/joansongjr/clawaimail",
+    "category": "Communication",
+    "installs": [
+      "npx clawaimail-mcp"
+    ],
+    "line": "- [clawaimail/mcp](https://github.com/joansongjr/clawaimail) [![joansongjr/clawaimail MCP server](https://glama.ai/mcp/servers/joansongjr/clawaimail/badges/score.svg)](https://glama.ai/mcp/servers/joansongjr/clawaimail) \ud83d\udcc7 \u2601\ufe0f \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Email infrastructure for AI agents. Create inboxes on the fly, send and receive real emails, search messages, and manage threads via API. Install with `npx clawaimail-mcp`.",
+    "readme_fetched": true,
+    "readme_file": "readmes/joansongjr__clawaimail.md"
+  },
+  {
+    "name": "csitte/mailwarden",
+    "url": "https://github.com/csitte/mailwarden",
+    "category": "Communication",
+    "installs": [
+      "npx -y mailwarden"
+    ],
+    "line": "- [csitte/mailwarden](https://github.com/csitte/mailwarden) [![csitte/mailwarden MCP server](https://glama.ai/mcp/servers/csitte/mailwarden/badges/score.svg)](https://glama.ai/mcp/servers/csitte/mailwarden) \ud83d\udcc7 \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Native Gmail MCP server with full mailbox control \u2014 search, read, label, archive, trash, download attachments, and the feature no other Gmail server ships: snooze threads until a date. Every call hits the live Gmail API (no synced index that silently misses mail). Install with `npx -y mailwarden`.",
+    "readme_fetched": true,
+    "readme_file": "readmes/csitte__mailwarden.md"
+  },
+  {
+    "name": "FROWNINGdev/django-orm-lens",
+    "url": "https://github.com/FROWNINGdev/django-orm-lens",
+    "category": "Databases",
+    "installs": [
+      "pip install django-orm-lens[mcp]"
+    ],
+    "line": "- [FROWNINGdev/django-orm-lens](https://github.com/FROWNINGdev/django-orm-lens) [![FROWNINGdev/django-orm-lens MCP server](https://glama.ai/mcp/servers/FROWNINGdev/django-orm-lens/badges/score.svg)](https://glama.ai/mcp/servers/FROWNINGdev/django-orm-lens) \ud83d\udc0d \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Django ORM static-analysis MCP server. Nine read-only tools (`list_apps`, `list_models`, `describe_model`, `find_relations`, `cascade_preview`, `er_diagram`, `describe_migration_dependency`, `suggest_indexes`, `signal_graph`) that expose Django schema, relationships (FK/M2M/O2O, on_delete, related_name), migration deps, missing indexes, and signal graphs \u2014 no DB, no Django boot, no credentials. Companion to a VS Code / VSCodium / Cursor extension (Open VSX verified) and a `django-orm-lens` PyPI CLI. `pip install django-orm-lens[mcp]`.",
+    "readme_fetched": true,
+    "readme_file": "readmes/FROWNINGdev__django-orm-lens.md"
+  },
+  {
+    "name": "mahAnuj/mcp-multi-db",
+    "url": "https://github.com/mahAnuj/mcp-multi-db",
+    "category": "Databases",
+    "installs": [
+      "npx -y mcp-multi-db"
+    ],
+    "line": "- [mahAnuj/mcp-multi-db](https://github.com/mahAnuj/mcp-multi-db) [![mahAnuj/mcp-multi-db MCP server](https://glama.ai/mcp/servers/mahAnuj/mcp-multi-db/badges/score.svg)](https://glama.ai/mcp/servers/mahAnuj/mcp-multi-db) \ud83d\udcc7 \ud83c\udfe0 - One MCP server for PostgreSQL, MySQL, and SQLite. Unified read-only tools (`list_databases`, `list_tables`, `describe_table`, `run_query`) across all three engines with two-layer read-only enforcement (SQL-text guard + DB-level read-only transactions). Install: `npx -y mcp-multi-db`.",
+    "readme_fetched": true,
+    "readme_file": "readmes/mahAnuj__mcp-multi-db.md"
+  },
+  {
+    "name": "croc100/Litescope",
+    "url": "https://github.com/croc100/Litescope",
+    "category": "Databases",
+    "installs": [
+      "npx -y litescope mcp"
+    ],
+    "line": "- [croc100/Litescope](https://github.com/croc100/Litescope) [![Litescope MCP server](https://glama.ai/mcp/servers/croc100/Litescope/badges/score.svg)](https://glama.ai/mcp/servers/croc100/Litescope) \ud83c\udfce\ufe0f \ud83c\udfe0 \u2601\ufe0f - MCP-first operations toolchain for SQLite, Cloudflare D1, and Turso. Inspect, diff, migrate, monitor, back up, and repair databases over stdio. Read-only by default; writes are opt-in, dry-run first, and auto-snapshot before applying. `npx -y litescope mcp`",
+    "readme_fetched": true,
+    "readme_file": "readmes/croc100__Litescope.md"
+  },
+  {
+    "name": "hivemindunit/llmintel-mcp",
+    "url": "https://github.com/hivemindunit/llmintel-mcp",
+    "category": "Developer Tools",
+    "installs": [
+      "npx -y @llmintel/mcp"
+    ],
+    "line": "- [hivemindunit/llmintel-mcp](https://github.com/hivemindunit/llmintel-mcp) [![hivemindunit/llmintel-mcp MCP server](https://glama.ai/mcp/servers/hivemindunit/llmintel-mcp/badges/score.svg)](https://glama.ai/mcp/servers/hivemindunit/llmintel-mcp) \ud83d\udcc7 \u2601\ufe0f - Check whether an LLM model id is deprecated, retiring, or retired, and what to migrate to. Covers OpenAI, Anthropic, Azure, Bedrock, Google, and Cohere. No API key. `npx -y @llmintel/mcp` or `https://llmintel.ai/v1/mcp`",
+    "readme_fetched": true,
+    "readme_file": "readmes/hivemindunit__llmintel-mcp.md"
+  },
+  {
+    "name": "rm-rf-prod/GroundTruth-MCP",
+    "url": "https://github.com/rm-rf-prod/GroundTruth-MCP",
+    "category": "Developer Tools",
+    "installs": [
+      "npx -y @groundtruth-mcp/gt-mcp"
+    ],
+    "line": "- [rm-rf-prod/GroundTruth-MCP](https://github.com/rm-rf-prod/GroundTruth-MCP) [![rm-rf-prod/GroundTruth-MCP MCP server](https://glama.ai/mcp/servers/rm-rf-prod/GroundTruth-MCP/badges/score.svg)](https://glama.ai/mcp/servers/rm-rf-prod/GroundTruth-MCP) \ud83d\udcc7 \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Self-hosted MCP for live docs, code audits, snippets, and best practices across 445+ libraries. 14 tools, 107 audit patterns with file:line precision, BM25-ranked snippets, lockfile-aware version pinning, npm/PyPI/crates.io/Go fallback. No API keys, no rate limits, Context7 alternative. `npx -y @groundtruth-mcp/gt-mcp`",
+    "readme_fetched": true,
+    "readme_file": "readmes/rm-rf-prod__GroundTruth-MCP.md"
+  },
+  {
+    "name": "scarletkc/vexor",
+    "url": "https://github.com/scarletkc/vexor",
+    "category": "Developer Tools",
+    "installs": [
+      "uvx vexor mcp",
+      "pip install vexor"
+    ],
+    "line": "- [scarletkc/vexor](https://github.com/scarletkc/vexor) [![scarletkc/vexor MCP server](https://glama.ai/mcp/servers/scarletkc/vexor/badges/score.svg)](https://glama.ai/mcp/servers/scarletkc/vexor) \ud83d\udc0d \ud83c\udfe0 \u2601\ufe0f \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - A semantic search engine for files and code \u2014 find files by describing what they do, not their names. Local reusable indexes, configurable embedding providers (OpenAI, Gemini, Voyage, any OpenAI-compatible API, or fully offline local models), AST-aware code chunking, optional reranking. `uvx vexor mcp` or `pip install vexor`.",
+    "readme_fetched": true,
+    "readme_file": "readmes/scarletkc__vexor.md"
+  },
+  {
+    "name": "aradar46/reuse-before-generate",
+    "url": "https://github.com/aradar46/reuse-before-generate",
+    "category": "Developer Tools",
+    "installs": [
+      "npx -y reuse-before-generate"
+    ],
+    "line": "- [aradar46/reuse-before-generate](https://github.com/aradar46/reuse-before-generate) [![aradar46/reuse-before-generate MCP server](https://glama.ai/mcp/servers/aradar46/reuse-before-generate/badges/score.svg)](https://glama.ai/mcp/servers/aradar46/reuse-before-generate) \ud83d\udcc7 \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Checks whether a project idea already exists before your agent scaffolds it. Searches GitHub, npm and Python repos, drops archived/inactive results, and returns at most 3 maintained alternatives with a concrete \"extend this instead\" suggestion for each. The calling agent does the relevance judgement itself, so no extra API key is needed. `npx -y reuse-before-generate`",
+    "readme_fetched": true,
+    "readme_file": "readmes/aradar46__reuse-before-generate.md"
+  },
+  {
+    "name": "hernaninverso/eleata-verify-mcp",
+    "url": "https://github.com/hernaninverso/eleata-verify-mcp",
+    "category": "Developer Tools",
+    "installs": [
+      "npx -y eleata-verify-mcp"
+    ],
+    "line": "- [hernaninverso/eleata-verify-mcp](https://github.com/hernaninverso/eleata-verify-mcp) [![hernaninverso/eleata-verify-mcp MCP server](https://glama.ai/mcp/servers/hernaninverso/eleata-verify-mcp/badges/score.svg)](https://glama.ai/mcp/servers/hernaninverso/eleata-verify-mcp) \ud83d\udcc7 \u2601\ufe0f - Grounding / hallucination guard: verify a claim against evidence (Supported/Refuted/Not Enough Evidence) with a confidence + abstain flag, for RAG and agents. `npx -y eleata-verify-mcp`.",
+    "readme_fetched": true,
+    "readme_file": "readmes/hernaninverso__eleata-verify-mcp.md"
+  },
+  {
+    "name": "appcreationsca/bumpguard-mcp",
+    "url": "https://github.com/appcreationsca/bumpguard-mcp",
+    "category": "Developer Tools",
+    "installs": [
+      "pip install bumpguard-mcp"
+    ],
+    "line": "- [appcreationsca/bumpguard-mcp](https://github.com/appcreationsca/bumpguard-mcp) [![appcreationsca/bumpguard-mcp MCP server](https://glama.ai/mcp/servers/appcreationsca/bumpguard-mcp/badges/score.svg)](https://glama.ai/mcp/servers/appcreationsca/bumpguard-mcp) \ud83d\udc0d \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Pre-flight dependency-upgrade impact analysis: reports exactly which of your code's API usages break *before* you bump a dependency, with line numbers, severity, and fix hints. Also verifies AI-written code against the actually-installed API to catch hallucinated calls. Static analysis only \u2014 never runs third-party code. Python + .NET. `pip install bumpguard-mcp`",
+    "readme_fetched": true,
+    "readme_file": "readmes/appcreationsca__bumpguard-mcp.md"
+  },
+  {
+    "name": "bzsanti/oxidize-python",
+    "url": "https://github.com/bzsanti/oxidize-python",
+    "category": "File Systems",
+    "installs": [
+      "uvx oxidize-mcp"
+    ],
+    "line": "- [bzsanti/oxidize-python](https://github.com/bzsanti/oxidize-python) [![bzsanti/oxidize-python MCP server](https://glama.ai/mcp/servers/bzsanti/oxidize-python/badges/score.svg)](https://glama.ai/mcp/servers/bzsanti/oxidize-python) \ud83d\udc0d \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Rust-powered PDF toolkit: create, read, and analyze PDFs; extract text and entities for RAG; convert to Markdown; split, merge, rotate, and reorder pages; add content, annotations, and form fields; and encrypt documents. Ships in the `oxidize-pdf` PyPI package \u2014 run locally with `uvx oxidize-mcp`.",
+    "readme_fetched": true,
+    "readme_file": "readmes/bzsanti__oxidize-python.md"
+  },
+  {
+    "name": "risha-max/0xpdf-mcp",
+    "url": "https://github.com/risha-max/0xpdf-mcp",
+    "category": "File Systems",
+    "installs": [
+      "uvx oxpdf-mcp"
+    ],
+    "line": "- [risha-max/0xpdf-mcp](https://github.com/risha-max/0xpdf-mcp) [![risha-max/0xpdf-mcp MCP server](https://glama.ai/mcp/servers/risha-max/0xpdf-mcp/badges/score.svg)](https://glama.ai/mcp/servers/risha-max/0xpdf-mcp) \ud83d\udc0d \u2601\ufe0f \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Schema-first PDF\u2192JSON MCP for AI agents (0xPdf API). Define a JSON schema, parse invoices/forms (OCR optional), manage schemas, and poll async jobs. `uvx oxpdf-mcp` \u00b7 [docs](https://0xpdf.io/docs#mcp) \u00b7 [playground](https://0xpdf.io/samples)",
+    "readme_fetched": true,
+    "readme_file": "readmes/risha-max__0xpdf-mcp.md"
+  },
+  {
+    "name": "Cohexa-ai/agent-coherence",
+    "url": "https://github.com/Cohexa-ai/agent-coherence",
+    "category": "File Systems",
+    "installs": [
+      "uvx --from \"agent-coherence[mcp]\" stale-write-guard-fs"
+    ],
+    "line": "- [Cohexa-ai/agent-coherence](https://github.com/Cohexa-ai/agent-coherence) [![Cohexa-ai/agent-coherence MCP server](https://glama.ai/mcp/servers/Cohexa-ai/agent-coherence/badges/score.svg)](https://glama.ai/mcp/servers/Cohexa-ai/agent-coherence) \ud83d\udc0d \ud83c\udfe0 - Coherence guard for shared files: when two agents write the same file, the stale writer is denied instead of silently overwriting, then reacquires and retries. Single-host, TLA+-verified. Install: `uvx --from \"agent-coherence[mcp]\" stale-write-guard-fs`.",
+    "readme_fetched": true,
+    "readme_file": "readmes/Cohexa-ai__agent-coherence.md"
+  },
+  {
+    "name": "AkashGoenka/coldstart",
+    "url": "https://github.com/AkashGoenka/coldstart",
+    "category": "Knowledge & Memory",
+    "installs": [
+      "npm i -g @cstart/coldstart && coldstart init"
+    ],
+    "line": "- [AkashGoenka/coldstart](https://github.com/AkashGoenka/coldstart) [![AkashGoenka/coldstart MCP server](https://glama.ai/mcp/servers/AkashGoenka/coldstart/badges/score.svg)](https://glama.ai/mcp/servers/AkashGoenka/coldstart) \ud83d\udcc7 \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Codebase memory for coding agents, with no embeddings and no API key. A deterministic AST index answers \"which files are relevant to this task?\" in milliseconds, and agents write durable notes about the repo that are content-hash checked \u2014 a note flags itself stale the moment the code it describes changes. Notes are markdown inside the repo, so they commit and review alongside your code. `npm i -g @cstart/coldstart && coldstart init`",
+    "readme_fetched": true,
+    "readme_file": "readmes/AkashGoenka__coldstart.md"
+  },
+  {
+    "name": "jayasukuv11-beep/agenthelm",
+    "url": "https://github.com/jayasukuv11-beep/agenthelm",
+    "category": "Knowledge & Memory",
+    "installs": [
+      "npx -y agenthelm-mcp"
+    ],
+    "line": "- [jayasukuv11-beep/agenthelm](https://github.com/jayasukuv11-beep/agenthelm) [![jayasukuv11-beep/agenthelm MCP server](https://glama.ai/mcp/servers/jayasukuv11-beep/agenthelm/badges/score.svg)](https://glama.ai/mcp/servers/jayasukuv11-beep/agenthelm) \ud83d\udcc7 \ud83d\udc0d \u2601\ufe0f \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Shared, versioned memory and governance control plane for AI coding agents. Compiler pipeline resolves architectural decision conflicts across Claude Code, Cursor, and custom agent fleets. `npx -y agenthelm-mcp`",
+    "readme_fetched": true,
+    "readme_file": "readmes/jayasukuv11-beep__agenthelm.md"
+  },
+  {
+    "name": "jmpdsevilla/BovedIA",
+    "url": "https://github.com/jmpdsevilla/BovedIA",
+    "category": "Knowledge & Memory",
+    "installs": [
+      "npx bovedia"
+    ],
+    "line": "- [jmpdsevilla/BovedIA](https://github.com/jmpdsevilla/BovedIA) [![jmpdsevilla/BovedIA MCP server](https://glama.ai/mcp/servers/@jmpdsevilla/BovedIA/badges/score.svg)](https://glama.ai/mcp/servers/@jmpdsevilla/BovedIA) \ud83d\udcc7 \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Personal memory for Claude Code in plain Markdown notes you own. Doesn't load context blindly: a router note decides what to load and when, plus an \"alma\" (soul) layer for what you think and feel, not just tasks. `npx bovedia`",
+    "readme_fetched": true,
+    "readme_file": "readmes/jmpdsevilla__BovedIA.md"
+  },
+  {
+    "name": "lumayapartners/memini",
+    "url": "https://github.com/lumayapartners/memini",
+    "category": "Knowledge & Memory",
+    "installs": [
+      "npx -y memini mcp"
+    ],
+    "line": "- [lumayapartners/memini](https://github.com/lumayapartners/memini) [![lumayapartners/memini MCP server](https://glama.ai/mcp/servers/lumayapartners/memini/badges/score.svg)](https://glama.ai/mcp/servers/lumayapartners/memini) \ud83d\udcc7 \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Local-first project memory and guardrails for coding agents. Records failed attempts, fragile files, and decisions per repo; warns the agent before it repeats a recorded mistake. `npx -y memini mcp`",
+    "readme_fetched": true,
+    "readme_file": "readmes/lumayapartners__memini.md"
+  },
+  {
+    "name": "jessedu29260-netizen/booboo",
+    "url": "https://github.com/jessedu29260-netizen/booboo",
+    "category": "Knowledge & Memory",
+    "installs": [
+      "npx create-booboo"
+    ],
+    "line": "- [jessedu29260-netizen/booboo](https://github.com/jessedu29260-netizen/booboo) [![jessedu29260-netizen/booboo MCP server](https://glama.ai/mcp/servers/jessedu29260-netizen/booboo/badges/score.svg)](https://glama.ai/mcp/servers/jessedu29260-netizen/booboo) \ud83d\udcc7 \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - See and query your whole AI system as one rooted 3D knowledge graph \u2014 agents, memory, knowledge, and automations fused into a privacy-walled snapshot. MCP tools for stats, search, node dossiers, neighbors, and pathfinding; the same snapshot renders up to a million nodes in the browser. `npx create-booboo`",
+    "readme_fetched": true,
+    "readme_file": "readmes/jessedu29260-netizen__booboo.md"
+  },
+  {
+    "name": "soolaugust/0CompactMem",
+    "url": "https://github.com/soolaugust/0CompactMem",
+    "category": "Knowledge & Memory",
+    "installs": [
+      "uvx --from git+https://github.com/soolaugust/0CompactMem memory-os"
+    ],
+    "line": "- [soolaugust/0CompactMem](https://github.com/soolaugust/0CompactMem) [![soolaugust/0CompactMem MCP server](https://glama.ai/mcp/servers/soolaugust/0CompactMem/badges/score.svg)](https://glama.ai/mcp/servers/soolaugust/0CompactMem) \ud83d\udc0d \ud83c\udfe0 \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Persistent memory MCP server with OS-style demand paging, kswapd-style eviction, and mlock pinning. Multi-agent shared SQLite store with BM25 + FTS5 retrieval, importance scoring, and capacity-aware reclaim. 5 tools: `memory_lookup`, `pin_memory`, `unpin_memory`, `memory_stats`, `list_pinned`. `uvx --from git+https://github.com/soolaugust/0CompactMem memory-os`",
+    "readme_fetched": true,
+    "readme_file": "readmes/soolaugust__0CompactMem.md"
+  },
+  {
+    "name": "agentkitai/agentlens",
+    "url": "https://github.com/agentkitai/agentlens",
+    "category": "Monitoring",
+    "installs": [
+      "npx -y @agentlensai/mcp"
+    ],
+    "line": "- [agentkitai/agentlens](https://github.com/agentkitai/agentlens) [![agentkitai/agentlens MCP server](https://glama.ai/mcp/servers/agentkitai/agentlens/badges/score.svg)](https://glama.ai/mcp/servers/agentkitai/agentlens) \ud83d\udcc7 \ud83c\udfe0 \u2601\ufe0f \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Tamper-evident observability for AI agents: a SHA-256 hash-chained audit log with chain verification and signed export (EU AI Act Art. 12). Instrument any agent with zero code via `npx -y @agentlensai/mcp`; also ingests OpenTelemetry GenAI traces.",
+    "readme_fetched": true,
+    "readme_file": "readmes/agentkitai__agentlens.md"
+  },
+  {
+    "name": "antonio-mello-ai/mcp-redis-monitor",
+    "url": "https://github.com/antonio-mello-ai/mcp-redis-monitor",
+    "category": "Monitoring",
+    "installs": [
+      "uvx mcp-redis-monitor"
+    ],
+    "line": "- [antonio-mello-ai/mcp-redis-monitor](https://github.com/antonio-mello-ai/mcp-redis-monitor) [![antonio-mello-ai/mcp-redis-monitor MCP server](https://glama.ai/mcp/servers/antonio-mello-ai/mcp-redis-monitor/badges/score.svg)](https://glama.ai/mcp/servers/antonio-mello-ai/mcp-redis-monitor) \ud83d\udc0d \ud83c\udfe0 - Read-only Redis monitoring \u2014 queue depths by type, Celery queue status, connected clients, server/memory stats, and key counts per database. 5 tools, built with FastMCP. Install: `uvx mcp-redis-monitor`.",
+    "readme_fetched": true,
+    "readme_file": "readmes/antonio-mello-ai__mcp-redis-monitor.md"
+  },
+  {
+    "name": "argosvix/mcp-server",
+    "url": "https://github.com/argosvix/mcp-server",
+    "category": "Monitoring",
+    "installs": [
+      "npx -y @argosvix/mcp-server"
+    ],
+    "line": "- [argosvix/mcp-server](https://github.com/argosvix/mcp-server) [![argosvix/mcp-server MCP server](https://glama.ai/mcp/servers/argosvix/mcp-server/badges/score.svg)](https://glama.ai/mcp/servers/argosvix/mcp-server) \ud83d\udcc7 \u2601\ufe0f \ud83c\udf4e \ud83e\ude9f \ud83d\udc27 - Observability for AI agents: 87 tools to query LLM cost, errors, and latency across OpenAI/Anthropic/Gemini/Mistral, and operate alerts, budget gates, evals, and safety checks from Claude/Cursor. Install: `npx -y @argosvix/mcp-server`.",
+    "readme_fetched": true,
+    "readme_file": "readmes/argosvix__mcp-server.md"
+  },
+  {
+    "name": "pgalyen1987/gate402-mcp",
+    "url": "https://github.com/pgalyen1987/gate402-mcp",
+    "category": "Search & Data Extraction",
+    "installs": [
+      "npx -y gate402-mcp"
+    ],
+    "line": "- [pgalyen1987/gate402-mcp](https://github.com/pgalyen1987/gate402-mcp) [![pgalyen1987/gate402-mcp MCP server](https://glama.ai/mcp/servers/pgalyen1987/gate402-mcp/badges/score.svg)](https://glama.ai/mcp/servers/pgalyen1987/gate402-mcp) \ud83d\udcc7 \u2601\ufe0f - Pay-per-call agent APIs over x402 (USDC on Base): per-token LLM inference (Llama 3.1/Qwen/Mistral), per-second GPU/CPU compute, on-chain/DeFi + SEC-EDGAR + news data, and clean-Markdown/Cloudflare-stealth web scraping. Signed receipts, no signup \u2014 auto-claims a free-tier key. Install via `npx -y gate402-mcp`.",
+    "readme_fetched": true,
+    "readme_file": "readmes/pgalyen1987__gate402-mcp.md"
+  },
+  {
+    "name": "KnockOutEZ/wigolo",
+    "url": "https://github.com/KnockOutEZ/wigolo",
+    "category": "Search & Data Extraction",
+    "installs": [
+      "npx wigolo init --non-interactive --agents=<agent>"
+    ],
+    "line": "- [KnockOutEZ/wigolo](https://github.com/KnockOutEZ/wigolo) [![KnockOutEZ/wigolo MCP server](https://glama.ai/mcp/servers/KnockOutEZ/wigolo/badges/score.svg)](https://glama.ai/mcp/servers/KnockOutEZ/wigolo) \ud83d\udcc7 \ud83c\udfe0 - Local-first, keyless web intelligence in one server: search, fetch, crawl, extract, cache, find-similar, and research. Multi-engine search with local ML reranking and a persistent SQLite cache, renders JS-heavy pages, and keeps everything on your machine. Install via `npx wigolo init --non-interactive --agents=<agent>`.",
+    "readme_fetched": true,
+    "readme_file": "readmes/KnockOutEZ__wigolo.md"
+  }
+]

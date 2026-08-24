@@ -1,0 +1,12 @@
+{
+  "name": "community-aeoess_agent-passport-mcp",
+  "mcpServers": {
+    "agent-passport-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "agent-passport-system-mcp"
+      ]
+    }
+  }
+}

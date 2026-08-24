@@ -1,0 +1,11 @@
+{
+  "name": "community-Focus-GTS_eds-mcp-server",
+  "mcpServers": {
+    "eds-mcp-server": {
+      "command": "npx",
+      "args": [
+        "@focusgts/eds-mcp-server"
+      ]
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "community-anypost_emailmd",
+  "mcpServers": {
+    "emailmd": {
+      "command": "npx",
+      "args": [
+        "emailmd",
+        "mcp"
+      ]
+    }
+  }
+}

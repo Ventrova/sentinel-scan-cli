@@ -1,0 +1,13 @@
+{
+  "name": "community-AkashGoenka_coldstart",
+  "mcpServers": {
+    "coldstart": {
+      "command": "npm",
+      "args": [
+        "i",
+        "-g",
+        "@cstart/coldstart"
+      ]
+    }
+  }
+}

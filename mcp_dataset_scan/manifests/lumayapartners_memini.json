@@ -1,0 +1,13 @@
+{
+  "name": "community-lumayapartners_memini",
+  "mcpServers": {
+    "memini": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "memini",
+        "mcp"
+      ]
+    }
+  }
+}

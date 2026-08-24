@@ -1,0 +1,26 @@
+{
+  "tool": "sentinel-scan-cli mcp",
+  "version": "1.3.0",
+  "num_tools_scanned": 0,
+  "num_servers_scanned": 1,
+  "num_findings": 1,
+  "findings_by_severity": {
+    "LOW": 1
+  },
+  "findings_by_heuristic": {
+    "missing_provenance": 1
+  },
+  "manifest": "manifests/yamantaka520_Agent-Memory-OS.json"
+}
+
+Full results written to results/yamantaka520_Agent-Memory-OS_result.json
+
+1 finding(s) in 0 tool(s):
+  - [LOW] [LLM03: Supply Chain Vulnerabilities] missing_provenance on Agent-Memory-OS
+
+This is a static heuristic scan of the manifest text/schema only - it
+does not execute the MCP server or call an LLM, so it will miss
+injection payloads that don't match these patterns and cannot judge
+runtime behavior. For an LLM-judged review: https://ventrova.dev/audit
+
+---STDERR---

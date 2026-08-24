@@ -1,0 +1,12 @@
+{
+  "name": "community-hivemindunit_llmintel-mcp",
+  "mcpServers": {
+    "llmintel": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@llmintel/mcp"
+      ]
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "community-sachitrafa_YourMemory",
+  "mcpServers": {
+    "YourMemory": {
+      "command": "pip",
+      "args": [
+        "install",
+        "yourmemory"
+      ]
+    }
+  }
+}

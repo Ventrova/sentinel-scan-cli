@@ -1,0 +1,11 @@
+{
+  "name": "community-jamesdfinance-dev_lazaretto-mcp",
+  "mcpServers": {
+    "lazaretto-mcp": {
+      "command": "npx",
+      "args": [
+        "lazaretto-mcp"
+      ]
+    }
+  }
+}

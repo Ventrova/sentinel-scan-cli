@@ -1,0 +1,12 @@
+{
+  "name": "community-csitte_mailwarden",
+  "mcpServers": {
+    "mailwarden": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mailwarden"
+      ]
+    }
+  }
+}

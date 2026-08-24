@@ -1,0 +1,13 @@
+{
+  "name": "community-Piccolo123_url-manager-mcp",
+  "mcpServers": {
+    "url-manager-mcp": {
+      "command": "pip",
+      "args": [
+        "install",
+        "-r",
+        "requirements.txt"
+      ]
+    }
+  }
+}

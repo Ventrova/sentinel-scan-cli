@@ -1,0 +1,12 @@
+{
+  "name": "community-agentkitai_agentlens",
+  "mcpServers": {
+    "agentlens": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@agentlensai/mcp"
+      ]
+    }
+  }
+}

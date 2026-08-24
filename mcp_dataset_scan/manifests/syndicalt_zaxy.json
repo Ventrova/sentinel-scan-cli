@@ -1,0 +1,12 @@
+{
+  "name": "community-syndicalt_zaxy",
+  "mcpServers": {
+    "zaxy": {
+      "command": "pip",
+      "args": [
+        "install",
+        "zaxy-memory"
+      ]
+    }
+  }
+}

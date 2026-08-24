@@ -1,0 +1,26 @@
+{
+  "tool": "sentinel-scan-cli mcp",
+  "version": "1.3.0",
+  "num_tools_scanned": 0,
+  "num_servers_scanned": 1,
+  "num_findings": 1,
+  "findings_by_severity": {
+    "HIGH": 1
+  },
+  "findings_by_heuristic": {
+    "hardcoded_credential": 1
+  },
+  "manifest": "manifests/omniologynow-rgb_scout-intel-mcp.json"
+}
+
+Full results written to results/omniologynow-rgb_scout-intel-mcp_result.json
+
+1 finding(s) in 0 tool(s):
+  - [HIGH] [LLM02: Sensitive Information Disclosure] hardcoded_credential on scout-mcp
+
+This is a static heuristic scan of the manifest text/schema only - it
+does not execute the MCP server or call an LLM, so it will miss
+injection payloads that don't match these patterns and cannot judge
+runtime behavior. For an LLM-judged review: https://ventrova.dev/audit
+
+---STDERR---

@@ -1,0 +1,11 @@
+{
+  "name": "community-robbyczgw-cla_web-search-plus-mcp",
+  "mcpServers": {
+    "web-search-plus-mcp": {
+      "command": "uvx",
+      "args": [
+        "web-search-plus-mcp"
+      ]
+    }
+  }
+}

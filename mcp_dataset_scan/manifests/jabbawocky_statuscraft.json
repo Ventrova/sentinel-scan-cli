@@ -1,0 +1,12 @@
+{
+  "name": "community-jabbawocky_statuscraft",
+  "mcpServers": {
+    "statuscraft": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "github:jabbawocky/statuscraft"
+      ]
+    }
+  }
+}

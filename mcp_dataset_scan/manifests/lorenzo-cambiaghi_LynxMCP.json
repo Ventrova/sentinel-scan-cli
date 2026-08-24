@@ -1,0 +1,12 @@
+{
+  "name": "community-lorenzo-cambiaghi_LynxMCP",
+  "mcpServers": {
+    "LynxMCP": {
+      "command": "pipx",
+      "args": [
+        "install",
+        "lynx-mcp"
+      ]
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "community-Goldentrii_AgentRecall",
+  "mcpServers": {
+    "AgentRecall": {
+      "command": "npx",
+      "args": [
+        "agent-recall-mcp"
+      ]
+    }
+  }
+}

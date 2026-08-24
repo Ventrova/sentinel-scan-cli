@@ -1,0 +1,12 @@
+{
+  "name": "community-cygnussystems_cygnus-ssh-mcp",
+  "mcpServers": {
+    "cygnus-ssh-mcp": {
+      "command": "pip",
+      "args": [
+        "install",
+        "cygnus-ssh-mcp"
+      ]
+    }
+  }
+}

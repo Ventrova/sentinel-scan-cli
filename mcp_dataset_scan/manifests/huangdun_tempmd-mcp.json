@@ -1,0 +1,11 @@
+{
+  "name": "community-huangdun_tempmd-mcp",
+  "mcpServers": {
+    "tempmd-mcp": {
+      "command": "npx",
+      "args": [
+        "tempmd-mcp"
+      ]
+    }
+  }
+}

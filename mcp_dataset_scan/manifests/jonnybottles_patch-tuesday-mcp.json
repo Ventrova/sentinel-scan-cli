@@ -1,0 +1,11 @@
+{
+  "name": "community-jonnybottles_patch-tuesday-mcp",
+  "mcpServers": {
+    "patch-tuesday-mcp": {
+      "command": "uvx",
+      "args": [
+        "patch-tuesday-mcp"
+      ]
+    }
+  }
+}

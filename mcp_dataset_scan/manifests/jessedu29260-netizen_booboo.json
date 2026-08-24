@@ -1,0 +1,11 @@
+{
+  "name": "community-jessedu29260-netizen_booboo",
+  "mcpServers": {
+    "booboo": {
+      "command": "npx",
+      "args": [
+        "create-booboo"
+      ]
+    }
+  }
+}

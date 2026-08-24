@@ -1,0 +1,13 @@
+{
+  "name": "community-sgateway_s-gw",
+  "mcpServers": {
+    "s-gw": {
+      "command": "npm",
+      "args": [
+        "install",
+        "-g",
+        "@s-gw/s-gw"
+      ]
+    }
+  }
+}

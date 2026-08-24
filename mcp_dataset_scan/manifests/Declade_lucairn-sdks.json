@@ -1,0 +1,12 @@
+{
+  "name": "community-Declade_lucairn-sdks",
+  "mcpServers": {
+    "lucairn-sdks": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@lucairn/mcp-server"
+      ]
+    }
+  }
+}

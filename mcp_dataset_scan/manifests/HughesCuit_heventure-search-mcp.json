@@ -1,0 +1,11 @@
+{
+  "name": "community-HughesCuit_heventure-search-mcp",
+  "mcpServers": {
+    "heventure-search-mcp": {
+      "command": "uvx",
+      "args": [
+        "heventure-search-mcp"
+      ]
+    }
+  }
+}

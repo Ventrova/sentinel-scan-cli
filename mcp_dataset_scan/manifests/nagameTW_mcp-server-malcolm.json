@@ -1,0 +1,12 @@
+{
+  "name": "community-nagameTW_mcp-server-malcolm",
+  "mcpServers": {
+    "mcp-server-malcolm": {
+      "command": "pip",
+      "args": [
+        "install",
+        "mcp-server-malcolm"
+      ]
+    }
+  }
+}
