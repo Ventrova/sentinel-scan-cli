@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sentinel-scan-cli"
-version = "1.3.0"
+version = "1.4.0"
 description = "Free, zero-dependency 15-attack prompt-injection / jailbreak smoke test for your own LLM endpoint."
 readme = "README.md"
 license = { text = "MIT" }

@@ -60,14 +60,14 @@ Requires Python 3.8+, no dependencies. PyPI publishing is coming soon; until
 then install straight from the pinned release tag on GitHub:
 
 ```bash
-pipx install git+https://github.com/Ventrova/sentinel-scan-cli.git@v1.3.0
+pipx install git+https://github.com/Ventrova/sentinel-scan-cli.git@v1.4.0
 sentinel-scan --demo
 ```
 
 Or without pipx:
 
 ```bash
-pip install git+https://github.com/Ventrova/sentinel-scan-cli.git@v1.3.0
+pip install git+https://github.com/Ventrova/sentinel-scan-cli.git@v1.4.0
 ```
 
 PyPI (`pip install sentinel-scan-cli`) currently serves a stale `1.0.0`
@@ -81,7 +81,7 @@ pip install sentinel-scan-cli  # coming soon: currently stale (1.0.0)
 Or run it once without installing anything:
 
 ```bash
-pipx run --spec git+https://github.com/Ventrova/sentinel-scan-cli.git@v1.3.0 sentinel-scan --demo
+pipx run --spec git+https://github.com/Ventrova/sentinel-scan-cli.git@v1.4.0 sentinel-scan --demo
 ```
 
 Or skip installing anything at all:
@@ -184,7 +184,7 @@ guarantee.
 ## MCP tool manifest scan
 
 > Not on the PyPI release yet - install with
-> `pipx install git+https://github.com/Ventrova/sentinel-scan-cli.git@v1.3.0` (see
+> `pipx install git+https://github.com/Ventrova/sentinel-scan-cli.git@v1.4.0` (see
 > [Quick start](#quick-start)) to get this subcommand.
 
 `sentinel-scan mcp` is a second, separate check: a static heuristic scanner
@@ -215,6 +215,7 @@ reports:
 ```bash
 sentinel-scan mcp --demo
 sentinel-scan mcp --manifest mcp.json
+sentinel-scan mcp --manifest mcp.json --format sarif --output results.sarif
 ```
 
 The first six heuristics run against the `tools` array (either a raw
@@ -231,6 +232,13 @@ recommendation) are written to `sentinel_scan_mcp_results.json` (or
 a bounded, self-serve check, not a guarantee: it will miss anything that
 doesn't match these patterns and can't judge what the server actually does
 at runtime.
+
+Pass `--format sarif` to write a SARIF 2.1.0 log instead of the default JSON
+- each finding's heuristic ID becomes the SARIF `ruleId`, its OWASP LLM/MCP
+Top 10 mapping becomes the rule's description, and severity maps to the
+standard `error`/`warning`/`note` levels. This is the format the [GitHub
+Action](#github-action) below uploads to the Security tab, and what any
+SARIF-consuming CI tool expects.
 
 ## GitHub Action
 
