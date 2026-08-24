@@ -21,9 +21,23 @@ stringify step). Diffed `python sentinel_scan.py --demo` against
 CRLF vs LF (Python's text-mode stdout on Windows adds `\r`; Node doesn't - not a logic
 difference, confirmed by stripping `\r` from the Python output before diffing).
 
+## Release workflow staged (2026-08-24)
+
+`.github/workflows/npm-publish.yml` runs `npm publish --provenance` on any `v*.*.*` tag
+push, authenticating with `NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}` (Option B below).
+Once the `NPM_TOKEN` repo secret exists, `git tag vX.Y.Z && git push origin vX.Y.Z`
+publishes to the npm registry with zero further prep - same tag also triggers the PyPI
+release workflow, so one tag push publishes to both registries.
+
+Re-verified 2026-08-24 with the current `1.3.0` metadata: `npm pack --dry-run` is clean
+(4 files: `bin/sentinel-scan.js`, `package.json`, `README.md`, `LICENSE`), and installing
+the actual built tarball (`npm pack` then `npm install ./sentinel-scan-cli-1.3.0.tgz`
+into a fresh scratch directory) produces a working `sentinel-scan` binary - `--demo` and
+version output match the Python original.
+
 ## Two ways to unblock this without ever storing an npm password
 
-### Option A (preferred): npm Trusted Publishing (OIDC), same model as the PyPI fix
+### Option A (future upgrade): npm Trusted Publishing (OIDC), same model as the PyPI fix
 
 npm added OIDC-based Trusted Publishing in mid-2025 (npm CLI >= 11.5.1): a GitHub
 Actions workflow with `id-token: write` authenticates straight to the npm registry,
