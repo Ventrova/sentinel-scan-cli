@@ -175,18 +175,23 @@ MCP server's `tools/list`). It reads the manifest text and JSON schema only
 patterns that show up in real MCP tool-poisoning and excessive-agency
 reports:
 
-| Heuristic | OWASP | What it flags |
-|---|---|---|
-| `tool_description_injection` | LLM01 | Imperative/override language, fake `[SYSTEM]` tags, zero-width/invisible characters, or HTML comments hidden in a tool's `description` field, aimed at the calling agent rather than a human reader |
-| `tool_name_shadowing` | LLM01 | Tool names that collide or near-collide (edit distance <= 2) with common sensitive/builtin tool names, or descriptions that claim to override/replace another tool |
-| `excessive_agency_schema` | LLM06 | Input schemas granting broad power: free-form `command`/`shell`/`code` string parameters, `sudo`/`admin`/`bypass` boolean flags, or wide-open schemas (`additionalProperties: true`, no declared properties) |
-| `indirect_injection_surface` | LLM01 | A manifest that both ingests untrusted external content (fetch/browse/read-inbox) and can take action (send/write/execute) - the "toxic flow" combination indirect prompt injection needs to do damage |
-| `unpinned_remote_source` | LLM03 | A `mcpServers` entry that launches a package via `npx`/`uvx`/`pip`/etc with no pinned version, or is reachable over a plaintext (`http://`) remote transport |
-| `hardcoded_credential` | LLM02 | An API key/token/password literal embedded in a server's `env` block or CLI `args`, instead of an `${ENV_VAR}` placeholder resolved at launch time |
-| `overbroad_tool_scope` | LLM06 | A tool or server declares a wildcard/blanket scope or permission (`"*"`, `"all"`, `"admin"`) instead of an enumerated, least-privilege list |
-| `missing_provenance` | LLM03 | A remote-sourced server entry (package runner or URL transport) with no signature/checksum/publisher field to verify what's actually being launched |
-| `missing_hitl_confirmation` | LLM06 | A tool exposing a sensitive capability (exec/shell command, filesystem write/delete, or an outbound send/network action) with no human-in-the-loop/confirmation metadata declared (e.g. `requiresConfirmation`, `requireApproval`, `humanInTheLoop`) |
-| `hidden_unicode_instructions` | LLM01 | Unicode tag-block characters (ASCII-smuggling), bidirectional override/embedding control characters, or zero-width characters hidden in a tool's name, description, or input-schema text (title, property description, enum values) |
+| Heuristic | OWASP LLM Top 10 | OWASP MCP Top 10 | What it flags |
+|---|---|---|---|
+| `tool_description_injection` | LLM01 | MCP01 | Imperative/override language, fake `[SYSTEM]` tags, zero-width/invisible characters, or HTML comments hidden in a tool's `description` field, aimed at the calling agent rather than a human reader |
+| `tool_name_shadowing` | LLM01 | MCP02 | Tool names that collide or near-collide (edit distance <= 2) with common sensitive/builtin tool names, or descriptions that claim to override/replace another tool |
+| `excessive_agency_schema` | LLM06 | MCP06 | Input schemas granting broad power: free-form `command`/`shell`/`code` string parameters, `sudo`/`admin`/`bypass` boolean flags, or wide-open schemas (`additionalProperties: true`, no declared properties) |
+| `indirect_injection_surface` | LLM01 | MCP01 | A manifest that both ingests untrusted external content (fetch/browse/read-inbox) and can take action (send/write/execute) - the "toxic flow" combination indirect prompt injection needs to do damage |
+| `unpinned_remote_source` | LLM03 | MCP04 | A `mcpServers` entry that launches a package via `npx`/`uvx`/`pip`/etc with no pinned version, or is reachable over a plaintext (`http://`) remote transport |
+| `hardcoded_credential` | LLM02 | MCP03 | An API key/token/password literal embedded in a server's `env` block or CLI `args`, instead of an `${ENV_VAR}` placeholder resolved at launch time |
+| `overbroad_tool_scope` | LLM06 | MCP06 | A tool or server declares a wildcard/blanket scope or permission (`"*"`, `"all"`, `"admin"`) instead of an enumerated, least-privilege list |
+| `missing_provenance` | LLM03 | MCP04 | A remote-sourced server entry (package runner or URL transport) with no signature/checksum/publisher field to verify what's actually being launched |
+| `missing_hitl_confirmation` | LLM06 | MCP06 | A tool exposing a sensitive capability (exec/shell command, filesystem write/delete, or an outbound send/network action) with no human-in-the-loop/confirmation metadata declared (e.g. `requiresConfirmation`, `requireApproval`, `humanInTheLoop`) |
+| `hidden_unicode_instructions` | LLM01 | MCP01 | Unicode tag-block characters (ASCII-smuggling), bidirectional override/embedding control characters, or zero-width characters hidden in a tool's name, description, or input-schema text (title, property description, enum values) |
+
+> **OWASP MCP Top 10 (beta v0.1) coverage:** MCP07, MCP08, and MCP09 are not
+> yet covered by any current heuristic (known gaps). The MCP mapping is
+> additive alongside the OWASP LLM Top 10 tagging above - both categories are
+> attached to every finding where a mapping exists.
 
 ```bash
 sentinel-scan mcp --demo

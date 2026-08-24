@@ -7,10 +7,20 @@ public CLI surface.
 """
 import argparse
 import json
+import os
 import sys
 
 SEVERITY_RANK = {"LOW": 1, "MEDIUM": 2, "HIGH": 3}
 SEVERITY_TO_SARIF_LEVEL = {"HIGH": "error", "MEDIUM": "warning", "LOW": "note"}
+
+# Waitlist CTA for a hosted history/trend view of Action findings. Each surface
+# gets its own `ref` so click-through can be measured separately per surface
+# and separately from general ventrova.dev site conversion.
+HOSTED_DASHBOARD_URL = "https://ventrova.dev/hosted-dashboard"
+
+
+def _hosted_dashboard_link(ref):
+    return "{}?ref={}".format(HOSTED_DASHBOARD_URL, ref)
 
 
 def to_sarif(data, manifest_path):
@@ -24,7 +34,10 @@ def to_sarif(data, manifest_path):
                 "name": rule_id,
                 "shortDescription": {"text": r["owasp_category"]},
                 "helpUri": "https://github.com/Ventrova/sentinel-scan-cli",
-                "properties": {"owasp_category": r["owasp_category"]},
+                "properties": {
+                    "owasp_category": r["owasp_category"],
+                    "owasp_mcp_category": r.get("owasp_mcp_category"),
+                },
             }
         sarif_results.append(
             {
@@ -46,7 +59,11 @@ def to_sarif(data, manifest_path):
                     "sentinelScan/heuristic": rule_id,
                     "sentinelScan/tool": r["tool"],
                 },
-                "properties": {"evidence": r["evidence"], "tool": r["tool"]},
+                "properties": {
+                    "evidence": r["evidence"],
+                    "tool": r["tool"],
+                    "owasp_mcp_category": r.get("owasp_mcp_category"),
+                },
             }
         )
 
@@ -67,6 +84,16 @@ def to_sarif(data, manifest_path):
             }
         ],
     }
+
+
+def _hosted_dashboard_note(ref):
+    return (
+        "> **See this trend over time, not just this run:** we're gauging demand "
+        "for a hosted dashboard with scan history across every PR/branch. "
+        "[Join the waitlist]({}) (pre-launch, no product yet).".format(
+            _hosted_dashboard_link(ref)
+        )
+    )
 
 
 def to_markdown(data, manifest_path):
@@ -90,6 +117,8 @@ def to_markdown(data, manifest_path):
     ]
     if not data["results"]:
         lines.append("No findings. :white_check_mark:")
+        lines.append("")
+        lines.append(_hosted_dashboard_note("gh-action-pr-comment"))
         return "\n".join(lines) + "\n"
 
     lines.append("| Severity | OWASP category | Heuristic | Tool | Recommendation |")
@@ -106,6 +135,7 @@ def to_markdown(data, manifest_path):
             )
         )
     lines.append("")
+    lines.append(_hosted_dashboard_note("gh-action-pr-comment"))
     return "\n".join(lines) + "\n"
 
 
@@ -143,6 +173,14 @@ def main():
     print("sentinel-scan mcp: {} finding(s) - HIGH={} MEDIUM={} LOW={}".format(
         summary.get("num_findings", 0), by_sev.get("HIGH", 0), by_sev.get("MEDIUM", 0), by_sev.get("LOW", 0)
     ))
+
+    # Job summary is written for every format (sarif/markdown/json) so the
+    # waitlist CTA reaches SARIF users too, not just PR-comment consumers of
+    # the markdown report. Uses its own `ref` to track click-through per surface.
+    step_summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
+    if step_summary_path:
+        with open(step_summary_path, "a", encoding="utf-8") as f:
+            f.write(_hosted_dashboard_note("gh-action-summary") + "\n")
 
     if args.fail_on_severity == "none":
         return 0

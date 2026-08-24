@@ -247,11 +247,25 @@ def _mcp_edit_distance_le(a, b, limit):
     return prev[-1] <= limit
 
 
-def _mcp_finding(heuristic_id, owasp_code, severity, tool_name, evidence, recommendation):
+def _mcp_finding(heuristic_id, owasp_code, severity, tool_name, evidence, recommendation, confidence=0.75):
+    """Build a finding dict.
+
+    `severity` and `confidence` are independent axes:
+      - severity: how bad it is *if it's a true positive* (impact).
+      - confidence: how likely this specific match *is* a true positive
+        (0.0-1.0), based on how specific/unambiguous the pattern is. An
+        exact dangerous-function/credential match with no mitigating
+        context scores high (0.85-0.95); a broad keyword/pattern match
+        that's prone to false positives on legitimate manifests scores
+        lower (0.4-0.6).
+    """
+    assert 0.0 <= confidence <= 1.0, f"confidence out of range: {confidence!r}"
     return {
         "heuristic": heuristic_id,
         "owasp_category": f"{owasp_code}: {OWASP_LLM_TOP10[owasp_code]}",
+        "owasp_mcp_category": OWASP_MCP_TOP10.get(heuristic_id),
         "severity": severity,
+        "confidence": round(confidence, 2),
         "tool": tool_name,
         "evidence": evidence,
         "recommendation": recommendation,
@@ -284,12 +298,22 @@ def _mcp_scan_description(tool_name, description):
         if html_comment_hit:
             evidence_bits.append("HTML comment block present")
         severity = "HIGH" if (zero_width_hit or len(matches) >= 2) else "MEDIUM"
+        # Hidden/invisible characters or 2+ imperative phrases together are hard
+        # to explain away as benign copy; a single matched phrase is more prone
+        # to catching legitimate "always call X before Y" style descriptions.
+        if zero_width_hit or len(matches) >= 2:
+            confidence = 0.9
+        elif matches:
+            confidence = 0.65
+        else:
+            confidence = 0.45  # HTML-comment-only hit, weakest signal
         findings.append(_mcp_finding(
             "tool_description_injection", "LLM01", severity, tool_name,
             "; ".join(evidence_bits) + f' | description: "{description[:200]}"',
             "Rewrite the description to plainly describe the tool's function to a "
             "human/reviewer only. Strip imperative language directed at the calling "
             "agent, hidden characters, and HTML comments.",
+            confidence,
         ))
     elif base64_hit:
         findings.append(_mcp_finding(
@@ -297,6 +321,7 @@ def _mcp_scan_description(tool_name, description):
             f'long base64-like blob embedded in description: "{description[:200]}"',
             "Confirm this blob is not a smuggled instruction payload; descriptions "
             "should not carry encoded data.",
+            0.35,  # base64-looking substrings are common and mostly benign
         ))
     return findings
 
@@ -316,6 +341,7 @@ def _mcp_scan_name_shadowing(tools):
                 f"multiple tools normalize to the same name ({norm!r}): {variants}",
                 "Rename one of the colliding tools. Duplicate/near-duplicate tool "
                 "names let a malicious server or manifest shadow a trusted tool.",
+                0.9,  # exact normalized-name collision, unambiguous
             ))
             continue
         name = variants[0]
@@ -329,6 +355,7 @@ def _mcp_scan_name_shadowing(tools):
                     f"typo-squat) of the common sensitive tool name {sensitive!r}",
                     "Use a clearly distinct tool name so it can't be visually "
                     "confused with a well-known builtin tool name.",
+                    0.7,  # near-duplicate of a known-sensitive name, but could be coincidence
                 ))
                 break
 
@@ -916,6 +943,26 @@ OWASP_LLM_TOP10 = {
     "LLM05": "Improper Output Handling",
     "LLM06": "Excessive Agency",
     "LLM07": "System Prompt Leakage",
+}
+
+# OWASP MCP Top 10 (beta v0.1) category each MCP-specific heuristic is
+# evidence for, additive alongside OWASP_LLM_TOP10 above - findings map to
+# both frameworks so reviewers can use whichever checklist they already
+# track against. Keyed by heuristic id (not OWASP code) since a heuristic
+# doesn't necessarily carry a distinct MCP code of its own the way the LLM
+# attack corpus does.
+# https://mcp-top10.owasp.org/ (beta)
+OWASP_MCP_TOP10 = {
+    "tool_description_injection": "MCP01: Prompt Injection via Tool Descriptions",
+    "tool_name_shadowing": "MCP02: Tool Poisoning / Shadowing",
+    "excessive_agency_schema": "MCP06: Excessive Agency / Permissions",
+    "indirect_injection_surface": "MCP01: Prompt Injection via Tool Descriptions",
+    "unpinned_remote_source": "MCP04: Supply Chain Risk",
+    "hardcoded_credential": "MCP03: Credential / Secret Exposure",
+    "overbroad_tool_scope": "MCP06: Excessive Agency / Permissions",
+    "missing_provenance": "MCP04: Supply Chain Risk",
+    "missing_hitl_confirmation": "MCP06: Excessive Agency / Permissions",
+    "hidden_unicode_instructions": "MCP01: Prompt Injection via Tool Descriptions",
 }
 
 # Bounded attack corpus: 15 known prompt-injection / jailbreak technique
