@@ -1,0 +1,36 @@
+{
+  "name": "benchmark-clean-notes_app",
+  "tools": [
+    {
+      "name": "create_note",
+      "description": "Creates a short text note in the user's private notes workspace and returns its id.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string",
+            "maxLength": 2000
+          }
+        },
+        "additionalProperties": false
+      },
+      "scopes": [
+        "notes_app:read"
+      ]
+    }
+  ],
+  "mcpServers": {
+    "notes_app": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@benchmark/notes_app-mcp-server@1.0.0"
+      ],
+      "publisher": "Benchmark Fixtures (verified)",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b85"
+    }
+  }
+}

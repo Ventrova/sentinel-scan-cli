@@ -1,0 +1,33 @@
+{
+  "name": "benchmark-clean-file_reader_sandboxed",
+  "tools": [
+    {
+      "name": "read_workspace_file",
+      "description": "Reads the text contents of a file within the user's sandboxed project workspace directory only.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "relative_path": {
+            "type": "string",
+            "description": "Path relative to the workspace root; parent traversal is rejected"
+          }
+        },
+        "additionalProperties": false
+      },
+      "scopes": [
+        "file_reader_sandboxed:read"
+      ]
+    }
+  ],
+  "mcpServers": {
+    "file_reader_sandboxed": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@benchmark/file_reader_sandboxed-mcp-server@1.0.0"
+      ],
+      "publisher": "Benchmark Fixtures (verified)",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b85"
+    }
+  }
+}

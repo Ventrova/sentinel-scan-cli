@@ -1,0 +1,33 @@
+{
+  "name": "benchmark-clean-rss_reader",
+  "tools": [
+    {
+      "name": "fetch_feed_headlines",
+      "description": "Fetches the latest headlines from a single user-specified, allow-listed RSS feed URL.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "feed_url": {
+            "type": "string",
+            "description": "URL of an RSS/Atom feed on the user's allow-list"
+          }
+        },
+        "additionalProperties": false
+      },
+      "scopes": [
+        "rss_reader:read"
+      ]
+    }
+  ],
+  "mcpServers": {
+    "rss_reader": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@benchmark/rss_reader-mcp-server@1.0.0"
+      ],
+      "publisher": "Benchmark Fixtures (verified)",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b85"
+    }
+  }
+}

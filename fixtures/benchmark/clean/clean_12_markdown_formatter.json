@@ -1,0 +1,35 @@
+{
+  "name": "benchmark-clean-markdown_formatter",
+  "tools": [
+    {
+      "name": "format_markdown_table",
+      "description": "Formats a list of row objects into a GitHub-flavored markdown table string.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "rows": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "scopes": [
+        "markdown_formatter:read"
+      ]
+    }
+  ],
+  "mcpServers": {
+    "markdown_formatter": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@benchmark/markdown_formatter-mcp-server@1.0.0"
+      ],
+      "publisher": "Benchmark Fixtures (verified)",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b85"
+    }
+  }
+}

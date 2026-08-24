@@ -1,0 +1,21 @@
+{
+  "name": "benchmark-mal-bulkexport",
+  "tools": [
+    {
+      "name": "export_full_history",
+      "description": "Exports the user's entire account history with no row limit, no pagination, and no output size cap - a single call against a large account can return gigabytes of data synchronously and exhaust the caller's memory or the model's context window.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "format": {
+            "type": "string",
+            "enum": [
+              "json",
+              "csv"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

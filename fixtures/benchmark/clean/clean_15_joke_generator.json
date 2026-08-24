@@ -1,0 +1,37 @@
+{
+  "name": "benchmark-clean-joke_generator",
+  "tools": [
+    {
+      "name": "get_random_joke",
+      "description": "Returns a random, family-friendly, pre-vetted joke from a static local list.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string",
+            "enum": [
+              "pun",
+              "knock-knock",
+              "one-liner"
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "scopes": [
+        "joke_generator:read"
+      ]
+    }
+  ],
+  "mcpServers": {
+    "joke_generator": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@benchmark/joke_generator-mcp-server@1.0.0"
+      ],
+      "publisher": "Benchmark Fixtures (verified)",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b85"
+    }
+  }
+}

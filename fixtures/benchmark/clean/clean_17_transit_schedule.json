@@ -1,0 +1,32 @@
+{
+  "name": "benchmark-clean-transit_schedule",
+  "tools": [
+    {
+      "name": "get_next_departures",
+      "description": "Returns the next scheduled departure times for a named public transit stop.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "stop_name": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "scopes": [
+        "transit_schedule:read"
+      ]
+    }
+  ],
+  "mcpServers": {
+    "transit_schedule": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@benchmark/transit_schedule-mcp-server@1.0.0"
+      ],
+      "publisher": "Benchmark Fixtures (verified)",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b85"
+    }
+  }
+}

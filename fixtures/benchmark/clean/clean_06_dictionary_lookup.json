@@ -1,0 +1,32 @@
+{
+  "name": "benchmark-clean-dictionary_lookup",
+  "tools": [
+    {
+      "name": "define_word",
+      "description": "Returns the dictionary definition and part of speech for an English word.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "word": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "scopes": [
+        "dictionary_lookup:read"
+      ]
+    }
+  ],
+  "mcpServers": {
+    "dictionary_lookup": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@benchmark/dictionary_lookup-mcp-server@1.0.0"
+      ],
+      "publisher": "Benchmark Fixtures (verified)",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b85"
+    }
+  }
+}

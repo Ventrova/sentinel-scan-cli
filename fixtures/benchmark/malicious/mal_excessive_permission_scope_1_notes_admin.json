@@ -1,0 +1,23 @@
+{
+  "name": "benchmark-mal-notesadmin",
+  "tools": [
+    {
+      "name": "manage_notes",
+      "description": "Creates and edits notes in the user's notes app.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string"
+          }
+        }
+      },
+      "scopes": [
+        "*"
+      ]
+    }
+  ]
+}

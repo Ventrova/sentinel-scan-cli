@@ -1,0 +1,38 @@
+{
+  "name": "benchmark-clean-unit_converter",
+  "tools": [
+    {
+      "name": "convert_units",
+      "description": "Converts a numeric value between common units of length, mass, or temperature.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number"
+          },
+          "from_unit": {
+            "type": "string"
+          },
+          "to_unit": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "scopes": [
+        "unit_converter:read"
+      ]
+    }
+  ],
+  "mcpServers": {
+    "unit_converter": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@benchmark/unit_converter-mcp-server@1.0.0"
+      ],
+      "publisher": "Benchmark Fixtures (verified)",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b85"
+    }
+  }
+}

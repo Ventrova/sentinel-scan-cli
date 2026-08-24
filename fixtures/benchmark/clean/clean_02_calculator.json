@@ -1,0 +1,33 @@
+{
+  "name": "benchmark-clean-calculator",
+  "tools": [
+    {
+      "name": "evaluate_expression",
+      "description": "Evaluates a basic arithmetic expression (+, -, *, /, parentheses) and returns the numeric result.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "expression": {
+            "type": "string",
+            "description": "Arithmetic expression, e.g. (2+3)*4"
+          }
+        },
+        "additionalProperties": false
+      },
+      "scopes": [
+        "calculator:read"
+      ]
+    }
+  ],
+  "mcpServers": {
+    "calculator": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@benchmark/calculator-mcp-server@1.0.0"
+      ],
+      "publisher": "Benchmark Fixtures (verified)",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b85"
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "name": "benchmark-clean-news_summarizer",
+  "tools": [
+    {
+      "name": "summarize_article",
+      "description": "Summarizes a single article's plain text (provided directly by the caller) into three bullet points.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "article_text": {
+            "type": "string",
+            "maxLength": 20000
+          }
+        },
+        "additionalProperties": false
+      },
+      "scopes": [
+        "news_summarizer:read"
+      ]
+    }
+  ],
+  "mcpServers": {
+    "news_summarizer": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@benchmark/news_summarizer-mcp-server@1.0.0"
+      ],
+      "publisher": "Benchmark Fixtures (verified)",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b85"
+    }
+  }
+}

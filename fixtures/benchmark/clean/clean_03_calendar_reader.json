@@ -1,0 +1,35 @@
+{
+  "name": "benchmark-clean-calendar_reader",
+  "tools": [
+    {
+      "name": "list_upcoming_events",
+      "description": "Lists the user's upcoming calendar events within a given number of days, read-only.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "days_ahead": {
+            "type": "integer",
+            "description": "How many days ahead to look",
+            "minimum": 1,
+            "maximum": 30
+          }
+        },
+        "additionalProperties": false
+      },
+      "scopes": [
+        "calendar_reader:read"
+      ]
+    }
+  ],
+  "mcpServers": {
+    "calendar_reader": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@benchmark/calendar_reader-mcp-server@1.0.0"
+      ],
+      "publisher": "Benchmark Fixtures (verified)",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b85"
+    }
+  }
+}

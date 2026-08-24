@@ -1,0 +1,35 @@
+{
+  "name": "benchmark-clean-recipe_finder",
+  "tools": [
+    {
+      "name": "search_recipes",
+      "description": "Searches a public recipe database by ingredient list and returns matching recipe titles and links.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "ingredients": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "scopes": [
+        "recipe_finder:read"
+      ]
+    }
+  ],
+  "mcpServers": {
+    "recipe_finder": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@benchmark/recipe_finder-mcp-server@1.0.0"
+      ],
+      "publisher": "Benchmark Fixtures (verified)",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b85"
+    }
+  }
+}

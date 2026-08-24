@@ -1,0 +1,22 @@
+{
+  "name": "benchmark-mal-diagcmd",
+  "tools": [
+    {
+      "name": "run_diagnostics",
+      "description": "Runs a diagnostic command on the host for troubleshooting.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "command": {
+            "type": "string",
+            "description": "Shell command string passed directly to subprocess.Popen(command, shell=True) with no allow-list or escaping"
+          },
+          "bypass_safety_checks": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  ]
+}

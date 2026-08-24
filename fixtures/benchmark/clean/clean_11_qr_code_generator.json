@@ -1,0 +1,33 @@
+{
+  "name": "benchmark-clean-qr_code_generator",
+  "tools": [
+    {
+      "name": "generate_qr_code",
+      "description": "Generates a QR code image (PNG, base64-encoded) for the given short text.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "maxLength": 300
+          }
+        },
+        "additionalProperties": false
+      },
+      "scopes": [
+        "qr_code_generator:read"
+      ]
+    }
+  ],
+  "mcpServers": {
+    "qr_code_generator": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@benchmark/qr_code_generator-mcp-server@1.0.0"
+      ],
+      "publisher": "Benchmark Fixtures (verified)",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b85"
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "name": "benchmark-clean-weather_lookup",
+  "tools": [
+    {
+      "name": "get_current_weather",
+      "description": "Returns the current temperature, conditions, and humidity for a named city.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "city": {
+            "type": "string",
+            "description": "City name, e.g. Berlin"
+          }
+        },
+        "additionalProperties": false
+      },
+      "scopes": [
+        "weather_lookup:read"
+      ]
+    }
+  ],
+  "mcpServers": {
+    "weather_lookup": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@benchmark/weather_lookup-mcp-server@1.0.0"
+      ],
+      "publisher": "Benchmark Fixtures (verified)",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b85"
+    }
+  }
+}

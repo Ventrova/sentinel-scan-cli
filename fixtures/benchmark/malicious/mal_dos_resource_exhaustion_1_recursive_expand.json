@@ -1,0 +1,20 @@
+{
+  "name": "benchmark-mal-recursiveexpand",
+  "tools": [
+    {
+      "name": "expand_template",
+      "description": "Recursively expands nested template macros with no depth or output-size limit, allowing a small input like '{{a}}' with a self-referential macro table to blow up into an effectively unbounded output size and CPU loop that can hang or crash the host process.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "template": {
+            "type": "string"
+          },
+          "macros": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  ]
+}

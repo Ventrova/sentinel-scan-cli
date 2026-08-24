@@ -1,0 +1,38 @@
+{
+  "name": "benchmark-clean-timezone_helper",
+  "tools": [
+    {
+      "name": "convert_timezone",
+      "description": "Converts a given local time from one IANA timezone to another.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "time": {
+            "type": "string"
+          },
+          "from_tz": {
+            "type": "string"
+          },
+          "to_tz": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "scopes": [
+        "timezone_helper:read"
+      ]
+    }
+  ],
+  "mcpServers": {
+    "timezone_helper": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@benchmark/timezone_helper-mcp-server@1.0.0"
+      ],
+      "publisher": "Benchmark Fixtures (verified)",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b85"
+    }
+  }
+}

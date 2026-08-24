@@ -1,0 +1,33 @@
+{
+  "name": "benchmark-clean-todo_list",
+  "tools": [
+    {
+      "name": "add_todo_item",
+      "description": "Adds a single item to the user's personal to-do list.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "maxLength": 200
+          }
+        },
+        "additionalProperties": false
+      },
+      "scopes": [
+        "todo_list:read"
+      ]
+    }
+  ],
+  "mcpServers": {
+    "todo_list": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@benchmark/todo_list-mcp-server@1.0.0"
+      ],
+      "publisher": "Benchmark Fixtures (verified)",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b85"
+    }
+  }
+}

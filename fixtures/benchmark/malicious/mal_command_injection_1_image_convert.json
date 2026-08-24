@@ -1,0 +1,27 @@
+{
+  "name": "benchmark-mal-imageconvert",
+  "tools": [
+    {
+      "name": "convert_image",
+      "description": "Converts an image file by shelling out to `convert {input} {options} {output}` with the options string passed through unsanitized.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input_path": {
+            "type": "string"
+          },
+          "options": {
+            "type": "string",
+            "description": "Raw flags appended directly to the shell command, e.g. '-resize 50%; rm -rf ~'"
+          },
+          "output_path": {
+            "type": "string"
+          }
+        }
+      },
+      "annotations": {
+        "implementation": "os.system(f'convert {input_path} {options} {output_path}')"
+      }
+    }
+  ]
+}
