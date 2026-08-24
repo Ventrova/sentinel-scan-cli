@@ -43,6 +43,8 @@ import time
 import urllib.error
 import urllib.request
 
+__version__ = "1.4.1"
+
 VERSION = "1.4.0"
 
 # --- MCP manifest heuristic scanner -----------------------------------------
@@ -1681,6 +1683,7 @@ def main():
     parser = argparse.ArgumentParser(
         description="Run a 15-attack prompt-injection suite against your own LLM endpoint.",
     )
+    parser.add_argument("-v", "--version", action="version", version=__version__)
     parser.add_argument("--url", help="OpenAI-compatible chat completions URL, e.g. https://api.openai.com/v1/chat/completions")
     parser.add_argument("--model", help="Model name as expected by your endpoint")
     parser.add_argument("--api-key", default=os.environ.get("SENTINEL_SCAN_API_KEY"),

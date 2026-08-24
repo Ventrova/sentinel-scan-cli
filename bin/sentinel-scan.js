@@ -28,8 +28,9 @@
  */
 
 const fs = require('fs');
+const path = require('path');
 
-const VERSION = '1.4.0';
+const VERSION = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'package.json'), 'utf-8')).version;
 
 // OWASP Top 10 for LLM Applications (2025 revision) category each attack
 // technique is evidence for. https://genai.owasp.org/llm-top-10/
@@ -1483,6 +1484,7 @@ function parseArgs(argv) {
     output: 'sentinel_scan_results.json',
     demo: false,
     help: false,
+    version: false,
     failOn: 'none',
   };
   for (let i = 0; i < argv.length; i++) {
@@ -1508,6 +1510,8 @@ function parseArgs(argv) {
       }
       case '-h':
       case '--help': args.help = true; break;
+      case '-v':
+      case '--version': args.version = true; break;
       default:
         console.error(`error: unrecognized argument: ${a}`);
         process.exit(2);
@@ -1536,6 +1540,7 @@ Options:
   --fail-on <mode>              Exit 1 if any attack got past the system prompt: any, or
                                 none to never fail (default: none)
   -h, --help                   Show this help
+  -v, --version                 Show version number and exit
 
 Run "sentinel-scan mcp --help" for the MCP manifest heuristic scanner.`);
 }
@@ -1655,6 +1660,10 @@ async function runScan(args) {
 }
 
 async function main() {
+  if (process.argv[2] === '-v' || process.argv[2] === '--version') {
+    console.log(VERSION);
+    return;
+  }
   if (process.argv[2] === 'mcp') {
     const mcpArgs = parseMcpArgs(process.argv.slice(3));
     if (mcpArgs.help) {
@@ -1670,6 +1679,10 @@ async function main() {
   }
 
   const args = parseArgs(process.argv.slice(2));
+  if (args.version) {
+    console.log(VERSION);
+    return;
+  }
   if (args.help) {
     printHelp();
     return;

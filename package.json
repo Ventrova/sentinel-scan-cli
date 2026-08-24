@@ -1,6 +1,6 @@
 {
   "name": "sentinel-scan-cli",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Free, zero-dependency 15-attack prompt-injection / jailbreak smoke test for your own LLM endpoint (OWASP LLM Top 10), plus a static MCP tool-manifest heuristic scanner (`sentinel-scan mcp`).",
   "license": "MIT",
   "author": "Ventrova",
