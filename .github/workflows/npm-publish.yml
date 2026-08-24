@@ -33,10 +33,12 @@ jobs:
       id-token: write # required: lets npm mint the OIDC token for Trusted Publishing
     steps:
       - uses: actions/checkout@v4
+      # NB: intentionally NO registry-url here. setup-node's registry-url writes an
+      # .npmrc that forces token auth (always-auth + NODE_AUTH_TOKEN), which fights
+      # the tokenless OIDC flow. The default registry (npmjs.org) is used anyway.
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-          registry-url: "https://registry.npmjs.org"
       - name: Upgrade npm (Trusted Publishing OIDC needs >= 11.5.1)
         run: npm install -g npm@latest
       - name: Verify tag matches package.json version
@@ -49,4 +51,17 @@ jobs:
             exit 1
           fi
       - name: Publish to npm (OIDC, tokenless)
-        run: npm publish --provenance --access public
+        run: |
+          set +e
+          OUT="$(npm publish --provenance --access public 2>&1)"; CODE=$?
+          printf '%s\n' "$OUT"
+          if [ $CODE -ne 0 ]; then
+            # npm's staged-publishing flow can return 409 after the version is already
+            # published (provenance signed, version live). Treat "already there" as success
+            # so the release is idempotent instead of a false-red.
+            if printf '%s' "$OUT" | grep -qiE 'previously staged version|cannot publish over|EPUBLISHCONFLICT|code E409|already exists'; then
+              echo "::notice::sentinel-scan-cli@${GITHUB_REF_NAME#v} already published/staged on npm - treating as success."
+              exit 0
+            fi
+            exit $CODE
+          fi
