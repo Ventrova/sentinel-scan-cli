@@ -102,6 +102,35 @@ in `fixtures/benchmark/{clean,malicious}/`. `npx sentinel-scan-cli mcp` will wor
 without any GitHub pip/npx-github install as soon as the npm registry publish
 below lands.
 
+## Confirmed blocker: `ventrova` npm account requires 2FA/OTP (2026-08-24)
+
+Owner broadcast npmjs.com credentials (username `ventrova`, email `business@ventrova.dev`)
+on 2026-08-24. Tried both non-2FA-bypassing paths:
+
+1. `npm login --auth-type=legacy` (piped username/password/email) and the raw
+   couchdb-style `PUT /-/user/org.couchdb.user:ventrova` API call both returned
+   `401 { "error": "username or password was invalid" }` with
+   `WWW-Authenticate: OTP` and `npm-notice: Authentication requires a one-time
+   password` - the credentials are correct, but the account has 2FA enabled, so
+   password-only auth is rejected. No OTP/TOTP seed was provided in the broadcast.
+2. `npm login --auth-type=web` (the modern default) produces a one-time
+   `https://www.npmjs.com/login/cli/<uuid>` URL that a human must open and complete
+   (including the 2FA step) in real time - the CLI process blocks waiting for that
+   completion, so it isn't something an async agent session can finish alone.
+
+**Still the fastest unblock (unchanged from Option B above):** owner creates a
+Granular Access Token at https://www.npmjs.com/settings/ventrova/tokens, scoped to
+`sentinel-scan-cli`, "Automation" type (this is the type npm explicitly still allows
+to bypass 2FA for CI/publish use), expiry set, and pastes the token value back. Then:
+
+```
+NODE_AUTH_TOKEN=<token> npm publish --provenance
+```
+
+publishes immediately from the repo root at the current `1.4.0`, no further prep
+needed (dry-run already verified clean per above). Password-based login is not a
+viable path for this account as long as 2FA is enabled, regardless of who runs it.
+
 ## Keeping this in sync with the Python original
 
 `bin/sentinel-scan.js` is a manual, dependency-free port of `sentinel_scan.py`. The
