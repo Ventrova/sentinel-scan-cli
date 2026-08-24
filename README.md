@@ -99,15 +99,14 @@ curl -fsSL https://raw.githubusercontent.com/Ventrova/sentinel-scan-cli/master/s
 ```
 
 Building in JS/TS instead? There's a zero-dependency Node port with the same
-attack corpus and OWASP mapping, no Python required, no signup, no npm
-registry publish needed:
+attack corpus and OWASP mapping, no Python required, no signup:
 
 ```bash
-npx github:ventrova/sentinel-scan-cli --demo
+npx sentinel-scan-cli --demo
 ```
 
-npm registry publish is pending (see [`NPM_PUBLISH.md`](https://github.com/Ventrova/sentinel-scan-cli/blob/v1.4.0/NPM_PUBLISH.md));
-once that lands this shortens to `npx sentinel-scan-cli --demo`. Source:
+Published on npm as [`sentinel-scan-cli`](https://www.npmjs.com/package/sentinel-scan-cli),
+so `npx sentinel-scan-cli` (or `npm i -g sentinel-scan-cli`) just works. Source:
 [`bin/sentinel-scan.js`](https://github.com/Ventrova/sentinel-scan-cli/blob/v1.4.0/bin/sentinel-scan.js).
 
 `--demo` runs a built-in vulnerable target, no network calls, no API key, and
