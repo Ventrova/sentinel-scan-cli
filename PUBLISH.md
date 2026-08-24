@@ -12,29 +12,33 @@ This means once the PyPI-side trusted publisher is registered, the entire releas
 is: bump `pyproject.toml` version -> `git tag vX.Y.Z && git push origin vX.Y.Z` -> PyPI
 publish happens automatically, zero secrets in the repo or in GitHub Actions secrets.
 
-### Remaining human step (narrowed from "provide an API token" to this one PyPI console action)
+### Correction (2026-08-24): the project already exists on PyPI
 
-Because `sentinel-scan-cli` has never been published, PyPI has no existing project to
-attach a trusted publisher to, so this can't be done via API/CLI - it requires a login
-to pypi.org. Someone with a PyPI account needs to:
+`sentinel-scan-cli` is already live on PyPI, but only as a stale `1.0.0` (uploaded
+2026-08-23T15:53 UTC, presumably via a manual token upload predating this OIDC setup
+- README quickstart's plain `pip install sentinel-scan-cli` reflects that version and
+is missing everything from `1.1.0` onward, including the `sentinel-scan mcp`
+subcommand). This means the project-level "pending publisher" flow below does NOT
+apply - the project already has an owner account on PyPI. Someone with access to
+that existing PyPI project needs to add the trusted publisher instead:
 
-1. Log into https://pypi.org (create an account first if none exists for Ventrova).
-2. Go to https://pypi.org/manage/account/publishing/ (the "pending publisher" flow for
-   a project that doesn't exist yet).
+1. Log into https://pypi.org with the account that owns the `sentinel-scan-cli` project
+   (or that owns whatever account performed the 1.0.0 upload).
+2. Go to https://pypi.org/manage/project/sentinel-scan-cli/settings/publishing/ (the
+   *existing-project* trusted-publisher form, not the "pending publisher" form for a
+   name that isn't claimed yet).
 3. Fill in:
-   - PyPI Project Name: `sentinel-scan-cli`
    - Owner: `Ventrova`
    - Repository name: `sentinel-scan-cli`
    - Workflow name: `release.yml`
    - Environment name: `pypi`
-4. Submit. PyPI reserves the project name and will accept the first publish that
-   authenticates via OIDC from that exact repo/workflow/environment combination -
-   that first publish also becomes the project owner automatically.
+4. Submit, then tag and push a release (see below) to get `1.3.0` live and close the
+   gap with `master`.
 
-No token, password, or TOTP seed is needed for this or any future release - this
-replaces the old blocker entirely. If 2FA is required to log into pypi.org itself
-(not for publishing, just for the one-time console registration), that's a normal
-PyPI account security control, not something automatable.
+No token, password, or TOTP seed is needed for any future release once this is set up.
+If 2FA is required to log into pypi.org itself (not for publishing, just for this
+one-time console step), that's a normal PyPI account security control, not something
+automatable.
 
 ### After PyPI-side registration lands
 

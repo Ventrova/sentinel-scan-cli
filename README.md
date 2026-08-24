@@ -56,14 +56,24 @@ zero customization, it's worth five minutes to check your own endpoint.
 
 ## Quick start
 
-Requires Python 3.8+, no dependencies. On PyPI now as `1.0.0`, first finding
-in under a minute from a cold install:
+Requires Python 3.8+, no dependencies. The PyPI listing is currently a few
+releases behind `master` (missing the `sentinel-scan mcp` subcommand below),
+so if you want that, install straight from GitHub instead:
+
+```bash
+pip install git+https://github.com/Ventrova/sentinel-scan-cli
+```
+
+If you just want the fastest path and don't need `mcp`, the PyPI release
+also works:
 
 ```bash
 pip install sentinel-scan-cli && sentinel-scan --demo
 ```
 
-Or with [pipx](https://pipx.pypa.io/), nothing left installed afterward:
+Or with [pipx](https://pipx.pypa.io/), nothing left installed afterward
+(swap in `git+https://github.com/Ventrova/sentinel-scan-cli` for the latest
+source):
 
 ```bash
 pipx run sentinel-scan-cli --demo
@@ -167,6 +177,10 @@ turn, or tool call your own app makes downstream). It is a smoke test, not a
 guarantee.
 
 ## MCP tool manifest scan
+
+> Not on the PyPI release yet - install with
+> `pip install git+https://github.com/Ventrova/sentinel-scan-cli` (see
+> [Quick start](#quick-start)) to get this subcommand.
 
 `sentinel-scan mcp` is a second, separate check: a static heuristic scanner
 for MCP tool manifests (`mcp.json`, or the `tools` array returned by an
