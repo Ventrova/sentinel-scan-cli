@@ -170,10 +170,12 @@ _MCP_PRIVILEGE_FLAG_RE = re.compile(r"(sudo|admin|bypass|override|force|unrestri
 _MCP_FETCH_KEYWORDS = (
     "fetch", "http", "url", "web", "browse", "scrape", "rss", "crawl",
     "read_inbox", "read_email", "read_page", "download",
+    "retrieve", "retrieves", "retrieving", "retrieved",
 )
 _MCP_ACT_KEYWORDS = (
     "send", "email", "post", "write", "delete", "execute", "run", "deploy",
     "transfer", "purchase", "pay", "publish", "message", "invoke",
+    "notify", "notifies", "notifying", "notified",
 )
 
 
@@ -456,7 +458,7 @@ _MCP_URL_PLACEHOLDER_RE = re.compile(r"\{(\w+)\}")
 # sensitive content, as opposed to a small identifier/flag.
 _MCP_CONTENT_PARAM_MARKERS = (
     "content", "document", "body", "secret", "password", "token",
-    "credential", "history", "message", "transcript",
+    "credential", "history", "message", "transcript", "notes", "feedback",
 )
 
 
@@ -517,6 +519,8 @@ _MCP_DOS_PHRASES = [
     r"\bno pagination\b",
     r"exhaust\w*\s+(?:the\s+)?(?:caller'?s?\s+)?(?:memory|context|resources?|cpu)",
     r"\b(?:hang|crash) (?:or (?:crash|hang) )?the (?:host|server|process)\b",
+    r"loads? the (?:full|entire|combined)[\w\s]{0,40}into memory",
+    r"regardless of how many[\w\s,]{0,40}(?:are )?involved",
 ]
 _MCP_DOS_RE = re.compile("|".join(_MCP_DOS_PHRASES), re.IGNORECASE)
 
@@ -719,6 +723,55 @@ def _mcp_scan_indirect_injection_surface(tools):
             "Consider prompting the model explicitly not to follow instructions "
             "found in tool output, and gate action tools behind user confirmation.",
         ))
+    return findings
+
+
+# Phrases that self-document an indirect-injection risk in prose (rather than
+# containing an actual injection payload): the tool's own description/schema
+# text explains that raw, untrusted external content is passed through into
+# the assistant's context unchanged and can carry planted follow-up
+# instructions - a single-tool variant of the toxic-flow pattern above, where
+# the ingest and "act on it" step aren't split into two separate tools.
+_MCP_UNTRUSTED_PASSTHROUGH_PHRASES = [
+    r"untrusted\b[^.]{0,120}\b(?:passed?(?: through)?|forwarded|carried forward)\b",
+    r"plant(?:ed|ing)?\s+(?:follow-up\s+)?(?:instructions?|steps?)",
+    r"as if (?:it|this|that) came from the (?:original )?user",
+    r"carr(?:y|ies|ied) (?:that|the) (?:request|instructions?) forward",
+]
+_MCP_UNTRUSTED_PASSTHROUGH_RE = re.compile(
+    "|".join(_MCP_UNTRUSTED_PASSTHROUGH_PHRASES), re.IGNORECASE
+)
+
+
+def _mcp_scan_untrusted_passthrough(tool):
+    """LLM01: description/schema text documents that untrusted external
+    content (e.g. a forum post, email body, web page) is forwarded into the
+    assistant's context unchanged and can plant instructions the model may
+    follow as if they came from the user - a single-tool indirect-injection
+    surface that the cross-tool fetch+act check above doesn't cover."""
+    findings = []
+    name = tool.get("name", "<unnamed>")
+    fields = [("description", tool.get("description"))]
+    in_schema, _ = _mcp_get_schema_properties(tool)
+    fields.extend(_mcp_collect_schema_strings(in_schema, path="inputSchema"))
+    out_schema = tool.get("outputSchema") or tool.get("output_schema")
+    if isinstance(out_schema, dict):
+        fields.extend(_mcp_collect_schema_strings(out_schema, path="outputSchema"))
+
+    for field_label, text in fields:
+        if not isinstance(text, str) or not text:
+            continue
+        if _MCP_UNTRUSTED_PASSTHROUGH_RE.search(text):
+            findings.append(_mcp_finding(
+                "indirect_injection_surface", "LLM01", "HIGH", name,
+                f"{field_label} documents that untrusted external content is "
+                f'forwarded into the assistant\'s context unchanged: "{text[:200]}"',
+                "Treat any text returned by this tool as untrusted data. Strip or "
+                "clearly delimit externally-sourced content so the model can't "
+                "confuse embedded instructions with the user's actual request.",
+                0.7,
+            ))
+            break  # one finding per tool is enough signal
     return findings
 
 
@@ -1002,6 +1055,7 @@ def scan_mcp_manifest(manifest):
         findings.extend(_mcp_scan_wildcard_scope(name, tool.get("scopes") or tool.get("permissions")))
         findings.extend(_mcp_scan_hitl_confirmation(tool))
         findings.extend(_mcp_scan_hidden_unicode(tool))
+        findings.extend(_mcp_scan_untrusted_passthrough(tool))
     findings.extend(_mcp_scan_name_shadowing(tools))
     findings.extend(_mcp_scan_indirect_injection_surface(tools))
 

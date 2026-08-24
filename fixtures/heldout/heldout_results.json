@@ -7,15 +7,15 @@
     {
       "scanner": "sentinel-scan-cli (Python)",
       "num_fixtures": 40,
-      "true_positives": 15,
-      "false_negatives": 5,
+      "true_positives": 19,
+      "false_negatives": 1,
       "true_negatives": 20,
       "false_positives": 0,
       "errors": 0,
-      "detection_rate": 0.75,
+      "detection_rate": 0.95,
       "false_positive_rate": 0.0,
-      "total_runtime_seconds": 7.0246,
-      "avg_runtime_ms_per_fixture": 175.62,
+      "total_runtime_seconds": 6.8916,
+      "avg_runtime_ms_per_fixture": 172.29,
       "heuristics_that_fired_on_heldout": [
         "command_injection_risk",
         "cross_origin_exfiltration",
@@ -212,16 +212,20 @@
         {
           "file": "malicious/ho_cross_origin_8_evasion_feedback_widget.json",
           "expected": "malicious",
-          "flagged": false,
-          "num_findings": 0,
-          "heuristics": []
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "cross_origin_exfiltration"
+          ]
         },
         {
           "file": "malicious/ho_dos_10_evasion_join_query.json",
           "expected": "malicious",
-          "flagged": false,
-          "num_findings": 0,
-          "heuristics": []
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "dos_resource_exhaustion"
+          ]
         },
         {
           "file": "malicious/ho_dos_9_standard_export_all_records.json",
@@ -262,9 +266,11 @@
         {
           "file": "malicious/ho_indirect_output_14_evasion_fetch_comment.json",
           "expected": "malicious",
-          "flagged": false,
-          "num_findings": 0,
-          "heuristics": []
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "indirect_injection_surface"
+          ]
         },
         {
           "file": "malicious/ho_indirect_surface_11_standard_readmail_notify.json",
@@ -279,9 +285,11 @@
         {
           "file": "malicious/ho_indirect_surface_12_evasion_calendar_assistant.json",
           "expected": "malicious",
-          "flagged": false,
-          "num_findings": 0,
-          "heuristics": []
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "indirect_injection_surface"
+          ]
         },
         {
           "file": "malicious/ho_prompt_injection_3_standard_meeting_notes.json",
@@ -353,15 +361,15 @@
     {
       "scanner": "sentinel-scan-cli (Node)",
       "num_fixtures": 40,
-      "true_positives": 15,
-      "false_negatives": 5,
+      "true_positives": 19,
+      "false_negatives": 1,
       "true_negatives": 20,
       "false_positives": 0,
       "errors": 0,
-      "detection_rate": 0.75,
+      "detection_rate": 0.95,
       "false_positive_rate": 0.0,
-      "total_runtime_seconds": 3.4883,
-      "avg_runtime_ms_per_fixture": 87.21,
+      "total_runtime_seconds": 3.7611,
+      "avg_runtime_ms_per_fixture": 94.03,
       "heuristics_that_fired_on_heldout": [
         "command_injection_risk",
         "cross_origin_exfiltration",
@@ -558,16 +566,20 @@
         {
           "file": "malicious/ho_cross_origin_8_evasion_feedback_widget.json",
           "expected": "malicious",
-          "flagged": false,
-          "num_findings": 0,
-          "heuristics": []
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "cross_origin_exfiltration"
+          ]
         },
         {
           "file": "malicious/ho_dos_10_evasion_join_query.json",
           "expected": "malicious",
-          "flagged": false,
-          "num_findings": 0,
-          "heuristics": []
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "dos_resource_exhaustion"
+          ]
         },
         {
           "file": "malicious/ho_dos_9_standard_export_all_records.json",
@@ -608,9 +620,11 @@
         {
           "file": "malicious/ho_indirect_output_14_evasion_fetch_comment.json",
           "expected": "malicious",
-          "flagged": false,
-          "num_findings": 0,
-          "heuristics": []
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "indirect_injection_surface"
+          ]
         },
         {
           "file": "malicious/ho_indirect_surface_11_standard_readmail_notify.json",
@@ -625,9 +639,11 @@
         {
           "file": "malicious/ho_indirect_surface_12_evasion_calendar_assistant.json",
           "expected": "malicious",
-          "flagged": false,
-          "num_findings": 0,
-          "heuristics": []
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "indirect_injection_surface"
+          ]
         },
         {
           "file": "malicious/ho_prompt_injection_3_standard_meeting_notes.json",

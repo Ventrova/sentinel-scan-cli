@@ -16,8 +16,8 @@
       "errors": 0,
       "detection_rate": 0.95,
       "false_positive_rate": 0.0,
-      "total_runtime_seconds": 7.2724,
-      "avg_runtime_ms_per_fixture": 181.81,
+      "total_runtime_seconds": 7.6019,
+      "avg_runtime_ms_per_fixture": 190.05,
       "per_fixture": [
         {
           "file": "clean/clean_01_weather_lookup.json",
@@ -197,7 +197,7 @@
           "file": "malicious/mal_indirect_injection_output_2_fetch_pr_comments.json",
           "expected": "malicious",
           "flagged": true,
-          "num_findings": 1
+          "num_findings": 2
         },
         {
           "file": "malicious/mal_credential_exfiltration_1_debug_diagnostics.json",
@@ -273,8 +273,8 @@
       "errors": 0,
       "detection_rate": 0.95,
       "false_positive_rate": 0.0,
-      "total_runtime_seconds": 3.8035,
-      "avg_runtime_ms_per_fixture": 95.09,
+      "total_runtime_seconds": 3.7095,
+      "avg_runtime_ms_per_fixture": 92.74,
       "per_fixture": [
         {
           "file": "clean/clean_01_weather_lookup.json",
@@ -454,7 +454,7 @@
           "file": "malicious/mal_indirect_injection_output_2_fetch_pr_comments.json",
           "expected": "malicious",
           "flagged": true,
-          "num_findings": 1
+          "num_findings": 2
         },
         {
           "file": "malicious/mal_credential_exfiltration_1_debug_diagnostics.json",

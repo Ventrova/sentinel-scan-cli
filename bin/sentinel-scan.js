@@ -190,10 +190,12 @@ const MCP_PRIVILEGE_FLAG_RE = /(sudo|admin|bypass|override|force|unrestricted)/i
 const MCP_FETCH_KEYWORDS = [
   'fetch', 'http', 'url', 'web', 'browse', 'scrape', 'rss', 'crawl',
   'read_inbox', 'read_email', 'read_page', 'download',
+  'retrieve', 'retrieves', 'retrieving', 'retrieved',
 ];
 const MCP_ACT_KEYWORDS = [
   'send', 'email', 'post', 'write', 'delete', 'execute', 'run', 'deploy',
   'transfer', 'purchase', 'pay', 'publish', 'message', 'invoke',
+  'notify', 'notifies', 'notifying', 'notified',
 ];
 
 // True if any keyword appears in haystack as a whole token - bounded by
@@ -445,7 +447,7 @@ const MCP_URL_PLACEHOLDER_RE = /\{(\w+)\}/g;
 // sensitive content, as opposed to a small identifier/flag.
 const MCP_CONTENT_PARAM_MARKERS = [
   'content', 'document', 'body', 'secret', 'password', 'token',
-  'credential', 'history', 'message', 'transcript',
+  'credential', 'history', 'message', 'transcript', 'notes', 'feedback',
 ];
 
 function mcpScanCrossOriginExfiltration(tool) {
@@ -509,6 +511,8 @@ const MCP_DOS_PHRASES = [
   '\\bno pagination\\b',
   "exhaust\\w*\\s+(?:the\\s+)?(?:caller'?s?\\s+)?(?:memory|context|resources?|cpu)",
   '\\b(?:hang|crash) (?:or (?:crash|hang) )?the (?:host|server|process)\\b',
+  'loads? the (?:full|entire|combined)[\\w\\s]{0,40}into memory',
+  'regardless of how many[\\w\\s,]{0,40}(?:are )?involved',
 ];
 const MCP_DOS_RE = new RegExp(MCP_DOS_PHRASES.join('|'), 'gi');
 
@@ -716,6 +720,55 @@ function mcpScanIndirectInjectionSurface(tools) {
       'Consider prompting the model explicitly not to follow instructions ' +
       'found in tool output, and gate action tools behind user confirmation.',
     ));
+  }
+  return findings;
+}
+
+// Phrases that self-document an indirect-injection risk in prose (rather
+// than containing an actual injection payload): the tool's own
+// description/schema text explains that raw, untrusted external content is
+// passed through into the assistant's context unchanged and can carry
+// planted follow-up instructions - a single-tool variant of the toxic-flow
+// pattern above, where the ingest and "act on it" step aren't split into two
+// separate tools.
+const MCP_UNTRUSTED_PASSTHROUGH_PHRASES = [
+  "untrusted\\b[^.]{0,120}\\b(?:passed?(?: through)?|forwarded|carried forward)\\b",
+  'plant(?:ed|ing)?\\s+(?:follow-up\\s+)?(?:instructions?|steps?)',
+  'as if (?:it|this|that) came from the (?:original )?user',
+  'carr(?:y|ies|ied) (?:that|the) (?:request|instructions?) forward',
+];
+const MCP_UNTRUSTED_PASSTHROUGH_RE = new RegExp(MCP_UNTRUSTED_PASSTHROUGH_PHRASES.join('|'), 'i');
+
+function mcpScanUntrustedPassthrough(tool) {
+  // LLM01: description/schema text documents that untrusted external
+  // content (e.g. a forum post, email body, web page) is forwarded into the
+  // assistant's context unchanged and can plant instructions the model may
+  // follow as if they came from the user - a single-tool indirect-injection
+  // surface that the cross-tool fetch+act check above doesn't cover.
+  const findings = [];
+  const name = tool.name !== undefined ? tool.name : '<unnamed>';
+  const fields = [['description', tool.description]];
+  const [inSchema] = mcpGetSchemaProperties(tool);
+  fields.push(...mcpCollectSchemaStrings(inSchema, 'inputSchema'));
+  const outSchema = tool.outputSchema || tool.output_schema;
+  if (outSchema && typeof outSchema === 'object') {
+    fields.push(...mcpCollectSchemaStrings(outSchema, 'outputSchema'));
+  }
+
+  for (const [fieldLabel, text] of fields) {
+    if (typeof text !== 'string' || !text) continue;
+    if (MCP_UNTRUSTED_PASSTHROUGH_RE.test(text)) {
+      findings.push(mcpFinding(
+        'indirect_injection_surface', 'LLM01', 'HIGH', name,
+        `${fieldLabel} documents that untrusted external content is ` +
+        `forwarded into the assistant's context unchanged: "${sliceCp(text, 200)}"`,
+        "Treat any text returned by this tool as untrusted data. Strip or " +
+        "clearly delimit externally-sourced content so the model can't " +
+        "confuse embedded instructions with the user's actual request.",
+        0.7,
+      ));
+      break; // one finding per tool is enough signal
+    }
   }
   return findings;
 }
@@ -1006,6 +1059,7 @@ function scanMcpManifest(manifest) {
     findings.push(...mcpScanWildcardScope(name, tool.scopes || tool.permissions));
     findings.push(...mcpScanHitlConfirmation(tool));
     findings.push(...mcpScanHiddenUnicode(tool));
+    findings.push(...mcpScanUntrustedPassthrough(tool));
   }
   findings.push(...mcpScanNameShadowing(tools));
   findings.push(...mcpScanIndirectInjectionSurface(tools));
