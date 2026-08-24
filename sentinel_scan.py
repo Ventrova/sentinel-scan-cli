@@ -45,7 +45,7 @@ import urllib.request
 
 __version__ = "1.4.1"
 
-VERSION = "1.4.0"
+VERSION = "1.4.1"
 
 # --- MCP manifest heuristic scanner -----------------------------------------
 #
