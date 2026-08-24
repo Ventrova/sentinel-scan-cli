@@ -1,5 +1,14 @@
 # PyPI publish
 
+**One command covers both registries, dry-run by default:** `scripts/publish.sh`
+(see [scripts/publish.sh](./scripts/publish.sh) - checks version parity across
+`package.json`/`pyproject.toml`/`sentinel_scan.py`/`bin/sentinel-scan.js`, builds
+both packages, and runs `npm pack --dry-run` + `twine check` with zero
+credentials required. Pass `--publish` to actually publish once `NPM_TOKEN`
+and/or `TWINE_USERNAME`/`TWINE_PASSWORD` (or `PYPI_API_TOKEN`) are present in
+the environment.)
+
+
 **Status: PyPI is coming soon.** `pip install sentinel-scan-cli` currently
 serves a stale `1.0.0` build (missing the `mcp` subcommand and 3 releases
 behind `master`). Until the trusted-publisher registration below lands, the

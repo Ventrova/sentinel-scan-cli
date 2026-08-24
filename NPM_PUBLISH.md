@@ -1,5 +1,9 @@
 # npm publish
 
+**One command covers both registries, dry-run by default:** `scripts/publish.sh`
+(see [scripts/publish.sh](./scripts/publish.sh) and [PUBLISH.md](./PUBLISH.md)).
+
+
 `package.json` and `bin/sentinel-scan.js` moved to the repo root (2026-08-23) so that
 `npx github:ventrova/sentinel-scan-cli --demo` resolves without any npm registry publish
 (npm's `github:` installer requires `package.json` at the repo root, it does not support
