@@ -3,6 +3,35 @@
 **One command covers both registries, dry-run by default:** `scripts/publish.sh`
 (see [scripts/publish.sh](./scripts/publish.sh) and [PUBLISH.md](./PUBLISH.md)).
 
+## DECISION (2026-08-24): tokenless Trusted Publishing (OIDC) is the path
+
+npm is deprecating token-based automated publishing on 2FA accounts. Per the GitHub
+changelog "npm install-time security and GAT bypass2fa deprecation" (2026-07-08):
+**granular** access tokens lose sensitive-account access in early Aug 2026 and lose
+**publishing entirely around Jan 2027**. So a granular Automation token is a dead end;
+do not build on it. (This is exactly why the two granular tokens tried earlier hit a
+2FA / read-only wall.)
+
+`.github/workflows/npm-publish.yml` is now **pure OIDC** - no `NPM_TOKEN` secret, no
+`NODE_AUTH_TOKEN`. It upgrades npm to >= 11.5.1 (OIDC requirement), verifies the tag
+matches `package.json`, and runs `npm publish --provenance --access public`, which
+authenticates via the workflow's `id-token: write` OIDC identity once a Trusted
+Publisher is linked on npm.
+
+**Activation (two one-time owner steps, both tokenless):**
+1. **Bootstrap the package name onto npm once** - Trusted Publishing can't create a
+   brand-new name. Cleanest tokenless way: from a trusted machine, `npm publish` at the
+   repo root; npm prompts for the account's 2FA OTP (nothing stored). (A throwaway
+   Automation token deleted right after also works, but isn't necessary.)
+2. **Link the Trusted Publisher** on npmjs.com: `sentinel-scan-cli` -> Settings ->
+   Trusted Publisher -> GitHub repo `Ventrova/sentinel-scan-cli`, workflow
+   `npm-publish.yml`, environment `npm`.
+
+After that, `git tag vX.Y.Z && git push origin vX.Y.Z` publishes to npm (and PyPI via
+`release.yml`) with **zero credentials anywhere** - and no npm token ever lives in the
+agent broker. The sections below are retained as history; the token-based Option B is
+superseded by this decision.
+
 
 `package.json` and `bin/sentinel-scan.js` moved to the repo root (2026-08-23) so that
 `npx github:ventrova/sentinel-scan-cli --demo` resolves without any npm registry publish

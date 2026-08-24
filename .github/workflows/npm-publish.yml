@@ -1,13 +1,24 @@
 name: Publish to npm
 
-# Requires a one-time NPM_TOKEN repo secret for the very first publish (npm
-# doesn't support Trusted Publishing/OIDC until the package already exists).
-# See NPM_PUBLISH.md Option B. After the first publish, switch this workflow
-# to npm's Trusted Publisher OIDC flow (Option A) and drop the token.
+# Tokenless publishing via npm Trusted Publishing (OIDC) - no NPM_TOKEN anywhere.
+# The GitHub Actions OIDC identity (id-token: write) authenticates straight to the
+# npm registry once a Trusted Publisher is configured for the package.
+#
+# ONE-TIME SETUP (see NPM_PUBLISH.md):
+#   1. Bootstrap the package onto npm ONCE - Trusted Publishing cannot create a
+#      brand-new package name. Either `npm publish` from a trusted machine (npm
+#      prompts for your 2FA OTP; no token is stored anywhere), or use a throwaway
+#      Automation token you delete right after.
+#   2. On npmjs.com: sentinel-scan-cli -> Settings -> Trusted Publisher -> add
+#      GitHub repo "Ventrova/sentinel-scan-cli", workflow "npm-publish.yml",
+#      environment "npm".
+# After that, pushing a `vX.Y.Z` tag publishes with zero credentials.
+
 on:
   push:
     tags:
       - "v*.*.*"
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -19,14 +30,23 @@ jobs:
       name: npm
       url: https://www.npmjs.com/package/sentinel-scan-cli
     permissions:
-      id-token: write
+      id-token: write # required: lets npm mint the OIDC token for Trusted Publishing
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
           registry-url: "https://registry.npmjs.org"
-      - name: Publish to npm
-        run: npm publish --provenance
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Upgrade npm (Trusted Publishing OIDC needs >= 11.5.1)
+        run: npm install -g npm@latest
+      - name: Verify tag matches package.json version
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          PKG="$(node -p "require('./package.json').version")"
+          if [ "$TAG" != "$PKG" ]; then
+            echo "::error::tag $GITHUB_REF_NAME does not match package.json version $PKG"
+            exit 1
+          fi
+      - name: Publish to npm (OIDC, tokenless)
+        run: npm publish --provenance --access public
