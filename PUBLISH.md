@@ -102,6 +102,21 @@ python -m twine upload --username __token__ --password <PYPI_TOKEN> dist/*
 Rebuild first if `dist/` is stale or missing:
 `rm -rf dist build *.egg-info && python -m build`.
 
+## Re-verified at 1.4.0 (2026-08-24, Show HN launch version)
+
+`package.json`, `pyproject.toml`, `sentinel_scan.py`'s `VERSION`, and
+`bin/sentinel-scan.js`'s `VERSION` all agree on `1.4.0`, matching the git tag
+(`v1.4.0`) referenced in the Show HN post and first comment. `scripts/publish.sh`
+(dry run) passes end-to-end: `npm pack --dry-run` is clean, `python -m build` +
+`twine check dist/*` both PASSED for the wheel and sdist, and the wheel's
+`entry_points.txt` resolves `sentinel-scan = sentinel_scan:main` correctly. Also
+fixed a `setuptools` deprecation warning by switching `license = { text = "MIT" }`
+to the SPDX string form `license = "MIT"` (the TOML-table form stops working in
+setuptools by 2027-02-18) - `python -m build` now runs with zero warnings.
+Nothing was published. The only remaining blocker is the PyPI trusted-publisher
+registration step below (human, PyPI account owner only) plus the equivalent npm
+token/OIDC step in NPM_PUBLISH.md.
+
 ## Package verified ready to publish (2026-08-24)
 
 `rm -rf dist build *.egg-info && python -m build` succeeds, `twine check dist/*`
