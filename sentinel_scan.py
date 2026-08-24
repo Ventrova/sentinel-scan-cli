@@ -1030,6 +1030,47 @@ def _mcp_scan_hidden_unicode(tool):
     return findings
 
 
+def _mcp_char_script(ch):
+    cp = ord(ch)
+    if 0x0041 <= cp <= 0x005A or 0x0061 <= cp <= 0x007A:
+        return "LATIN"
+    if 0x0400 <= cp <= 0x04FF or 0x0500 <= cp <= 0x052F:
+        return "CYRILLIC"
+    if 0x0370 <= cp <= 0x03FF:
+        return "GREEK"
+    return None
+
+
+def _mcp_scan_homoglyph_typosquat(name):
+    """LLM01: flag identifiers that mix Latin letters with visually-confusable
+    letters from another script (e.g. Cyrillic і U+0456 vs Latin i). Legitimate
+    tool/server names are effectively always pure ASCII/Latin, so any
+    Latin+Cyrillic/Greek mix in the same identifier is a strong signal of a
+    homoglyph-based typosquat trying to impersonate a well-known tool name."""
+    if not isinstance(name, str):
+        return []
+    scripts = set()
+    non_latin = []
+    for ch in name:
+        script = _mcp_char_script(ch)
+        if script:
+            scripts.add(script)
+            if script != "LATIN":
+                non_latin.append(ch)
+    if "LATIN" in scripts and len(scripts) > 1:
+        confusable = ", ".join(f"{ch!r} (U+{ord(ch):04X})" for ch in dict.fromkeys(non_latin))
+        return [_mcp_finding(
+            "homoglyph_typosquat", "LLM01", "HIGH", name,
+            f"name {name!r} mixes Latin letters with visually-confusable "
+            f"non-Latin characters: {confusable}",
+            "Rename to use a single, pure-ASCII/Latin script. Mixed-script "
+            "identifiers are a hallmark of homoglyph typosquatting used to "
+            "impersonate a trusted tool or package name.",
+            0.85,
+        )]
+    return []
+
+
 def scan_mcp_manifest(manifest):
     """Run all MCP manifest heuristics. manifest is the parsed mcp.json dict."""
     tools = manifest.get("tools")
@@ -1056,6 +1097,7 @@ def scan_mcp_manifest(manifest):
         findings.extend(_mcp_scan_hitl_confirmation(tool))
         findings.extend(_mcp_scan_hidden_unicode(tool))
         findings.extend(_mcp_scan_untrusted_passthrough(tool))
+        findings.extend(_mcp_scan_homoglyph_typosquat(name))
     findings.extend(_mcp_scan_name_shadowing(tools))
     findings.extend(_mcp_scan_indirect_injection_surface(tools))
 
@@ -1067,6 +1109,7 @@ def scan_mcp_manifest(manifest):
         findings.extend(_mcp_scan_env_secrets(server_name, server))
         findings.extend(_mcp_scan_wildcard_scope(server_name, server.get("scopes") or server.get("permissions")))
         findings.extend(_mcp_scan_provenance(server_name, server))
+        findings.extend(_mcp_scan_homoglyph_typosquat(server_name))
 
     # unpinned_remote_source: the LOW-severity "unversioned package pull"
     # case is informational on its own (see _mcp_scan_source_pinning) - only

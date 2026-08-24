@@ -7,21 +7,22 @@
     {
       "scanner": "sentinel-scan-cli (Python)",
       "num_fixtures": 40,
-      "true_positives": 19,
-      "false_negatives": 1,
+      "true_positives": 20,
+      "false_negatives": 0,
       "true_negatives": 20,
       "false_positives": 0,
       "errors": 0,
-      "detection_rate": 0.95,
+      "detection_rate": 1.0,
       "false_positive_rate": 0.0,
-      "total_runtime_seconds": 6.8916,
-      "avg_runtime_ms_per_fixture": 172.29,
+      "total_runtime_seconds": 6.8287,
+      "avg_runtime_ms_per_fixture": 170.72,
       "heuristics_that_fired_on_heldout": [
         "command_injection_risk",
         "cross_origin_exfiltration",
         "dos_resource_exhaustion",
         "excessive_agency_schema",
         "hardcoded_credential",
+        "homoglyph_typosquat",
         "indirect_injection_surface",
         "missing_hitl_confirmation",
         "overbroad_tool_scope",
@@ -352,30 +353,34 @@
         {
           "file": "malicious/ho_typosquat_16_evasion_homoglyph_thirdparty.json",
           "expected": "malicious",
-          "flagged": false,
-          "num_findings": 0,
-          "heuristics": []
+          "flagged": true,
+          "num_findings": 3,
+          "heuristics": [
+            "homoglyph_typosquat",
+            "unpinned_remote_source"
+          ]
         }
       ]
     },
     {
       "scanner": "sentinel-scan-cli (Node)",
       "num_fixtures": 40,
-      "true_positives": 19,
-      "false_negatives": 1,
+      "true_positives": 20,
+      "false_negatives": 0,
       "true_negatives": 20,
       "false_positives": 0,
       "errors": 0,
-      "detection_rate": 0.95,
+      "detection_rate": 1.0,
       "false_positive_rate": 0.0,
-      "total_runtime_seconds": 3.7611,
-      "avg_runtime_ms_per_fixture": 94.03,
+      "total_runtime_seconds": 3.774,
+      "avg_runtime_ms_per_fixture": 94.35,
       "heuristics_that_fired_on_heldout": [
         "command_injection_risk",
         "cross_origin_exfiltration",
         "dos_resource_exhaustion",
         "excessive_agency_schema",
         "hardcoded_credential",
+        "homoglyph_typosquat",
         "indirect_injection_surface",
         "missing_hitl_confirmation",
         "overbroad_tool_scope",
@@ -706,9 +711,12 @@
         {
           "file": "malicious/ho_typosquat_16_evasion_homoglyph_thirdparty.json",
           "expected": "malicious",
-          "flagged": false,
-          "num_findings": 0,
-          "heuristics": []
+          "flagged": true,
+          "num_findings": 3,
+          "heuristics": [
+            "homoglyph_typosquat",
+            "unpinned_remote_source"
+          ]
         }
       ]
     }

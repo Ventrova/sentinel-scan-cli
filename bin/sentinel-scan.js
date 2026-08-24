@@ -1039,6 +1039,47 @@ function mcpScanHiddenUnicode(tool) {
   return findings;
 }
 
+function mcpCharScript(ch) {
+  const cp = ch.codePointAt(0);
+  if ((cp >= 0x0041 && cp <= 0x005a) || (cp >= 0x0061 && cp <= 0x007a)) return 'LATIN';
+  if ((cp >= 0x0400 && cp <= 0x04ff) || (cp >= 0x0500 && cp <= 0x052f)) return 'CYRILLIC';
+  if (cp >= 0x0370 && cp <= 0x03ff) return 'GREEK';
+  return null;
+}
+
+function mcpScanHomoglyphTyposquat(name) {
+  // LLM01: flag identifiers that mix Latin letters with visually-confusable
+  // letters from another script (e.g. Cyrillic i U+0456 vs Latin i).
+  // Legitimate tool/server names are effectively always pure ASCII/Latin, so
+  // any Latin+Cyrillic/Greek mix in the same identifier is a strong signal of
+  // a homoglyph-based typosquat trying to impersonate a well-known tool name.
+  if (typeof name !== 'string') return [];
+  const scripts = new Set();
+  const nonLatin = [];
+  for (const ch of name) {
+    const script = mcpCharScript(ch);
+    if (script) {
+      scripts.add(script);
+      if (script !== 'LATIN' && !nonLatin.includes(ch)) nonLatin.push(ch);
+    }
+  }
+  if (scripts.has('LATIN') && scripts.size > 1) {
+    const confusable = nonLatin
+      .map((ch) => `${pyRepr(ch)} (U+${ch.codePointAt(0).toString(16).toUpperCase().padStart(4, '0')})`)
+      .join(', ');
+    return [mcpFinding(
+      'homoglyph_typosquat', 'LLM01', 'HIGH', name,
+      `name ${pyRepr(name)} mixes Latin letters with visually-confusable ` +
+      `non-Latin characters: ${confusable}`,
+      'Rename to use a single, pure-ASCII/Latin script. Mixed-script ' +
+      'identifiers are a hallmark of homoglyph typosquatting used to ' +
+      'impersonate a trusted tool or package name.',
+      0.85,
+    )];
+  }
+  return [];
+}
+
 function scanMcpManifest(manifest) {
   let tools = manifest.tools;
   if (!Array.isArray(tools)) tools = [];
@@ -1060,6 +1101,7 @@ function scanMcpManifest(manifest) {
     findings.push(...mcpScanHitlConfirmation(tool));
     findings.push(...mcpScanHiddenUnicode(tool));
     findings.push(...mcpScanUntrustedPassthrough(tool));
+    findings.push(...mcpScanHomoglyphTyposquat(name));
   }
   findings.push(...mcpScanNameShadowing(tools));
   findings.push(...mcpScanIndirectInjectionSurface(tools));
@@ -1071,6 +1113,7 @@ function scanMcpManifest(manifest) {
     findings.push(...mcpScanEnvSecrets(serverName, server));
     findings.push(...mcpScanWildcardScope(serverName, server.scopes || server.permissions));
     findings.push(...mcpScanProvenance(serverName, server));
+    findings.push(...mcpScanHomoglyphTyposquat(serverName));
   }
 
   // unpinned_remote_source: the LOW-severity "unversioned package pull"

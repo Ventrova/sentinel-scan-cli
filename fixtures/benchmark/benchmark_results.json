@@ -16,8 +16,8 @@
       "errors": 0,
       "detection_rate": 0.95,
       "false_positive_rate": 0.0,
-      "total_runtime_seconds": 7.6019,
-      "avg_runtime_ms_per_fixture": 190.05,
+      "total_runtime_seconds": 6.8439,
+      "avg_runtime_ms_per_fixture": 171.1,
       "per_fixture": [
         {
           "file": "clean/clean_01_weather_lookup.json",
@@ -273,8 +273,8 @@
       "errors": 0,
       "detection_rate": 0.95,
       "false_positive_rate": 0.0,
-      "total_runtime_seconds": 3.7095,
-      "avg_runtime_ms_per_fixture": 92.74,
+      "total_runtime_seconds": 3.6768,
+      "avg_runtime_ms_per_fixture": 91.92,
       "per_fixture": [
         {
           "file": "clean/clean_01_weather_lookup.json",
