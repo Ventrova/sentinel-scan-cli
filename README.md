@@ -18,9 +18,17 @@
 
 # Sentinel Scan CLI
 
-A free, open-source command-line tool that runs a 15-attack prompt-injection
-and jailbreak suite against your own LLM-backed endpoint, so you can see in
-about a minute whether your system prompt actually holds up.
+A free, open-source command-line tool that scans LLM apps and MCP servers for
+security issues: a 15-attack prompt-injection and jailbreak suite against
+your own LLM-backed endpoint, and a static heuristic scanner for MCP tool
+manifests (`mcp.json`). Every finding is tagged with its **OWASP LLM Top 10**
+(and OWASP MCP Top 10) category, so results map straight onto the checklist
+your security team already uses.
+
+```bash
+pipx install git+https://github.com/Ventrova/sentinel-scan-cli.git@v1.4.0
+sentinel-scan --demo
+```
 
 No signup, no telemetry, no API key required to run it (`--demo` mode uses a
 built-in target with zero network calls). When you point it at your own
