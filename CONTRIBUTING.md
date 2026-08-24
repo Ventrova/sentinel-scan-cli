@@ -3,19 +3,20 @@
 Thanks for taking a look. This is a small, single-file tool, so contributions
 are easy to review and easy to make.
 
-## Reporting a bug or false positive/negative
+## Reporting a false positive/negative
 
-Open an issue with:
+Use the [Report a false positive/negative](https://github.com/Ventrova/sentinel-scan-cli/issues/new?template=false_positive_negative.yml)
+issue form. It asks for exactly what we need to reproduce and fix it:
+which check/OWASP tag fired, what endpoint type you scanned, what you
+expected vs what actually happened, and the sanitized scan output.
 
-- The command you ran (redact your API key, endpoint URL is fine)
-- What you expected vs what happened
-- The relevant snippet from your output JSON (`--output` file)
+## Proposing a new attack or heuristic
 
-## Proposing a new attack
-
-The attack corpus in `sentinel_scan.py` (`ATTACKS`) is intentionally small and
-bounded so a scan stays fast and auditable. If you have a known
-prompt-injection or jailbreak technique that isn't covered:
+The attack corpus in `sentinel_scan.py` (`ATTACKS`) and the MCP heuristics
+are intentionally small and bounded so a scan stays fast and auditable. If
+you have a known prompt-injection technique or MCP manifest pattern that
+isn't covered, use the [Missing attack / heuristic suggestion](https://github.com/Ventrova/sentinel-scan-cli/issues/new?template=missing_attack.yml)
+issue form, or:
 
 1. Open an issue describing the technique and a source/reference if you have one.
 2. If you'd like to submit a PR directly, add one `(name, prompt)` tuple to

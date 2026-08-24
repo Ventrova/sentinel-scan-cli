@@ -1,0 +1,40 @@
+name: Missing attack / heuristic suggestion
+description: Suggest a prompt-injection attack or MCP heuristic that isn't in the corpus yet.
+title: "[Missing attack] "
+labels: ["missing-attack"]
+body:
+  - type: textarea
+    id: technique
+    attributes:
+      label: What's the attack or heuristic?
+      description: Describe the technique. If it's a prompt-injection attack, include the actual prompt text (self-contained, no external calls). If it's a static MCP heuristic, describe the manifest pattern it should detect.
+    validations:
+      required: true
+  - type: input
+    id: owasp-category
+    attributes:
+      label: OWASP category it maps to (if known)
+      description: e.g. LLM01 Prompt Injection, LLM07 System Prompt Leakage, MCP01 Prompt Injection via Tool Descriptions.
+      placeholder: "LLM01: Prompt Injection"
+    validations:
+      required: false
+  - type: textarea
+    id: reference
+    attributes:
+      label: Source or reference
+      description: Where does this technique come from - a paper, a real-world incident, another tool's corpus, your own testing? A link or a short description is fine.
+    validations:
+      required: false
+  - type: textarea
+    id: why-missed
+    attributes:
+      label: What would this catch that the current corpus doesn't?
+    validations:
+      required: false
+  - type: checkboxes
+    id: pr
+    attributes:
+      label: Contribution
+      options:
+        - label: I'd be willing to open a PR adding this myself.
+          required: false

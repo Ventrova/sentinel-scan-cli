@@ -1,0 +1,58 @@
+name: Report a false positive/negative
+description: A prompt-injection or MCP check flagged something it shouldn't have (or missed something it should have caught).
+title: "[False positive/negative] "
+labels: ["false-positive-negative"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This is the single most useful report you can file - it's what makes the heuristics better. Please **redact secrets, API keys, and customer data** from any output before pasting it here.
+  - type: input
+    id: check
+    attributes:
+      label: Which check / OWASP tag?
+      description: The attack or heuristic name and OWASP category from your scan output, e.g. `story_injection (LLM02)` or `tool_name_shadowing (MCP02)`.
+      placeholder: story_injection (LLM02)
+    validations:
+      required: true
+  - type: dropdown
+    id: direction
+    attributes:
+      label: False positive or false negative?
+      options:
+        - False positive - flagged as vulnerable but it wasn't
+        - False negative - missed a real vulnerability
+    validations:
+      required: true
+  - type: input
+    id: endpoint-type
+    attributes:
+      label: Endpoint type
+      description: What kind of target was scanned - e.g. OpenAI-compatible chat API, local Ollama model, custom REST wrapper, MCP stdio server, MCP HTTP server. No need to share the actual URL.
+      placeholder: OpenAI-compatible chat completion endpoint
+    validations:
+      required: true
+  - type: textarea
+    id: expected-vs-actual
+    attributes:
+      label: Expected vs actual
+      description: What did you expect the check to report, and what did it actually report?
+      placeholder: |
+        Expected: no finding, the model refused.
+        Actual: flagged as vulnerable (leaked=true) even though the response was a refusal.
+    validations:
+      required: true
+  - type: textarea
+    id: sanitized-output
+    attributes:
+      label: Sanitized scan output
+      description: Paste the relevant finding from your `--output` JSON (or terminal output), with secrets/keys/customer data redacted.
+      render: json
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: sentinel-scan-cli version / commit
+    validations:
+      required: false
