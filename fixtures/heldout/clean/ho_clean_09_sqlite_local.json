@@ -1,0 +1,38 @@
+{
+  "name": "heldout-clean-sqlite",
+  "tools": [
+    {
+      "name": "query_database",
+      "description": "Runs a SQL query against a local SQLite database file and returns the result rows.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "list_tables",
+      "description": "Lists table names in the local SQLite database file.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    }
+  ],
+  "mcpServers": {
+    "sqlite": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-sqlite",
+        "--db-path",
+        "./local.db"
+      ],
+      "publisher": "Model Context Protocol (verified)"
+    }
+  }
+}

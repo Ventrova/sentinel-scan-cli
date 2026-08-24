@@ -1,0 +1,32 @@
+{
+  "name": "heldout-clean-k8s",
+  "tools": [
+    {
+      "name": "get_pod_status",
+      "description": "Runs 'kubectl get pods -n <namespace>' against the configured read-only kubeconfig context and returns pod status.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "namespace": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "annotations": {
+        "implementation": "subprocess.run(['kubectl', 'get', 'pods', '-n', namespace], check=True)"
+      }
+    }
+  ],
+  "mcpServers": {
+    "k8s-readonly": {
+      "command": "uvx",
+      "args": [
+        "kubectl-mcp-server",
+        "--context",
+        "prod-readonly"
+      ],
+      "publisher": "community (unverified)"
+    }
+  }
+}

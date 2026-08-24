@@ -1,0 +1,35 @@
+{
+  "name": "heldout-clean-search",
+  "tools": [
+    {
+      "name": "web_search",
+      "description": "Runs a public web search query and returns the top results with title, URL, and snippet.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "count": {
+            "type": "integer",
+            "default": 10
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  ],
+  "mcpServers": {
+    "brave-search": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-brave-search"
+      ],
+      "publisher": "Model Context Protocol (verified)",
+      "env": {
+        "BRAVE_API_KEY": "${BRAVE_API_KEY}"
+      }
+    }
+  }
+}

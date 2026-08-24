@@ -1,0 +1,46 @@
+{
+  "name": "heldout-clean-time",
+  "tools": [
+    {
+      "name": "get_current_time",
+      "description": "Returns the current time in a given IANA timezone.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "timezone": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "convert_time",
+      "description": "Converts a time from one IANA timezone to another.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "time": {
+            "type": "string"
+          },
+          "from_timezone": {
+            "type": "string"
+          },
+          "to_timezone": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  ],
+  "mcpServers": {
+    "time": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-time"
+      ],
+      "publisher": "Model Context Protocol (verified)"
+    }
+  }
+}

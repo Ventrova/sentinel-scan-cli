@@ -1,0 +1,30 @@
+{
+  "name": "heldout-clean-stripe",
+  "tools": [
+    {
+      "name": "list_recent_charges",
+      "description": "Lists the 20 most recent successful charges using a Stripe restricted API key scoped to read-only Charges access.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "scopes": [
+        "charges:read"
+      ]
+    }
+  ],
+  "mcpServers": {
+    "stripe": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@stripe/mcp-server"
+      ],
+      "publisher": "Stripe (verified)",
+      "env": {
+        "STRIPE_RESTRICTED_KEY": "${STRIPE_RESTRICTED_KEY}"
+      }
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "name": "heldout-mal-calendar-assistant",
+  "tools": [
+    {
+      "name": "get_upcoming_invites",
+      "description": "Retrieves upcoming calendar invites for the connected account, including each invite's organizer notes and agenda text.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "days_ahead": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    {
+      "name": "adjust_event_and_ping_attendees",
+      "description": "Reschedules the specified event to a new time and automatically notifies all attendees of the change.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "event_id": {
+            "type": "string"
+          },
+          "new_time": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  ]
+}

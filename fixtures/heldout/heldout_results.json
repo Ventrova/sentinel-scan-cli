@@ -1,0 +1,774 @@
+{
+  "corpus_version": "heldout-1.0.0",
+  "total_fixtures": 40,
+  "num_clean": 20,
+  "num_malicious": 20,
+  "results": [
+    {
+      "scanner": "sentinel-scan-cli (Python)",
+      "num_fixtures": 40,
+      "true_positives": 13,
+      "false_negatives": 7,
+      "true_negatives": 1,
+      "false_positives": 19,
+      "errors": 0,
+      "detection_rate": 0.65,
+      "false_positive_rate": 0.95,
+      "total_runtime_seconds": 8.0051,
+      "avg_runtime_ms_per_fixture": 200.13,
+      "heuristics_that_fired_on_heldout": [
+        "command_injection_risk",
+        "cross_origin_exfiltration",
+        "dos_resource_exhaustion",
+        "excessive_agency_schema",
+        "hardcoded_credential",
+        "indirect_injection_surface",
+        "missing_hitl_confirmation",
+        "overbroad_tool_scope",
+        "tool_description_injection",
+        "tool_name_shadowing",
+        "unpinned_remote_source"
+      ],
+      "per_fixture": [
+        {
+          "file": "clean/ho_clean_01_git_status.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_02_filesystem_read.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 3,
+          "heuristics": [
+            "excessive_agency_schema",
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_03_github_read.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_04_slack_read.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_05_postgres_readonly.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_06_playwright_browser.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0,
+          "heuristics": []
+        },
+        {
+          "file": "clean/ho_clean_07_fetch_web.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_08_memory_knowledge_graph.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_09_sqlite_local.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 2,
+          "heuristics": [
+            "excessive_agency_schema",
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_10_docker_readonly.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_11_aws_cost_explorer.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_12_sentry_issues.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_13_notion_pages.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_14_gdrive_readonly.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_15_brave_search.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_16_time_zone.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_17_google_maps.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_18_stripe_readonly.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 2,
+          "heuristics": [
+            "excessive_agency_schema",
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_19_kubectl_readonly.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 2,
+          "heuristics": [
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_20_pdf_text_extract.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "excessive_agency_schema"
+          ]
+        },
+        {
+          "file": "malicious/ho_command_injection_1_standard_backup_restore.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 2,
+          "heuristics": [
+            "command_injection_risk",
+            "missing_hitl_confirmation"
+          ]
+        },
+        {
+          "file": "malicious/ho_command_injection_2_evasion_logrotate.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "missing_hitl_confirmation"
+          ]
+        },
+        {
+          "file": "malicious/ho_credential_exfiltration_18_standard_ci_logs.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 3,
+          "heuristics": [
+            "hardcoded_credential",
+            "indirect_injection_surface",
+            "missing_hitl_confirmation"
+          ]
+        },
+        {
+          "file": "malicious/ho_cross_origin_7_standard_chat_export.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "cross_origin_exfiltration"
+          ]
+        },
+        {
+          "file": "malicious/ho_cross_origin_8_evasion_feedback_widget.json",
+          "expected": "malicious",
+          "flagged": false,
+          "num_findings": 0,
+          "heuristics": []
+        },
+        {
+          "file": "malicious/ho_dos_10_evasion_join_query.json",
+          "expected": "malicious",
+          "flagged": false,
+          "num_findings": 0,
+          "heuristics": []
+        },
+        {
+          "file": "malicious/ho_dos_9_standard_export_all_records.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "dos_resource_exhaustion"
+          ]
+        },
+        {
+          "file": "malicious/ho_encoded_payload_17_novel_hex_operator_hint.json",
+          "expected": "malicious",
+          "flagged": false,
+          "num_findings": 0,
+          "heuristics": []
+        },
+        {
+          "file": "malicious/ho_excessive_permission_19_standard_reminders_widget.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "overbroad_tool_scope"
+          ]
+        },
+        {
+          "file": "malicious/ho_indirect_output_13_standard_fetch_review.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "tool_description_injection"
+          ]
+        },
+        {
+          "file": "malicious/ho_indirect_output_14_evasion_fetch_comment.json",
+          "expected": "malicious",
+          "flagged": false,
+          "num_findings": 0,
+          "heuristics": []
+        },
+        {
+          "file": "malicious/ho_indirect_surface_11_standard_readmail_notify.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 2,
+          "heuristics": [
+            "indirect_injection_surface",
+            "missing_hitl_confirmation"
+          ]
+        },
+        {
+          "file": "malicious/ho_indirect_surface_12_evasion_calendar_assistant.json",
+          "expected": "malicious",
+          "flagged": false,
+          "num_findings": 0,
+          "heuristics": []
+        },
+        {
+          "file": "malicious/ho_prompt_injection_3_standard_meeting_notes.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "tool_description_injection"
+          ]
+        },
+        {
+          "file": "malicious/ho_prompt_injection_4_evasion_survey_tool.json",
+          "expected": "malicious",
+          "flagged": false,
+          "num_findings": 0,
+          "heuristics": []
+        },
+        {
+          "file": "malicious/ho_rug_pull_20_evasion_translation_widget.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 2,
+          "heuristics": [
+            "tool_description_injection",
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "malicious/ho_tool_poisoning_5_standard_invoice_field.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "tool_description_injection"
+          ]
+        },
+        {
+          "file": "malicious/ho_tool_poisoning_6_evasion_enum_priority.json",
+          "expected": "malicious",
+          "flagged": false,
+          "num_findings": 0,
+          "heuristics": []
+        },
+        {
+          "file": "malicious/ho_typosquat_15_standard_execute_command_lookalike.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 4,
+          "heuristics": [
+            "excessive_agency_schema",
+            "missing_hitl_confirmation",
+            "tool_name_shadowing",
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "malicious/ho_typosquat_16_evasion_homoglyph_thirdparty.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "unpinned_remote_source"
+          ]
+        }
+      ]
+    },
+    {
+      "scanner": "sentinel-scan-cli (Node)",
+      "num_fixtures": 40,
+      "true_positives": 13,
+      "false_negatives": 7,
+      "true_negatives": 1,
+      "false_positives": 19,
+      "errors": 0,
+      "detection_rate": 0.65,
+      "false_positive_rate": 0.95,
+      "total_runtime_seconds": 3.7178,
+      "avg_runtime_ms_per_fixture": 92.94,
+      "heuristics_that_fired_on_heldout": [
+        "command_injection_risk",
+        "cross_origin_exfiltration",
+        "dos_resource_exhaustion",
+        "excessive_agency_schema",
+        "hardcoded_credential",
+        "indirect_injection_surface",
+        "missing_hitl_confirmation",
+        "overbroad_tool_scope",
+        "tool_description_injection",
+        "tool_name_shadowing",
+        "unpinned_remote_source"
+      ],
+      "per_fixture": [
+        {
+          "file": "clean/ho_clean_01_git_status.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_02_filesystem_read.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 3,
+          "heuristics": [
+            "excessive_agency_schema",
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_03_github_read.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_04_slack_read.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_05_postgres_readonly.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_06_playwright_browser.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0,
+          "heuristics": []
+        },
+        {
+          "file": "clean/ho_clean_07_fetch_web.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_08_memory_knowledge_graph.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_09_sqlite_local.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 2,
+          "heuristics": [
+            "excessive_agency_schema",
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_10_docker_readonly.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_11_aws_cost_explorer.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_12_sentry_issues.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_13_notion_pages.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_14_gdrive_readonly.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_15_brave_search.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_16_time_zone.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_17_google_maps.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_18_stripe_readonly.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 2,
+          "heuristics": [
+            "excessive_agency_schema",
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_19_kubectl_readonly.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 2,
+          "heuristics": [
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "clean/ho_clean_20_pdf_text_extract.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "excessive_agency_schema"
+          ]
+        },
+        {
+          "file": "malicious/ho_command_injection_1_standard_backup_restore.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 2,
+          "heuristics": [
+            "command_injection_risk",
+            "missing_hitl_confirmation"
+          ]
+        },
+        {
+          "file": "malicious/ho_command_injection_2_evasion_logrotate.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "missing_hitl_confirmation"
+          ]
+        },
+        {
+          "file": "malicious/ho_credential_exfiltration_18_standard_ci_logs.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 3,
+          "heuristics": [
+            "hardcoded_credential",
+            "indirect_injection_surface",
+            "missing_hitl_confirmation"
+          ]
+        },
+        {
+          "file": "malicious/ho_cross_origin_7_standard_chat_export.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "cross_origin_exfiltration"
+          ]
+        },
+        {
+          "file": "malicious/ho_cross_origin_8_evasion_feedback_widget.json",
+          "expected": "malicious",
+          "flagged": false,
+          "num_findings": 0,
+          "heuristics": []
+        },
+        {
+          "file": "malicious/ho_dos_10_evasion_join_query.json",
+          "expected": "malicious",
+          "flagged": false,
+          "num_findings": 0,
+          "heuristics": []
+        },
+        {
+          "file": "malicious/ho_dos_9_standard_export_all_records.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "dos_resource_exhaustion"
+          ]
+        },
+        {
+          "file": "malicious/ho_encoded_payload_17_novel_hex_operator_hint.json",
+          "expected": "malicious",
+          "flagged": false,
+          "num_findings": 0,
+          "heuristics": []
+        },
+        {
+          "file": "malicious/ho_excessive_permission_19_standard_reminders_widget.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "overbroad_tool_scope"
+          ]
+        },
+        {
+          "file": "malicious/ho_indirect_output_13_standard_fetch_review.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "tool_description_injection"
+          ]
+        },
+        {
+          "file": "malicious/ho_indirect_output_14_evasion_fetch_comment.json",
+          "expected": "malicious",
+          "flagged": false,
+          "num_findings": 0,
+          "heuristics": []
+        },
+        {
+          "file": "malicious/ho_indirect_surface_11_standard_readmail_notify.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 2,
+          "heuristics": [
+            "indirect_injection_surface",
+            "missing_hitl_confirmation"
+          ]
+        },
+        {
+          "file": "malicious/ho_indirect_surface_12_evasion_calendar_assistant.json",
+          "expected": "malicious",
+          "flagged": false,
+          "num_findings": 0,
+          "heuristics": []
+        },
+        {
+          "file": "malicious/ho_prompt_injection_3_standard_meeting_notes.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "tool_description_injection"
+          ]
+        },
+        {
+          "file": "malicious/ho_prompt_injection_4_evasion_survey_tool.json",
+          "expected": "malicious",
+          "flagged": false,
+          "num_findings": 0,
+          "heuristics": []
+        },
+        {
+          "file": "malicious/ho_rug_pull_20_evasion_translation_widget.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 2,
+          "heuristics": [
+            "tool_description_injection",
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "malicious/ho_tool_poisoning_5_standard_invoice_field.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "tool_description_injection"
+          ]
+        },
+        {
+          "file": "malicious/ho_tool_poisoning_6_evasion_enum_priority.json",
+          "expected": "malicious",
+          "flagged": false,
+          "num_findings": 0,
+          "heuristics": []
+        },
+        {
+          "file": "malicious/ho_typosquat_15_standard_execute_command_lookalike.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 4,
+          "heuristics": [
+            "excessive_agency_schema",
+            "missing_hitl_confirmation",
+            "tool_name_shadowing",
+            "unpinned_remote_source"
+          ]
+        },
+        {
+          "file": "malicious/ho_typosquat_16_evasion_homoglyph_thirdparty.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1,
+          "heuristics": [
+            "unpinned_remote_source"
+          ]
+        }
+      ]
+    }
+  ]
+}

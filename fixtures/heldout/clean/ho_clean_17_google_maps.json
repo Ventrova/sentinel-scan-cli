@@ -1,0 +1,31 @@
+{
+  "name": "heldout-clean-maps",
+  "tools": [
+    {
+      "name": "geocode_address",
+      "description": "Converts a street address into latitude/longitude coordinates using the Google Maps Geocoding API.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  ],
+  "mcpServers": {
+    "google-maps": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-google-maps"
+      ],
+      "publisher": "Model Context Protocol (verified)",
+      "env": {
+        "GOOGLE_MAPS_API_KEY": "${GOOGLE_MAPS_API_KEY}"
+      }
+    }
+  }
+}

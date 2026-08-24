@@ -1,0 +1,31 @@
+{
+  "name": "heldout-clean-fetch",
+  "tools": [
+    {
+      "name": "fetch_url",
+      "description": "Fetches a public URL over HTTPS and returns the page content converted to markdown, truncated to 5000 characters. Used to let the model read a web page the user links to.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "max_length": {
+            "type": "integer",
+            "default": 5000
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  ],
+  "mcpServers": {
+    "fetch": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-fetch"
+      ],
+      "publisher": "Model Context Protocol (verified)"
+    }
+  }
+}

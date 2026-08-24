@@ -1,0 +1,42 @@
+{
+  "name": "heldout-clean-playwright",
+  "tools": [
+    {
+      "name": "navigate",
+      "description": "Navigates the sandboxed headless browser to a given URL and returns the page title.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "screenshot",
+      "description": "Takes a screenshot of the current page in the sandboxed headless browser.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "full_page": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  ],
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp@latest"
+      ],
+      "publisher": "Microsoft (verified)"
+    }
+  }
+}

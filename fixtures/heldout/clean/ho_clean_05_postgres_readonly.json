@@ -1,0 +1,32 @@
+{
+  "name": "heldout-clean-postgres",
+  "tools": [
+    {
+      "name": "run_readonly_query",
+      "description": "Executes a read-only SQL SELECT statement against the configured Postgres database and returns rows. The server enforces a read-only transaction, rejecting any non-SELECT statement before execution.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "sql": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "scopes": [
+        "db:read"
+      ]
+    }
+  ],
+  "mcpServers": {
+    "postgres": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres",
+        "postgresql://localhost/analytics"
+      ],
+      "publisher": "Model Context Protocol (verified)"
+    }
+  }
+}

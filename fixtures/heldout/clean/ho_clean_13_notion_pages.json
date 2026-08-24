@@ -1,0 +1,47 @@
+{
+  "name": "heldout-clean-notion",
+  "tools": [
+    {
+      "name": "get_page",
+      "description": "Retrieves the content blocks of a Notion page the integration has been shared with.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "page_id": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "append_block",
+      "description": "Appends a new text block to the end of a Notion page the integration has been shared with.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "page_id": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  ],
+  "mcpServers": {
+    "notion": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@notionhq/notion-mcp-server"
+      ],
+      "publisher": "Notion (verified)",
+      "env": {
+        "NOTION_TOKEN": "${NOTION_TOKEN}"
+      }
+    }
+  }
+}

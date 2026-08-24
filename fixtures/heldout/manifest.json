@@ -1,0 +1,169 @@
+{
+  "corpus_version": "heldout-1.0.0",
+  "purpose": "Held-out generalization check for the fixtures/benchmark 40-fixture corpus. None of these fixtures were used to tune sentinel_scan.py's or bin/sentinel-scan.js's heuristics. Malicious fixtures cover the same broad attack classes as the tuned corpus (command injection, prompt injection in descriptions, tool poisoning, cross-origin exfiltration, DoS resource exhaustion, credential exfiltration, excessive permission scope, rug-pull schema mutation, typosquatting, indirect-injection surface) plus one genuinely novel encoding-evasion variant (hex-encoded instruction smuggling), expressed through new scenarios, tool names, and wording not present in the tuned corpus. Clean fixtures are modeled on real public MCP servers (git, filesystem, github, slack, postgres, playwright, fetch, memory, sqlite, docker, aws-cost-explorer, sentry, notion, gdrive, brave-search, time, google-maps, stripe, kubectl, pdf-extract), including several edge cases that legitimately shell out or fetch external URLs, to stress the false-positive rate on realistic manifests rather than only trivial toy ones.",
+  "total_fixtures": 40,
+  "num_clean": 20,
+  "num_malicious": 20,
+  "fixtures": [
+    {
+      "filename": "clean/ho_clean_01_git_status.json",
+      "expected": "clean"
+    },
+    {
+      "filename": "clean/ho_clean_02_filesystem_read.json",
+      "expected": "clean"
+    },
+    {
+      "filename": "clean/ho_clean_03_github_read.json",
+      "expected": "clean"
+    },
+    {
+      "filename": "clean/ho_clean_04_slack_read.json",
+      "expected": "clean"
+    },
+    {
+      "filename": "clean/ho_clean_05_postgres_readonly.json",
+      "expected": "clean"
+    },
+    {
+      "filename": "clean/ho_clean_06_playwright_browser.json",
+      "expected": "clean"
+    },
+    {
+      "filename": "clean/ho_clean_07_fetch_web.json",
+      "expected": "clean"
+    },
+    {
+      "filename": "clean/ho_clean_08_memory_knowledge_graph.json",
+      "expected": "clean"
+    },
+    {
+      "filename": "clean/ho_clean_09_sqlite_local.json",
+      "expected": "clean"
+    },
+    {
+      "filename": "clean/ho_clean_10_docker_readonly.json",
+      "expected": "clean"
+    },
+    {
+      "filename": "clean/ho_clean_11_aws_cost_explorer.json",
+      "expected": "clean"
+    },
+    {
+      "filename": "clean/ho_clean_12_sentry_issues.json",
+      "expected": "clean"
+    },
+    {
+      "filename": "clean/ho_clean_13_notion_pages.json",
+      "expected": "clean"
+    },
+    {
+      "filename": "clean/ho_clean_14_gdrive_readonly.json",
+      "expected": "clean"
+    },
+    {
+      "filename": "clean/ho_clean_15_brave_search.json",
+      "expected": "clean"
+    },
+    {
+      "filename": "clean/ho_clean_16_time_zone.json",
+      "expected": "clean"
+    },
+    {
+      "filename": "clean/ho_clean_17_google_maps.json",
+      "expected": "clean"
+    },
+    {
+      "filename": "clean/ho_clean_18_stripe_readonly.json",
+      "expected": "clean"
+    },
+    {
+      "filename": "clean/ho_clean_19_kubectl_readonly.json",
+      "expected": "clean"
+    },
+    {
+      "filename": "clean/ho_clean_20_pdf_text_extract.json",
+      "expected": "clean"
+    },
+    {
+      "filename": "malicious/ho_command_injection_1_standard_backup_restore.json",
+      "expected": "malicious"
+    },
+    {
+      "filename": "malicious/ho_command_injection_2_evasion_logrotate.json",
+      "expected": "malicious"
+    },
+    {
+      "filename": "malicious/ho_credential_exfiltration_18_standard_ci_logs.json",
+      "expected": "malicious"
+    },
+    {
+      "filename": "malicious/ho_cross_origin_7_standard_chat_export.json",
+      "expected": "malicious"
+    },
+    {
+      "filename": "malicious/ho_cross_origin_8_evasion_feedback_widget.json",
+      "expected": "malicious"
+    },
+    {
+      "filename": "malicious/ho_dos_10_evasion_join_query.json",
+      "expected": "malicious"
+    },
+    {
+      "filename": "malicious/ho_dos_9_standard_export_all_records.json",
+      "expected": "malicious"
+    },
+    {
+      "filename": "malicious/ho_encoded_payload_17_novel_hex_operator_hint.json",
+      "expected": "malicious"
+    },
+    {
+      "filename": "malicious/ho_excessive_permission_19_standard_reminders_widget.json",
+      "expected": "malicious"
+    },
+    {
+      "filename": "malicious/ho_indirect_output_13_standard_fetch_review.json",
+      "expected": "malicious"
+    },
+    {
+      "filename": "malicious/ho_indirect_output_14_evasion_fetch_comment.json",
+      "expected": "malicious"
+    },
+    {
+      "filename": "malicious/ho_indirect_surface_11_standard_readmail_notify.json",
+      "expected": "malicious"
+    },
+    {
+      "filename": "malicious/ho_indirect_surface_12_evasion_calendar_assistant.json",
+      "expected": "malicious"
+    },
+    {
+      "filename": "malicious/ho_prompt_injection_3_standard_meeting_notes.json",
+      "expected": "malicious"
+    },
+    {
+      "filename": "malicious/ho_prompt_injection_4_evasion_survey_tool.json",
+      "expected": "malicious"
+    },
+    {
+      "filename": "malicious/ho_rug_pull_20_evasion_translation_widget.json",
+      "expected": "malicious"
+    },
+    {
+      "filename": "malicious/ho_tool_poisoning_5_standard_invoice_field.json",
+      "expected": "malicious"
+    },
+    {
+      "filename": "malicious/ho_tool_poisoning_6_evasion_enum_priority.json",
+      "expected": "malicious"
+    },
+    {
+      "filename": "malicious/ho_typosquat_15_standard_execute_command_lookalike.json",
+      "expected": "malicious"
+    },
+    {
+      "filename": "malicious/ho_typosquat_16_evasion_homoglyph_thirdparty.json",
+      "expected": "malicious"
+    }
+  ]
+}

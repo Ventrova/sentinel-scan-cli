@@ -1,0 +1,63 @@
+{
+  "name": "heldout-clean-github",
+  "tools": [
+    {
+      "name": "get_pull_request",
+      "description": "Fetches metadata, diff stats, and review status for a pull request by owner, repo, and number.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string"
+          },
+          "repo": {
+            "type": "string"
+          },
+          "pull_number": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "scopes": [
+        "repo:read"
+      ]
+    },
+    {
+      "name": "list_issues",
+      "description": "Lists open issues for a repository, optionally filtered by label.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string"
+          },
+          "repo": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "scopes": [
+        "repo:read"
+      ]
+    }
+  ],
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "publisher": "Model Context Protocol (verified)",
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PAT}"
+      },
+      "sha256": "1b2c3d4e5f60718293a4b5c6d7e8f9019283746556473829102938475869301"
+    }
+  }
+}

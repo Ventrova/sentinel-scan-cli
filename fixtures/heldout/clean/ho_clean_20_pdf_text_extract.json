@@ -1,0 +1,21 @@
+{
+  "name": "heldout-clean-pdf",
+  "tools": [
+    {
+      "name": "extract_pdf_text",
+      "description": "Extracts plain text from a locally uploaded PDF file for summarization. Runs fully offline with no network access.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "file_path": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "scopes": [
+        "fs:read"
+      ]
+    }
+  ]
+}

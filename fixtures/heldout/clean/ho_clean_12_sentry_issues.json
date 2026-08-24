@@ -1,0 +1,31 @@
+{
+  "name": "heldout-clean-sentry",
+  "tools": [
+    {
+      "name": "get_issue_details",
+      "description": "Fetches the stack trace, event count, and status for a single Sentry issue by ID.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "issue_id": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  ],
+  "mcpServers": {
+    "sentry": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@sentry/mcp-server"
+      ],
+      "publisher": "Sentry (verified)",
+      "env": {
+        "SENTRY_AUTH_TOKEN": "${SENTRY_AUTH_TOKEN}"
+      }
+    }
+  }
+}

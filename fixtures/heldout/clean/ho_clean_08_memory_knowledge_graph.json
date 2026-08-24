@@ -1,0 +1,48 @@
+{
+  "name": "heldout-clean-memory",
+  "tools": [
+    {
+      "name": "create_entities",
+      "description": "Adds new entities with names, types, and observations to the local persistent knowledge graph file.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "entities": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "scopes": [
+        "fs:read",
+        "fs:write"
+      ]
+    },
+    {
+      "name": "search_nodes",
+      "description": "Searches the local knowledge graph file for entities matching a query string.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  ],
+  "mcpServers": {
+    "memory": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ],
+      "publisher": "Model Context Protocol (verified)"
+    }
+  }
+}

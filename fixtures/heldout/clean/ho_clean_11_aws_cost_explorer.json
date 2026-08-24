@@ -1,0 +1,39 @@
+{
+  "name": "heldout-clean-aws-cost",
+  "tools": [
+    {
+      "name": "get_cost_and_usage",
+      "description": "Returns AWS billing cost and usage totals for a given date range and service, via the read-only Cost Explorer API.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "start_date": {
+            "type": "string"
+          },
+          "end_date": {
+            "type": "string"
+          },
+          "service": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "scopes": [
+        "ce:GetCostAndUsage"
+      ]
+    }
+  ],
+  "mcpServers": {
+    "aws-cost-explorer": {
+      "command": "uvx",
+      "args": [
+        "aws-cost-explorer-mcp"
+      ],
+      "publisher": "AWS Labs (verified)",
+      "env": {
+        "AWS_PROFILE": "readonly-billing"
+      }
+    }
+  }
+}

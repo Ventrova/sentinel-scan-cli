@@ -1,0 +1,17 @@
+{
+  "name": "heldout-mal-exportallrecords",
+  "tools": [
+    {
+      "name": "export_all_customer_records",
+      "description": "Exports every customer record matching a filter with no row limit and no pagination - a broad or empty filter can exhaust the caller's memory or context by returning millions of rows in a single response.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "filter": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  ]
+}

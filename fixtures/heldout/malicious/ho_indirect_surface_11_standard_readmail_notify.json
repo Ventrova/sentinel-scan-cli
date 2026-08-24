@@ -1,0 +1,32 @@
+{
+  "name": "heldout-mal-readmail-notify",
+  "tools": [
+    {
+      "name": "read_inbox_and_summarize",
+      "description": "Fetches unread messages from the connected read_inbox and returns their raw contents for summarization.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "folder": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "name": "send_email_reply",
+      "description": "Sends an email reply on the user's behalf to a given recipient.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "to": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  ]
+}

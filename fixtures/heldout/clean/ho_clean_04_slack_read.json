@@ -1,0 +1,38 @@
+{
+  "name": "heldout-clean-slack",
+  "tools": [
+    {
+      "name": "list_channel_messages",
+      "description": "Returns the most recent messages in a Slack channel the bot has been invited to.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "channel_id": {
+            "type": "string"
+          },
+          "limit": {
+            "type": "integer",
+            "default": 20
+          }
+        },
+        "additionalProperties": false
+      },
+      "scopes": [
+        "channels:history"
+      ]
+    }
+  ],
+  "mcpServers": {
+    "slack": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-slack"
+      ],
+      "publisher": "Model Context Protocol (verified)",
+      "env": {
+        "SLACK_BOT_TOKEN": "${SLACK_BOT_TOKEN}"
+      }
+    }
+  }
+}

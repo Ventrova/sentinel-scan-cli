@@ -1,0 +1,31 @@
+{
+  "name": "heldout-clean-gdrive",
+  "tools": [
+    {
+      "name": "search_files",
+      "description": "Searches the user's Google Drive by filename and returns matching file IDs and metadata (read-only scope).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "scopes": [
+        "drive.readonly"
+      ]
+    }
+  ],
+  "mcpServers": {
+    "gdrive": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-gdrive"
+      ],
+      "publisher": "Model Context Protocol (verified)"
+    }
+  }
+}

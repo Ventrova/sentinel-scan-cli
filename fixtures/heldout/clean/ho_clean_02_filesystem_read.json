@@ -1,0 +1,49 @@
+{
+  "name": "heldout-clean-filesystem",
+  "tools": [
+    {
+      "name": "read_file",
+      "description": "Reads the contents of a file within the allow-listed project directory and returns it as text.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "scopes": [
+        "fs:read"
+      ]
+    },
+    {
+      "name": "list_directory",
+      "description": "Lists files and subdirectories within the allow-listed project directory.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "scopes": [
+        "fs:read"
+      ]
+    }
+  ],
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/home/user/project"
+      ],
+      "publisher": "Model Context Protocol (verified)",
+      "sha256": "9f1c2b5e2d0a4a2e9d0b7c6f1a3e5d8c0b9a7e6f4d2c1b0a9e8d7c6b5a4f3e2d"
+    }
+  }
+}

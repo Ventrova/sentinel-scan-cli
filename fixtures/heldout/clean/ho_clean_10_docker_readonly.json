@@ -1,0 +1,46 @@
+{
+  "name": "heldout-clean-docker",
+  "tools": [
+    {
+      "name": "list_containers",
+      "description": "Lists running Docker containers on the local daemon with their names, images, and status.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "all": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "get_container_logs",
+      "description": "Returns the last N lines of logs for a given container ID.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "container_id": {
+            "type": "string"
+          },
+          "tail": {
+            "type": "integer",
+            "default": 100
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  ],
+  "mcpServers": {
+    "docker": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "docker-mcp"
+      ],
+      "publisher": "unverified community server"
+    }
+  }
+}
