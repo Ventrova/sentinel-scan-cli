@@ -67,21 +67,25 @@ anyone, and the root README's `npx github:ventrova/sentinel-scan-cli --demo` lin
 be simplified to the direct registry form. Until then, the `github:` form already works
 with zero signup and is what's used in launch materials.
 
-## Version-parity gap found in the 2026-08-24 dry run
+## Version-parity gap closed 2026-08-24
 
 `sentinel_scan.py`'s internal `VERSION` was bumped to `1.2.0` then `1.3.0` when the
-`sentinel-scan mcp` static heuristic scanner and its GitHub Action were added, but
-`bin/sentinel-scan.js` never got an `mcp` subcommand port and its `VERSION` constant is
-still `1.1.0`. Left `package.json`/`bin/sentinel-scan.js` at `1.1.0` rather than bumping
-the number to match Python, since bumping the version alone without the `mcp` feature
-would misrepresent what the npm package actually does. The Python package is correctly
-at `1.3.0` (see PUBLISH.md). Porting `sentinel-scan mcp` to `bin/sentinel-scan.js` is
-follow-up feature work, not a packaging fix.
+`sentinel-scan mcp` static heuristic scanner and its GitHub Action were added; the
+Node port (`bin/sentinel-scan.js`) had not been updated to match. All ten `mcp`
+heuristic classes (tool_description_injection, hidden_unicode_instructions,
+excessive_agency_schema, missing_hitl_confirmation, overbroad_tool_scope,
+tool_name_shadowing, hardcoded_credential, unpinned_remote_source,
+indirect_injection_surface, missing_provenance) are now ported 1:1 into
+`bin/sentinel-scan.js`, and its `VERSION` constant and `package.json` both match
+Python's `1.3.0`. Verified byte-for-byte identical `num_findings` and
+`findings_by_heuristic` output between `python sentinel_scan.py mcp` and
+`node bin/sentinel-scan.js mcp` on the built-in demo manifest and all 40 fixtures
+in `fixtures/benchmark/{clean,malicious}/`. `npx sentinel-scan-cli mcp` will work
+without any GitHub pip/npx-github install as soon as the npm registry publish
+below lands.
 
 ## Keeping this in sync with the Python original
 
 `bin/sentinel-scan.js` is a manual, dependency-free port of `sentinel_scan.py`. The
 attack corpus, OWASP LLM Top 10 tags, heuristics, and output JSON shape must stay in
 lockstep - if you add/change an attack or the scoring logic in one, mirror it in the other.
-As of 2026-08-24 the `mcp` subcommand exists only in the Python original; the npm port's
-version number intentionally trails Python's until that gap is closed.
