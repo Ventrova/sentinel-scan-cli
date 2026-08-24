@@ -1,0 +1,32 @@
+name: Publish to npm
+
+# Requires a one-time NPM_TOKEN repo secret for the very first publish (npm
+# doesn't support Trusted Publishing/OIDC until the package already exists).
+# See NPM_PUBLISH.md Option B. After the first publish, switch this workflow
+# to npm's Trusted Publisher OIDC flow (Option A) and drop the token.
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: npm
+      url: https://www.npmjs.com/package/sentinel-scan-cli
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+      - name: Publish to npm
+        run: npm publish --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
