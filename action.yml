@@ -30,10 +30,10 @@ inputs:
 outputs:
   results-file:
     description: 'Path to the generated report file.'
-    value: ${{ steps.convert.outputs.results-file }}
+    value: ${{ steps.scan_sarif.outputs.results-file || steps.convert.outputs.results-file }}
   finding-count:
     description: 'Total number of findings.'
-    value: ${{ steps.convert.outputs.finding-count }}
+    value: ${{ steps.gate_sarif.outputs.finding-count || steps.convert.outputs.finding-count }}
 
 runs:
   using: 'composite'
@@ -47,15 +47,53 @@ runs:
       shell: bash
       run: pip install "${{ github.action_path }}"
 
-    - name: Run sentinel-scan mcp
-      id: scan
+    - name: Run sentinel-scan mcp (SARIF)
+      id: scan_sarif
+      if: inputs.format == 'sarif'
       shell: bash
       run: |
-        sentinel-scan mcp --manifest "${{ inputs.manifest }}" --output "${{ runner.temp }}/sentinel-scan-raw.json"
+        sentinel-scan mcp --manifest "${{ inputs.manifest }}" --format sarif --output "${{ inputs.output }}"
+        echo "results-file=${{ inputs.output }}" >> "$GITHUB_OUTPUT"
+
+    - name: Apply severity gate (SARIF)
+      id: gate_sarif
+      if: inputs.format == 'sarif'
+      shell: bash
+      run: |
+        count=$(jq '[.runs[0].results[]] | length' "${{ inputs.output }}")
+        echo "finding-count=$count" >> "$GITHUB_OUTPUT"
+
+        threshold="${{ inputs.fail-on-severity }}"
+        if [ "$threshold" = "none" ]; then
+          exit 0
+        fi
+
+        case "$threshold" in
+          high) levels='["error"]' ;;
+          medium) levels='["error","warning"]' ;;
+          low) levels='["error","warning","note"]' ;;
+          *) echo "::error::unknown fail-on-severity '$threshold'"; exit 1 ;;
+        esac
+
+        breach=$(jq --argjson levels "$levels" \
+          '[.runs[0].results[] | select(.level as $l | $levels | index($l))] | length' \
+          "${{ inputs.output }}")
+        if [ "$breach" -gt 0 ]; then
+          echo "::error::sentinel-scan found $breach finding(s) at or above severity '$threshold'"
+          exit 1
+        fi
+
+    - name: Run sentinel-scan mcp (JSON)
+      id: scan_json
+      if: inputs.format != 'sarif'
+      shell: bash
+      run: |
+        sentinel-scan mcp --manifest "${{ inputs.manifest }}" --format json --output "${{ runner.temp }}/sentinel-scan-raw.json"
         echo "raw-file=${{ runner.temp }}/sentinel-scan-raw.json" >> "$GITHUB_OUTPUT"
 
-    - name: Convert results and apply severity gate
+    - name: Convert results and apply severity gate (Markdown/JSON)
       id: convert
+      if: inputs.format != 'sarif'
       shell: bash
       run: |
         python "${{ github.action_path }}/scripts/action/convert_results.py" \
