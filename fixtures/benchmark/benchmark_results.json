@@ -9,15 +9,15 @@
       "status": "evaluated",
       "network_free": true,
       "num_fixtures": 40,
-      "true_positives": 20,
-      "false_negatives": 0,
+      "true_positives": 19,
+      "false_negatives": 1,
       "true_negatives": 20,
       "false_positives": 0,
       "errors": 0,
-      "detection_rate": 1.0,
+      "detection_rate": 0.95,
       "false_positive_rate": 0.0,
-      "total_runtime_seconds": 7.4704,
-      "avg_runtime_ms_per_fixture": 186.76,
+      "total_runtime_seconds": 7.2724,
+      "avg_runtime_ms_per_fixture": 181.81,
       "per_fixture": [
         {
           "file": "clean/clean_01_weather_lookup.json",
@@ -232,8 +232,8 @@
         {
           "file": "malicious/mal_typosquatting_2_github-lookalike.json",
           "expected": "malicious",
-          "flagged": true,
-          "num_findings": 1
+          "flagged": false,
+          "num_findings": 0
         },
         {
           "file": "malicious/mal_cross_origin_exfiltration_1_render_profile.json",
@@ -266,15 +266,15 @@
       "status": "evaluated",
       "network_free": true,
       "num_fixtures": 40,
-      "true_positives": 20,
-      "false_negatives": 0,
+      "true_positives": 19,
+      "false_negatives": 1,
       "true_negatives": 20,
       "false_positives": 0,
       "errors": 0,
-      "detection_rate": 1.0,
+      "detection_rate": 0.95,
       "false_positive_rate": 0.0,
-      "total_runtime_seconds": 3.3143,
-      "avg_runtime_ms_per_fixture": 82.86,
+      "total_runtime_seconds": 3.8035,
+      "avg_runtime_ms_per_fixture": 95.09,
       "per_fixture": [
         {
           "file": "clean/clean_01_weather_lookup.json",
@@ -489,8 +489,8 @@
         {
           "file": "malicious/mal_typosquatting_2_github-lookalike.json",
           "expected": "malicious",
-          "flagged": true,
-          "num_findings": 1
+          "flagged": false,
+          "num_findings": 0
         },
         {
           "file": "malicious/mal_cross_origin_exfiltration_1_render_profile.json",

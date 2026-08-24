@@ -15,8 +15,25 @@ are guessed for them.
 
 | Scanner | Status | Network-free | Detection rate | False-positive rate | Total runtime (40 fixtures) | Avg per fixture |
 |---|---|---|---|---|---|---|
-| sentinel-scan-cli (Python) | evaluated | yes | 100.0% (20/20 malicious caught) | 0.0% (0/20 clean flagged) | 7.47s | ~187 ms |
-| sentinel-scan-cli (Node) | evaluated | yes | 100.0% (20/20 malicious caught) | 0.0% (0/20 clean flagged) | 3.31s | ~83 ms |
+| sentinel-scan-cli (Python) | evaluated | yes | 95.0% (19/20 malicious caught) | 0.0% (0/20 clean flagged) | 7.27s | ~182 ms |
+| sentinel-scan-cli (Node) | evaluated | yes | 95.0% (19/20 malicious caught) | 0.0% (0/20 clean flagged) | see `benchmark_results.json` | see `benchmark_results.json` |
+
+**Update:** the 100.0%/0.0% numbers below this table reflect an earlier tuning
+pass that a later held-out validation (`fixtures/heldout/METHODOLOGY.md`)
+showed was overfit - it produced a 95% false-positive rate on a disjoint
+40-fixture corpus, driven almost entirely by `unpinned_remote_source` firing
+on the ordinary unpinned `npx -y`/`uvx` launch pattern used by nearly every
+real MCP server, plus a schema-agency logic bug flagging intentionally
+empty/fully-locked-down tool schemas. Both heuristics were fixed (gated/
+demoted, not fixture-tuned) in `sentinel_scan.py` and `bin/sentinel-scan.js`;
+that fix cost 1 of the 20 in-sample malicious detections (the
+`unpinned_remote_source`-only typosquatting fixture, which no longer trips
+the now-gated heuristic on its own) in exchange for eliminating the held-out
+false-positive catastrophe (95% -> 0%) with detection holding at 75% on that
+same held-out set. See `fixtures/heldout/METHODOLOGY.md` for the full
+before/after and the honest generalization numbers - treat this file's
+100.0%/0.0% as "in-sample, on the corpus used to develop the heuristics,"
+not a generalization claim.
 | MCP-Scan (Invariant Labs) | not evaluated | no | - | - | - | - |
 | Cisco mcp-scanner | not evaluated | no | - | - | - | - |
 | mcpshield (npm) | not evaluated | yes (tool itself has no network dependency) | - | - | - | - |

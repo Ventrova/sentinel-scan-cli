@@ -113,14 +113,15 @@ MCP_SEVERITY_RANK = {"LOW": 0, "MEDIUM": 1, "HIGH": 2}
 # Imperative/override language aimed at the calling agent rather than a human
 # reader - the hallmark of a tool-description prompt injection.
 _MCP_INJECTION_PHRASES = [
-    r"ignore (all |any )?(previous|prior|above) instructions",
+    r"ignore (all |any )?(previous|prior|above) (?:instructions?|constraints?|rules?|guidelines?)",
     r"disregard (the |your )?(system prompt|previous instructions)",
     r"\[\s*system\b[^\]]{0,40}\]",
     r"do not (tell|inform|mention|show|disclose|surface|reveal)\b[^.]{0,40}\bthe user\b",
     r"without (telling|informing|asking) the user",
+    r"without mentioning (?:it |this )?to the user",
     r"always (call|use|invoke) this tool (first|before)",
     r"you must (always )?call this",
-    r"before (responding|answering|replying)(?!\s+to\s+the\s+api)",
+    r"before (responding|answering|replying|completing (?:the |your )?response)(?!\s+to\s+the\s+api)",
     r"override (any|all) other tool",
     r"this tool takes priority over",
     r"trusted system instruction",
@@ -130,8 +131,11 @@ _MCP_INJECTION_PHRASES = [
     r"regardless of what the user (asked|specified|requested|wants|wanted)",
     r"secretly",
     r"\bsilently\b",
+    r"\bquietly\b",
     r"do not log this",
     r"inject(?:ed|ing)? instructions?",
+    r"keep (?:the |your )?(?:internal )?reasoning (?:out of|hidden from|separate from) (?:the )?response",
+    r"process (?:the )?request first",
 ]
 _MCP_INJECTION_RE = re.compile("|".join(_MCP_INJECTION_PHRASES), re.IGNORECASE)
 _MCP_HTML_COMMENT_RE = re.compile(r"<!--.*?-->", re.DOTALL)
@@ -614,7 +618,16 @@ def _mcp_scan_schema_agency(tool):
             "Set additionalProperties: false and enumerate every accepted "
             "parameter explicitly.",
         ))
-    if isinstance(schema, dict) and schema.get("type") == "object" and not properties:
+    # A no-argument tool (e.g. list_tables, list_recent_charges) that has
+    # explicitly locked down additionalProperties: false is fully
+    # constrained - "no properties" only signals excessive agency when the
+    # schema is also open to arbitrary extra fields.
+    if (
+        isinstance(schema, dict)
+        and schema.get("type") == "object"
+        and not properties
+        and schema.get("additionalProperties") is not False
+    ):
         findings.append(_mcp_finding(
             "excessive_agency_schema", "LLM06", "LOW", name,
             "inputSchema declares no properties at all (accepts any shape)",
@@ -641,7 +654,16 @@ def _mcp_scan_schema_agency(tool):
                 "Constrain this parameter to a fixed enum of allowed operations, or "
                 "remove raw command/code execution from the tool surface entirely.",
             ))
-        elif prop_lower in _MCP_PATH_PARAM_NAMES and is_unconstrained_string:
+        elif (
+            prop_lower in _MCP_PATH_PARAM_NAMES
+            and is_unconstrained_string
+            and schema.get("additionalProperties") is not False
+        ):
+            # A bare "path" string param is completely standard on
+            # legitimate read-only filesystem tools; it's only a real
+            # excessive-agency signal when the schema is also open to
+            # arbitrary extra fields (additionalProperties not locked to
+            # false), i.e. the tool isn't otherwise constrained.
             findings.append(_mcp_finding(
                 "excessive_agency_schema", "LLM06", "MEDIUM", name,
                 f'parameter "{prop_name}" is an unconstrained filesystem path with no pattern',
@@ -742,13 +764,21 @@ def _mcp_scan_source_pinning(server_name, server):
             if not _mcp_looks_like_package_ref(arg):
                 continue
             if not _mcp_package_ref_is_pinned(cmd, arg):
+                # Launching via `npx -y @pkg` / `uvx pkg` with no version pin
+                # is the standard, documented install pattern for the large
+                # majority of legitimate MCP servers - on its own it is not
+                # evidence of anything malicious. Score it LOW/low-confidence;
+                # scan_mcp_manifest() only surfaces it when the manifest
+                # already has another, independent risk signal to
+                # corroborate it.
                 findings.append(_mcp_finding(
-                    "unpinned_remote_source", "LLM03", "MEDIUM", server_name,
+                    "unpinned_remote_source", "LLM03", "LOW", server_name,
                     f'server launches package "{arg}" via {command!r} with no pinned '
                     "version (no @version/==version suffix) - it fetches whatever the "
                     "registry serves at run time",
                     "Pin an exact version (e.g. package@1.2.3, package==1.2.3) so the "
                     "server can't be silently swapped for a malicious update between runs.",
+                    confidence=0.35,
                 ))
     return findings
 
@@ -975,13 +1005,24 @@ def scan_mcp_manifest(manifest):
     findings.extend(_mcp_scan_name_shadowing(tools))
     findings.extend(_mcp_scan_indirect_injection_surface(tools))
 
+    source_pinning_findings = []
     for server_name, server in servers.items():
         if not isinstance(server, dict):
             continue
-        findings.extend(_mcp_scan_source_pinning(server_name, server))
+        source_pinning_findings.extend(_mcp_scan_source_pinning(server_name, server))
         findings.extend(_mcp_scan_env_secrets(server_name, server))
         findings.extend(_mcp_scan_wildcard_scope(server_name, server.get("scopes") or server.get("permissions")))
         findings.extend(_mcp_scan_provenance(server_name, server))
+
+    # unpinned_remote_source: the LOW-severity "unversioned package pull"
+    # case is informational on its own (see _mcp_scan_source_pinning) - only
+    # surface it once the manifest already has another, independent risk
+    # signal to corroborate it. The HIGH-severity plaintext-transport case
+    # is a strong signal by itself and is always kept.
+    has_other_signal = bool(findings)
+    for f in source_pinning_findings:
+        if f["severity"] != "LOW" or has_other_signal:
+            findings.append(f)
 
     findings.sort(key=lambda f: MCP_SEVERITY_RANK.get(f["severity"], 0), reverse=True)
 

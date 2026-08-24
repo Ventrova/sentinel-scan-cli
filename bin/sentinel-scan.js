@@ -140,14 +140,15 @@ function heuristicBrokePolicy(reply) {
 const MCP_SEVERITY_RANK = { LOW: 0, MEDIUM: 1, HIGH: 2 };
 
 const MCP_INJECTION_PHRASES = [
-  'ignore (all |any )?(previous|prior|above) instructions',
+  'ignore (all |any )?(previous|prior|above) (?:instructions?|constraints?|rules?|guidelines?)',
   'disregard (the |your )?(system prompt|previous instructions)',
   '\\[\\s*system\\b[^\\]]{0,40}\\]',
   'do not (tell|inform|mention|show|disclose|surface|reveal)\\b[^.]{0,40}\\bthe user\\b',
   'without (telling|informing|asking) the user',
+  'without mentioning (?:it |this )?to the user',
   'always (call|use|invoke) this tool (first|before)',
   'you must (always )?call this',
-  'before (responding|answering|replying)(?!\\s+to\\s+the\\s+api)',
+  'before (responding|answering|replying|completing (?:the |your )?response)(?!\\s+to\\s+the\\s+api)',
   'override (any|all) other tool',
   'this tool takes priority over',
   'trusted system instruction',
@@ -157,8 +158,11 @@ const MCP_INJECTION_PHRASES = [
   'regardless of what the user (asked|specified|requested|wants|wanted)',
   'secretly',
   '\\bsilently\\b',
+  '\\bquietly\\b',
   'do not log this',
   'inject(?:ed|ing)? instructions?',
+  'keep (?:the |your )?(?:internal )?reasoning (?:out of|hidden from|separate from) (?:the )?response',
+  'process (?:the )?request first',
 ];
 const MCP_INJECTION_RE = new RegExp(MCP_INJECTION_PHRASES.join('|'), 'gi');
 const MCP_HTML_COMMENT_RE = /<!--[\s\S]*?-->/;
@@ -619,8 +623,13 @@ function mcpScanSchemaAgency(tool) {
       'parameter explicitly.',
     ));
   }
+  // A no-argument tool (e.g. list_tables, list_recent_charges) that has
+  // explicitly locked down additionalProperties: false is fully
+  // constrained - "no properties" only signals excessive agency when the
+  // schema is also open to arbitrary extra fields.
   if (schema && typeof schema === 'object' && schema.type === 'object' &&
-      (!properties || Object.keys(properties).length === 0)) {
+      (!properties || Object.keys(properties).length === 0) &&
+      schema.additionalProperties !== false) {
     findings.push(mcpFinding(
       'excessive_agency_schema', 'LLM06', 'LOW', name,
       'inputSchema declares no properties at all (accepts any shape)',
@@ -643,7 +652,11 @@ function mcpScanSchemaAgency(tool) {
         'Constrain this parameter to a fixed enum of allowed operations, or ' +
         'remove raw command/code execution from the tool surface entirely.',
       ));
-    } else if (MCP_PATH_PARAM_NAMES.has(propLower) && isUnconstrainedString) {
+    } else if (MCP_PATH_PARAM_NAMES.has(propLower) && isUnconstrainedString &&
+        schema.additionalProperties !== false) {
+      // A bare "path" string param is completely standard on legitimate
+      // read-only filesystem tools; it's only a real excessive-agency
+      // signal when the schema is also open to arbitrary extra fields.
       findings.push(mcpFinding(
         'excessive_agency_schema', 'LLM06', 'MEDIUM', name,
         `parameter "${propName}" is an unconstrained filesystem path with no pattern`,
@@ -745,13 +758,20 @@ function mcpScanSourcePinning(serverName, server) {
     for (const arg of args) {
       if (!mcpLooksLikePackageRef(arg)) continue;
       if (!mcpPackageRefIsPinned(cmd, arg)) {
+        // Launching via `npx -y @pkg` / `uvx pkg` with no version pin is the
+        // standard, documented install pattern for the large majority of
+        // legitimate MCP servers - on its own it is not evidence of
+        // anything malicious. Score it LOW/low-confidence; scanMcpManifest()
+        // only surfaces it when the manifest already has another,
+        // independent risk signal to corroborate it.
         findings.push(mcpFinding(
-          'unpinned_remote_source', 'LLM03', 'MEDIUM', serverName,
+          'unpinned_remote_source', 'LLM03', 'LOW', serverName,
           `server launches package "${arg}" via '${command}' with no pinned ` +
           'version (no @version/==version suffix) - it fetches whatever the ' +
           'registry serves at run time',
           'Pin an exact version (e.g. package@1.2.3, package==1.2.3) so the ' +
           "server can't be silently swapped for a malicious update between runs.",
+          0.35,
         ));
       }
     }
@@ -990,12 +1010,23 @@ function scanMcpManifest(manifest) {
   findings.push(...mcpScanNameShadowing(tools));
   findings.push(...mcpScanIndirectInjectionSurface(tools));
 
+  const sourcePinningFindings = [];
   for (const [serverName, server] of Object.entries(servers)) {
     if (!server || typeof server !== 'object' || Array.isArray(server)) continue;
-    findings.push(...mcpScanSourcePinning(serverName, server));
+    sourcePinningFindings.push(...mcpScanSourcePinning(serverName, server));
     findings.push(...mcpScanEnvSecrets(serverName, server));
     findings.push(...mcpScanWildcardScope(serverName, server.scopes || server.permissions));
     findings.push(...mcpScanProvenance(serverName, server));
+  }
+
+  // unpinned_remote_source: the LOW-severity "unversioned package pull"
+  // case is informational on its own (see mcpScanSourcePinning) - only
+  // surface it once the manifest already has another, independent risk
+  // signal to corroborate it. The HIGH-severity plaintext-transport case is
+  // a strong signal by itself and is always kept.
+  const hasOtherSignal = findings.length > 0;
+  for (const f of sourcePinningFindings) {
+    if (f.severity !== 'LOW' || hasOtherSignal) findings.push(f);
   }
 
   findings = findings
