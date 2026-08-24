@@ -1324,6 +1324,16 @@ const DEMO_MCP_MANIFEST = {
   },
 };
 
+// Severity ranks for --fail-on threshold comparisons (kept in parity with
+// SEVERITY_RANK in sentinel_scan.py).
+const SEVERITY_RANK = { LOW: 1, MEDIUM: 2, HIGH: 3 };
+
+function mcpFindingsBreachThreshold(findings, failOn) {
+  if (failOn === 'none') return false;
+  const threshold = SEVERITY_RANK[failOn.toUpperCase()];
+  return findings.some((f) => (SEVERITY_RANK[f.severity] || 0) >= threshold);
+}
+
 function runMcpScan(mcpArgs) {
   let manifest;
   let source;
@@ -1388,11 +1398,17 @@ function runMcpScan(mcpArgs) {
     console.log('No heuristic findings on this manifest. This is a static pattern scan,');
     console.log('not a guarantee - it does not execute the server or call an LLM.');
   }
+
+  if (mcpFindingsBreachThreshold(out.results, mcpArgs.failOn)) {
+    console.log();
+    console.error(`Exiting 1: finding(s) at or above --fail-on=${mcpArgs.failOn} severity.`);
+    process.exit(1);
+  }
   return out;
 }
 
 function parseMcpArgs(argv) {
-  const args = { manifest: undefined, output: undefined, format: 'json', demo: false, help: false };
+  const args = { manifest: undefined, output: undefined, format: 'json', demo: false, help: false, failOn: 'none' };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     const next = () => argv[++i];
@@ -1406,6 +1422,15 @@ function parseMcpArgs(argv) {
           process.exit(2);
         }
         args.format = fmt;
+        break;
+      }
+      case '--fail-on': {
+        const level = next();
+        if (!['high', 'medium', 'low', 'none'].includes(level)) {
+          console.error(`error: argument --fail-on: invalid choice: '${level}' (choose from 'high', 'medium', 'low', 'none')`);
+          process.exit(2);
+        }
+        args.failOn = level;
         break;
       }
       case '--demo': args.demo = true; break;
@@ -1440,6 +1465,8 @@ Options:
   --format <fmt>     Output format: json (default) or sarif (SARIF 2.1.0 log for
                      CI/code-scanning tools)
   --demo             Scan a built-in deliberately vulnerable demo manifest, no file needed
+  --fail-on <level>  Exit 1 if any finding is at or above this severity: high, medium,
+                     low, or none to never fail (default: none)
   -h, --help         Show this help`);
 }
 
@@ -1456,6 +1483,7 @@ function parseArgs(argv) {
     output: 'sentinel_scan_results.json',
     demo: false,
     help: false,
+    failOn: 'none',
   };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -1469,6 +1497,15 @@ function parseArgs(argv) {
       case '--temperature': args.temperature = parseFloat(next()); break;
       case '--output': args.output = next(); break;
       case '--demo': args.demo = true; break;
+      case '--fail-on': {
+        const level = next();
+        if (!['any', 'none'].includes(level)) {
+          console.error(`error: argument --fail-on: invalid choice: '${level}' (choose from 'any', 'none')`);
+          process.exit(2);
+        }
+        args.failOn = level;
+        break;
+      }
       case '-h':
       case '--help': args.help = true; break;
       default:
@@ -1496,6 +1533,8 @@ Options:
   --temperature <n>            Sampling temperature, default 0.2
   --output <path>              Where to write full JSON results, default sentinel_scan_results.json
   --demo                       Run against a built-in demo target, no network calls
+  --fail-on <mode>              Exit 1 if any attack got past the system prompt: any, or
+                                none to never fail (default: none)
   -h, --help                   Show this help
 
 Run "sentinel-scan mcp --help" for the MCP manifest heuristic scanner.`);
@@ -1606,6 +1645,12 @@ async function runScan(args) {
   console.log('Want this scan running on a schedule instead of by hand? We\'re building');
   console.log('continuous monitoring (founder pricing $49-99/mo, waitlist open):');
   console.log('https://ventrova.dev/audit#monitoring');
+
+  if (args.failOn === 'any' && vulnerableResults.length > 0) {
+    console.log();
+    console.error(`Exiting 1: ${vulnerableResults.length} attack(s) got past the system prompt (--fail-on any).`);
+    process.exit(1);
+  }
   return out;
 }
 
@@ -1650,4 +1695,7 @@ if (require.main === module) {
 // mcpSarifLineForTool is also useful to embedders (e.g. the sentinel-scan
 // VS Code extension) that want a best-effort source line per finding
 // in-process instead of the SARIF file this normally feeds.
-module.exports = { scanMcpManifest, buildMcpSarif, mcpSarifLineForTool, DEMO_MCP_MANIFEST, VERSION };
+module.exports = {
+  scanMcpManifest, buildMcpSarif, mcpSarifLineForTool, DEMO_MCP_MANIFEST, VERSION,
+  mcpFindingsBreachThreshold,
+};

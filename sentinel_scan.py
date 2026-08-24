@@ -1380,6 +1380,11 @@ def run_mcp_scan(args):
         print()
         print("No heuristic findings on this manifest. This is a static pattern scan,")
         print("not a guarantee - it does not execute the server or call an LLM.")
+
+    if mcp_findings_breach_threshold(out["results"], args.fail_on):
+        print()
+        print(f"Exiting 1: finding(s) at or above --fail-on={args.fail_on} severity.", file=sys.stderr)
+        sys.exit(1)
     return out
 
 
@@ -1404,7 +1409,25 @@ def build_mcp_arg_parser():
                               "sarif (SARIF 2.1.0 log for CI/code-scanning tools)")
     parser.add_argument("--demo", action="store_true",
                          help="Scan a built-in deliberately vulnerable demo manifest, no file needed")
+    parser.add_argument("--fail-on", choices=["high", "medium", "low", "none"], default="none",
+                         help="Exit 1 if any finding is at or above this severity (high/medium/low), "
+                              "or never fail with 'none' (default). CI pipelines should pass "
+                              "--fail-on high (or their own threshold) explicitly.")
     return parser
+
+
+# Severity ranks for --fail-on threshold comparisons (both the `mcp` and
+# default scan commands use these strings even though the default scan's
+# findings don't carry a severity of their own - see mcp_findings_breach_threshold).
+SEVERITY_RANK = {"LOW": 1, "MEDIUM": 2, "HIGH": 3}
+
+
+def mcp_findings_breach_threshold(findings, fail_on):
+    """True if any MCP finding's severity is at or above the --fail-on threshold."""
+    if fail_on == "none":
+        return False
+    threshold = SEVERITY_RANK[fail_on.upper()]
+    return any(SEVERITY_RANK.get(f["severity"], 0) >= threshold for f in findings)
 
 # OWASP Top 10 for LLM Applications (2025 revision) category each attack
 # technique is evidence for, so findings map to a framework a security
@@ -1632,6 +1655,12 @@ def run_scan(args):
     print("Want this scan running on a schedule instead of by hand? We're building")
     print("continuous monitoring (founder pricing $49-99/mo, waitlist open):")
     print("https://ventrova.dev/audit#monitoring")
+
+    if args.fail_on == "any" and vulnerable_results:
+        print()
+        print(f"Exiting 1: {len(vulnerable_results)} attack(s) got past the system prompt "
+              f"(--fail-on any).", file=sys.stderr)
+        sys.exit(1)
     return out
 
 
@@ -1662,6 +1691,9 @@ def main():
     parser.add_argument("--output", default="sentinel_scan_results.json")
     parser.add_argument("--demo", action="store_true",
                          help="Run against a built-in demo target with no network calls, to see how the tool works")
+    parser.add_argument("--fail-on", choices=["any", "none"], default="none",
+                         help="Exit 1 if any attack got past the system prompt ('any'), or never "
+                              "fail with 'none' (default). CI pipelines should pass --fail-on any explicitly.")
     args = parser.parse_args()
 
     if not args.demo and (not args.url or not args.model):

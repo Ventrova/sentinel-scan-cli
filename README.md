@@ -248,6 +248,29 @@ standard `error`/`warning`/`note` levels. This is the format the [GitHub
 Action](#github-action) below uploads to the Security tab, and what any
 SARIF-consuming CI tool expects.
 
+### Exit codes
+
+Both `sentinel-scan` and `sentinel-scan mcp` exit `0` by default regardless
+of findings, so the demo/getting-started commands above never fail a script
+that's just trying the tool out. Pass `--fail-on` explicitly to make a run
+CI-friendly (fail the build on findings) in your own pipeline, without
+needing the GitHub Action below:
+
+```bash
+# fail if any HIGH-severity finding is present (medium/low/none also accepted)
+sentinel-scan mcp --manifest mcp.json --fail-on high
+
+# fail if any of the 15 prompt-injection attacks got past your system prompt
+sentinel-scan --url ... --model ... --fail-on any
+```
+
+`sentinel-scan mcp --fail-on` accepts `high`, `medium`, `low` (fail at or
+above that severity), or `none` (never fail, the default). `sentinel-scan
+--fail-on` accepts `any` (fail if at least one attack succeeded) or `none`
+(the default). Exit code is `1` on a breach, `0` otherwise; malformed
+arguments or an unreadable manifest still exit `2`/`1` as before. This works
+with either `--format json` or `--format sarif`.
+
 ## GitHub Action
 
 Run the MCP manifest scan in CI on every PR and fail the build on your
