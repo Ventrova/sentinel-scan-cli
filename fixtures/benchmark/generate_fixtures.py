@@ -14,6 +14,22 @@ MAL_DIR = os.path.join(HERE, "malicious")
 manifest_entries = []
 
 
+# Severity per technique - how bad a successful exploit/compromise is,
+# independent of how likely a scanner is to catch it.
+TECHNIQUE_SEVERITY = {
+    "command_injection": "critical",
+    "credential_exfiltration": "critical",
+    "rug_pull_schema_mutation": "critical",
+    "indirect_injection_output": "high",
+    "prompt_injection_description": "high",
+    "tool_poisoning_schema": "high",
+    "cross_origin_exfiltration": "high",
+    "excessive_permission_scope": "medium",
+    "typosquatting": "medium",
+    "dos_resource_exhaustion": "medium",
+}
+
+
 def write_fixture(subdir, filename, data, label, technique):
     path = os.path.join(subdir, filename)
     with open(path, "w", encoding="utf-8") as f:
@@ -22,8 +38,9 @@ def write_fixture(subdir, filename, data, label, technique):
     rel = os.path.join(os.path.basename(subdir), filename).replace("\\", "/")
     manifest_entries.append({
         "filename": rel,
-        "label": label,
+        "expected": label,
         "technique": technique,
+        "severity": TECHNIQUE_SEVERITY.get(technique) if label == "malicious" else None,
     })
 
 
@@ -399,11 +416,12 @@ for technique_id, label, stub, data in malicious_defs:
 
 # ---------------------------------------------------------------------------
 manifest = {
-    "corpus_version": "1.0.0",
+    "corpus_version": "1.1.0",
     "total_fixtures": len(manifest_entries),
-    "num_clean": sum(1 for e in manifest_entries if e["label"] == "clean"),
-    "num_malicious": sum(1 for e in manifest_entries if e["label"] == "malicious"),
+    "num_clean": sum(1 for e in manifest_entries if e["expected"] == "clean"),
+    "num_malicious": sum(1 for e in manifest_entries if e["expected"] == "malicious"),
     "techniques": sorted(seen_techniques.keys()),
+    "severity_by_technique": TECHNIQUE_SEVERITY,
     "fixtures": manifest_entries,
 }
 with open(os.path.join(HERE, "manifest.json"), "w", encoding="utf-8") as f:
@@ -413,3 +431,4 @@ with open(os.path.join(HERE, "manifest.json"), "w", encoding="utf-8") as f:
 print(f"Wrote {len(manifest_entries)} fixtures: "
       f"{manifest['num_clean']} clean, {manifest['num_malicious']} malicious "
       f"across {len(seen_techniques)} techniques.")
+

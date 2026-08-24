@@ -1,5 +1,5 @@
 {
-  "corpus_version": "1.0.0",
+  "corpus_version": "1.1.0",
   "total_fixtures": 40,
   "num_clean": 20,
   "num_malicious": 20,
@@ -15,206 +15,258 @@
     "tool_poisoning_schema",
     "typosquatting"
   ],
+  "severity_by_technique": {
+    "command_injection": "critical",
+    "credential_exfiltration": "critical",
+    "rug_pull_schema_mutation": "critical",
+    "indirect_injection_output": "high",
+    "prompt_injection_description": "high",
+    "tool_poisoning_schema": "high",
+    "cross_origin_exfiltration": "high",
+    "excessive_permission_scope": "medium",
+    "typosquatting": "medium",
+    "dos_resource_exhaustion": "medium"
+  },
   "fixtures": [
     {
       "filename": "clean/clean_01_weather_lookup.json",
-      "label": "clean",
-      "technique": null
+      "expected": "clean",
+      "technique": null,
+      "severity": null
     },
     {
       "filename": "clean/clean_02_calculator.json",
-      "label": "clean",
-      "technique": null
+      "expected": "clean",
+      "technique": null,
+      "severity": null
     },
     {
       "filename": "clean/clean_03_calendar_reader.json",
-      "label": "clean",
-      "technique": null
+      "expected": "clean",
+      "technique": null,
+      "severity": null
     },
     {
       "filename": "clean/clean_04_public_search.json",
-      "label": "clean",
-      "technique": null
+      "expected": "clean",
+      "technique": null,
+      "severity": null
     },
     {
       "filename": "clean/clean_05_unit_converter.json",
-      "label": "clean",
-      "technique": null
+      "expected": "clean",
+      "technique": null,
+      "severity": null
     },
     {
       "filename": "clean/clean_06_dictionary_lookup.json",
-      "label": "clean",
-      "technique": null
+      "expected": "clean",
+      "technique": null,
+      "severity": null
     },
     {
       "filename": "clean/clean_07_timezone_helper.json",
-      "label": "clean",
-      "technique": null
+      "expected": "clean",
+      "technique": null,
+      "severity": null
     },
     {
       "filename": "clean/clean_08_notes_app.json",
-      "label": "clean",
-      "technique": null
+      "expected": "clean",
+      "technique": null,
+      "severity": null
     },
     {
       "filename": "clean/clean_09_todo_list.json",
-      "label": "clean",
-      "technique": null
+      "expected": "clean",
+      "technique": null,
+      "severity": null
     },
     {
       "filename": "clean/clean_10_currency_exchange.json",
-      "label": "clean",
-      "technique": null
+      "expected": "clean",
+      "technique": null,
+      "severity": null
     },
     {
       "filename": "clean/clean_11_qr_code_generator.json",
-      "label": "clean",
-      "technique": null
+      "expected": "clean",
+      "technique": null,
+      "severity": null
     },
     {
       "filename": "clean/clean_12_markdown_formatter.json",
-      "label": "clean",
-      "technique": null
+      "expected": "clean",
+      "technique": null,
+      "severity": null
     },
     {
       "filename": "clean/clean_13_spell_checker.json",
-      "label": "clean",
-      "technique": null
+      "expected": "clean",
+      "technique": null,
+      "severity": null
     },
     {
       "filename": "clean/clean_14_rss_reader.json",
-      "label": "clean",
-      "technique": null
+      "expected": "clean",
+      "technique": null,
+      "severity": null
     },
     {
       "filename": "clean/clean_15_joke_generator.json",
-      "label": "clean",
-      "technique": null
+      "expected": "clean",
+      "technique": null,
+      "severity": null
     },
     {
       "filename": "clean/clean_16_recipe_finder.json",
-      "label": "clean",
-      "technique": null
+      "expected": "clean",
+      "technique": null,
+      "severity": null
     },
     {
       "filename": "clean/clean_17_transit_schedule.json",
-      "label": "clean",
-      "technique": null
+      "expected": "clean",
+      "technique": null,
+      "severity": null
     },
     {
       "filename": "clean/clean_18_file_reader_sandboxed.json",
-      "label": "clean",
-      "technique": null
+      "expected": "clean",
+      "technique": null,
+      "severity": null
     },
     {
       "filename": "clean/clean_19_news_summarizer.json",
-      "label": "clean",
-      "technique": null
+      "expected": "clean",
+      "technique": null,
+      "severity": null
     },
     {
       "filename": "clean/clean_20_password_strength_checker.json",
-      "label": "clean",
-      "technique": null
+      "expected": "clean",
+      "technique": null,
+      "severity": null
     },
     {
       "filename": "malicious/mal_prompt_injection_description_1_helpdesk_search.json",
-      "label": "malicious",
-      "technique": "prompt_injection_description"
+      "expected": "malicious",
+      "technique": "prompt_injection_description",
+      "severity": "high"
     },
     {
       "filename": "malicious/mal_prompt_injection_description_2_translate_text.json",
-      "label": "malicious",
-      "technique": "prompt_injection_description"
+      "expected": "malicious",
+      "technique": "prompt_injection_description",
+      "severity": "high"
     },
     {
       "filename": "malicious/mal_tool_poisoning_schema_1_report_export.json",
-      "label": "malicious",
-      "technique": "tool_poisoning_schema"
+      "expected": "malicious",
+      "technique": "tool_poisoning_schema",
+      "severity": "high"
     },
     {
       "filename": "malicious/mal_tool_poisoning_schema_2_invoice_create.json",
-      "label": "malicious",
-      "technique": "tool_poisoning_schema"
+      "expected": "malicious",
+      "technique": "tool_poisoning_schema",
+      "severity": "high"
     },
     {
       "filename": "malicious/mal_rug_pull_schema_mutation_1_analytics_query.json",
-      "label": "malicious",
-      "technique": "rug_pull_schema_mutation"
+      "expected": "malicious",
+      "technique": "rug_pull_schema_mutation",
+      "severity": "critical"
     },
     {
       "filename": "malicious/mal_rug_pull_schema_mutation_2_file_sync.json",
-      "label": "malicious",
-      "technique": "rug_pull_schema_mutation"
+      "expected": "malicious",
+      "technique": "rug_pull_schema_mutation",
+      "severity": "critical"
     },
     {
       "filename": "malicious/mal_excessive_permission_scope_1_notes_admin.json",
-      "label": "malicious",
-      "technique": "excessive_permission_scope"
+      "expected": "malicious",
+      "technique": "excessive_permission_scope",
+      "severity": "medium"
     },
     {
       "filename": "malicious/mal_excessive_permission_scope_2_photo_organizer.json",
-      "label": "malicious",
-      "technique": "excessive_permission_scope"
+      "expected": "malicious",
+      "technique": "excessive_permission_scope",
+      "severity": "medium"
     },
     {
       "filename": "malicious/mal_indirect_injection_output_1_fetch_ticket.json",
-      "label": "malicious",
-      "technique": "indirect_injection_output"
+      "expected": "malicious",
+      "technique": "indirect_injection_output",
+      "severity": "high"
     },
     {
       "filename": "malicious/mal_indirect_injection_output_2_fetch_pr_comments.json",
-      "label": "malicious",
-      "technique": "indirect_injection_output"
+      "expected": "malicious",
+      "technique": "indirect_injection_output",
+      "severity": "high"
     },
     {
       "filename": "malicious/mal_credential_exfiltration_1_debug_diagnostics.json",
-      "label": "malicious",
-      "technique": "credential_exfiltration"
+      "expected": "malicious",
+      "technique": "credential_exfiltration",
+      "severity": "critical"
     },
     {
       "filename": "malicious/mal_credential_exfiltration_2_config_backup.json",
-      "label": "malicious",
-      "technique": "credential_exfiltration"
+      "expected": "malicious",
+      "technique": "credential_exfiltration",
+      "severity": "critical"
     },
     {
       "filename": "malicious/mal_command_injection_1_image_convert.json",
-      "label": "malicious",
-      "technique": "command_injection"
+      "expected": "malicious",
+      "technique": "command_injection",
+      "severity": "critical"
     },
     {
       "filename": "malicious/mal_command_injection_2_run_diagnostics_cmd.json",
-      "label": "malicious",
-      "technique": "command_injection"
+      "expected": "malicious",
+      "technique": "command_injection",
+      "severity": "critical"
     },
     {
       "filename": "malicious/mal_typosquatting_1_filesystem_lookalike.json",
-      "label": "malicious",
-      "technique": "typosquatting"
+      "expected": "malicious",
+      "technique": "typosquatting",
+      "severity": "medium"
     },
     {
       "filename": "malicious/mal_typosquatting_2_github-lookalike.json",
-      "label": "malicious",
-      "technique": "typosquatting"
+      "expected": "malicious",
+      "technique": "typosquatting",
+      "severity": "medium"
     },
     {
       "filename": "malicious/mal_cross_origin_exfiltration_1_render_profile.json",
-      "label": "malicious",
-      "technique": "cross_origin_exfiltration"
+      "expected": "malicious",
+      "technique": "cross_origin_exfiltration",
+      "severity": "high"
     },
     {
       "filename": "malicious/mal_cross_origin_exfiltration_2_citation_formatter.json",
-      "label": "malicious",
-      "technique": "cross_origin_exfiltration"
+      "expected": "malicious",
+      "technique": "cross_origin_exfiltration",
+      "severity": "high"
     },
     {
       "filename": "malicious/mal_dos_resource_exhaustion_1_recursive_expand.json",
-      "label": "malicious",
-      "technique": "dos_resource_exhaustion"
+      "expected": "malicious",
+      "technique": "dos_resource_exhaustion",
+      "severity": "medium"
     },
     {
       "filename": "malicious/mal_dos_resource_exhaustion_2_bulk_export.json",
-      "label": "malicious",
-      "technique": "dos_resource_exhaustion"
+      "expected": "malicious",
+      "technique": "dos_resource_exhaustion",
+      "severity": "medium"
     }
   ]
 }
