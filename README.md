@@ -56,27 +56,32 @@ zero customization, it's worth five minutes to check your own endpoint.
 
 ## Quick start
 
-Requires Python 3.8+, no dependencies. The PyPI listing is currently a few
-releases behind `master` (missing the `sentinel-scan mcp` subcommand below),
-so if you want that, install straight from GitHub instead:
+Requires Python 3.8+, no dependencies. PyPI publishing is coming soon; until
+then install straight from the pinned release tag on GitHub:
 
 ```bash
-pip install git+https://github.com/Ventrova/sentinel-scan-cli
+pipx install git+https://github.com/Ventrova/sentinel-scan-cli.git@v1.3.0
+sentinel-scan --demo
 ```
 
-If you just want the fastest path and don't need `mcp`, the PyPI release
-also works:
+Or without pipx:
 
 ```bash
-pip install sentinel-scan-cli && sentinel-scan --demo
+pip install git+https://github.com/Ventrova/sentinel-scan-cli.git@v1.3.0
 ```
 
-Or with [pipx](https://pipx.pypa.io/), nothing left installed afterward
-(swap in `git+https://github.com/Ventrova/sentinel-scan-cli` for the latest
-source):
+PyPI (`pip install sentinel-scan-cli`) currently serves a stale `1.0.0`
+build that's missing the `sentinel-scan mcp` subcommand below, so use the
+git-install commands above until the PyPI release catches up to `master`:
 
 ```bash
-pipx run sentinel-scan-cli --demo
+pip install sentinel-scan-cli  # coming soon: currently stale (1.0.0)
+```
+
+Or run it once without installing anything:
+
+```bash
+pipx run --spec git+https://github.com/Ventrova/sentinel-scan-cli.git@v1.3.0 sentinel-scan --demo
 ```
 
 Or skip installing anything at all:
@@ -179,7 +184,7 @@ guarantee.
 ## MCP tool manifest scan
 
 > Not on the PyPI release yet - install with
-> `pip install git+https://github.com/Ventrova/sentinel-scan-cli` (see
+> `pipx install git+https://github.com/Ventrova/sentinel-scan-cli.git@v1.3.0` (see
 > [Quick start](#quick-start)) to get this subcommand.
 
 `sentinel-scan mcp` is a second, separate check: a static heuristic scanner

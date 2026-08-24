@@ -1,5 +1,39 @@
 # PyPI publish
 
+**Status: PyPI is coming soon.** `pip install sentinel-scan-cli` currently
+serves a stale `1.0.0` build (missing the `mcp` subcommand and 3 releases
+behind `master`). Until the trusted-publisher registration below lands, the
+git-install path is the primary documented install method (see README.md
+[Quick start](./README.md#quick-start)).
+
+## Interim install path - verified working (2026-08-24)
+
+In a clean environment (fresh pipx-managed venv, no prior sentinel-scan-cli
+install):
+
+```bash
+pipx install git+https://github.com/Ventrova/sentinel-scan-cli.git@v1.3.0
+```
+
+Installed cleanly as `sentinel-scan-cli 1.3.0`, exposing the `sentinel-scan`
+entry point. Confirmed both of the following work end-to-end from that
+install:
+
+```bash
+sentinel-scan --help
+sentinel-scan mcp --manifest fixtures/mcp/vulnerable.json
+```
+
+`--help` prints full usage. The `mcp` scan against the repo's own
+`fixtures/mcp/vulnerable.json` fixture correctly found 17 findings (9 HIGH,
+6 MEDIUM, 2 LOW) across 10 heuristics (tool_description_injection,
+excessive_agency_schema, missing_hitl_confirmation,
+hidden_unicode_instructions, overbroad_tool_scope, tool_name_shadowing,
+hardcoded_credential, unpinned_remote_source, indirect_injection_surface,
+missing_provenance), matching the OWASP-mapped output documented in
+README.md. No PyPI dependency anywhere in this path - it installs directly
+from the `v1.3.0` git tag.
+
 ## Trusted Publishing (OIDC) - blocked on a pypi.org manual step (2026-08-24)
 
 `.github/workflows/release.yml` builds the package (`python -m build`) and publishes it
