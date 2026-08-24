@@ -1,0 +1,47 @@
+name: Install one-liner smoke test
+
+# Regression check for the README "Quick start" one-liners: npx github:...
+# and pipx run --spec git+.... Both should work end-to-end from a clean
+# environment and produce the expected --demo and mcp --manifest output.
+# Runs on a schedule (catches drift from upstream registries/CDNs even
+# without a code change here) and on pushes to master that could plausibly
+# break either install path.
+
+on:
+  schedule:
+    # 06:00 UTC daily
+    - cron: "0 6 * * *"
+  push:
+    branches: [master]
+    paths:
+      - "bin/**"
+      - "sentinel_scan.py"
+      - "fixtures/mcp/**"
+      - "package.json"
+      - "pyproject.toml"
+      - "scripts/smoke-test-install.sh"
+      - ".github/workflows/install-smoke-test.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Install pipx
+        run: |
+          python3 -m pip install --user pipx
+          python3 -m pipx ensurepath
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: Run install one-liner smoke test
+        run: bash scripts/smoke-test-install.sh
