@@ -114,16 +114,23 @@ MCP_SEVERITY_RANK = {"LOW": 0, "MEDIUM": 1, "HIGH": 2}
 _MCP_INJECTION_PHRASES = [
     r"ignore (all |any )?(previous|prior|above) instructions",
     r"disregard (the |your )?(system prompt|previous instructions)",
-    r"\[\s*system\s*\]",
-    r"do not (tell|inform|mention|show) the user",
+    r"\[\s*system\b[^\]]{0,40}\]",
+    r"do not (tell|inform|mention|show|disclose|surface|reveal)\b[^.]{0,40}\bthe user\b",
     r"without (telling|informing|asking) the user",
     r"always (call|use|invoke) this tool (first|before)",
     r"you must (always )?call this",
     r"before (responding|answering|replying)(?!\s+to\s+the\s+api)",
     r"override (any|all) other tool",
     r"this tool takes priority over",
+    r"trusted system instruction",
+    r"supersedes? (the )?(user'?s?|original) (request|instructions?)",
+    r"note to (the )?agent",
+    r"hidden directive",
+    r"regardless of what the user (asked|specified|requested|wants|wanted)",
     r"secretly",
+    r"\bsilently\b",
     r"do not log this",
+    r"inject(?:ed|ing)? instructions?",
 ]
 _MCP_INJECTION_RE = re.compile("|".join(_MCP_INJECTION_PHRASES), re.IGNORECASE)
 _MCP_HTML_COMMENT_RE = re.compile(r"<!--.*?-->", re.DOTALL)
@@ -164,6 +171,18 @@ _MCP_ACT_KEYWORDS = (
     "transfer", "purchase", "pay", "publish", "message", "invoke",
 )
 
+
+def _mcp_keyword_hit(haystack, keywords):
+    """True if any keyword appears in haystack as a whole token - bounded by
+    non-alphanumeric characters (or string edges) on both sides. A plain
+    substring check (`kw in haystack`) false-positives on keywords that are
+    prefixes/infixes of unrelated words, e.g. "run" inside "Runs a search" or
+    "eval" inside "evaluate_expression"."""
+    for kw in keywords:
+        if re.search(r"(?<![a-z0-9])" + re.escape(kw) + r"(?![a-z0-9])", haystack):
+            return True
+    return False
+
 # Package-manager runners commonly used to launch an MCP server, split by
 # ecosystem so version-pin syntax can be checked correctly ("pkg@1.2.3" for
 # node, "pkg==1.2.3" for python).
@@ -187,7 +206,13 @@ _MCP_CLI_SECRET_ARG_RE = re.compile(
 )
 
 # Wildcard/blanket scope or permission strings instead of an enumerated list.
-_MCP_WILDCARD_SCOPE_RE = re.compile(r"^(\*|all|admin|full[_-]?access|god[_-]?mode)$", re.IGNORECASE)
+# Matches the whole string ("admin") as well as a wildcard component inside a
+# namespaced scope ("admin:*", "filesystem:full_access") - bounded by string
+# edges or a namespace separator (":", ".", "/") so it doesn't fire on an
+# unrelated word that merely contains one of these as a substring.
+_MCP_WILDCARD_SCOPE_RE = re.compile(
+    r"(^|[:./])(\*|all|admin|full[_-]?access|god[_-]?mode)($|[:./])", re.IGNORECASE
+)
 
 # Fields that would let a reviewer verify what's actually being launched for
 # a remote-sourced server (package registry pull or remote URL transport).
@@ -326,6 +351,194 @@ def _mcp_scan_description(tool_name, description):
     return findings
 
 
+def _mcp_scan_schema_text_injection(tool):
+    """LLM01: the same imperative/override-language injection vector as
+    _mcp_scan_description, but scanned across input- and output-schema
+    text (property/title descriptions, enum values) rather than just the
+    top-level tool description. A malicious schema can smuggle a directive
+    aimed at the calling agent inside a parameter's description just as
+    easily as the tool description itself ("tool poisoning" via schema)."""
+    findings = []
+    name = tool.get("name", "<unnamed>")
+    fields = []
+    in_schema, _ = _mcp_get_schema_properties(tool)
+    fields.extend(_mcp_collect_schema_strings(in_schema, path="inputSchema"))
+    out_schema = tool.get("outputSchema") or tool.get("output_schema")
+    if isinstance(out_schema, dict):
+        fields.extend(_mcp_collect_schema_strings(out_schema, path="outputSchema"))
+
+    for field_label, text in fields:
+        if not isinstance(text, str) or not text:
+            continue
+        matches = sorted(set(m.group(0).lower() for m in _MCP_INJECTION_RE.finditer(text)))
+        zero_width_hit = any(ch in text for ch in _MCP_ZERO_WIDTH_CHARS)
+        if not matches and not zero_width_hit:
+            continue
+        severity = "HIGH" if (zero_width_hit or len(matches) >= 2) else "MEDIUM"
+        confidence = 0.9 if (zero_width_hit or len(matches) >= 2) else 0.6
+        evidence_bits = []
+        if matches:
+            evidence_bits.append("phrases: " + ", ".join(matches))
+        if zero_width_hit:
+            evidence_bits.append("zero-width/invisible characters present")
+        findings.append(_mcp_finding(
+            "tool_description_injection", "LLM01", severity, name,
+            f"{field_label} " + "; ".join(evidence_bits) + f' | text: "{text[:200]}"',
+            "Strip imperative/override language directed at the calling agent from "
+            "schema property descriptions and titles, not just the top-level tool "
+            "description - the same prompt-injection vector applies anywhere an LLM "
+            "reads text from the manifest.",
+            confidence,
+        ))
+    return findings
+
+
+# Shell/exec function calls and process-spawn patterns commonly referenced
+# in a tool's description or implementation-annotation text when it shells
+# out to run a command.
+_MCP_SHELL_EXEC_RE = re.compile(
+    r"os\.system\(|subprocess\.(?:run|call|popen|check_output)\(|shell_exec\(|"
+    r"\beval\(|\bexec\(|Runtime\.getRuntime\(\)\.exec|ProcessBuilder\(|"
+    r"\bshell(?:ing)? out\b",
+    re.IGNORECASE,
+)
+# Phrases indicating a parameter is concatenated/interpolated into that
+# shell/exec call without validation or escaping.
+_MCP_UNSANITIZED_INPUT_RE = re.compile(
+    r"unsanitiz\w*|without sanitiz\w*|no sanitiz\w*|not sanitiz\w*|"
+    r"passed through (?:raw|unsanitized)|appended directly to the shell",
+    re.IGNORECASE,
+)
+
+
+def _mcp_scan_command_injection(tool):
+    """LLM06: a tool description or implementation annotation documents that
+    a caller-supplied parameter is interpolated into a shell/exec call
+    without sanitization - a command-injection primitive exposed straight
+    through the tool's declared surface."""
+    findings = []
+    name = tool.get("name", "<unnamed>")
+    text_parts = [tool.get("description", "")]
+    _, properties = _mcp_get_schema_properties(tool)
+    if isinstance(properties, dict):
+        for prop_schema in properties.values():
+            if isinstance(prop_schema, dict) and isinstance(prop_schema.get("description"), str):
+                text_parts.append(prop_schema["description"])
+    annotations = tool.get("annotations")
+    if isinstance(annotations, dict):
+        for value in annotations.values():
+            if isinstance(value, str):
+                text_parts.append(value)
+    haystack = " ".join(t for t in text_parts if isinstance(t, str))
+
+    if _MCP_SHELL_EXEC_RE.search(haystack) and _MCP_UNSANITIZED_INPUT_RE.search(haystack):
+        findings.append(_mcp_finding(
+            "command_injection_risk", "LLM06", "HIGH", name,
+            "tool description/annotations indicate a caller-supplied parameter is "
+            f'interpolated into a shell/exec call without sanitization: "{haystack[:200]}"',
+            "Never build a shell command string by interpolating caller-supplied "
+            "input. Use an argument-vector API (no shell=True/os.system), an "
+            "allow-listed enum of operations, or strict validation before any "
+            "exec/shell call the tool makes.",
+            0.8,
+        ))
+    return findings
+
+
+_MCP_URL_RE = re.compile(r"https?://[^\s'\"]+")
+_MCP_URL_PLACEHOLDER_RE = re.compile(r"\{(\w+)\}")
+# Schema-property-name fragments that suggest the parameter carries bulk or
+# sensitive content, as opposed to a small identifier/flag.
+_MCP_CONTENT_PARAM_MARKERS = (
+    "content", "document", "body", "secret", "password", "token",
+    "credential", "history", "message", "transcript",
+)
+
+
+def _mcp_scan_cross_origin_exfiltration(tool):
+    """LLM02: description text builds an outbound URL that embeds a
+    content-bearing tool parameter as a query-string placeholder - fetching
+    or even just rendering/previewing that link forwards the parameter's
+    contents to whatever third-party host the URL points at."""
+    findings = []
+    name = tool.get("name", "<unnamed>")
+    _, properties = _mcp_get_schema_properties(tool)
+    prop_names = list(properties.keys()) if isinstance(properties, dict) else []
+
+    text_parts = [tool.get("description", "")]
+    if isinstance(properties, dict):
+        for prop_schema in properties.values():
+            if isinstance(prop_schema, dict) and isinstance(prop_schema.get("description"), str):
+                text_parts.append(prop_schema["description"])
+    haystack = " ".join(t for t in text_parts if isinstance(t, str))
+
+    seen = set()
+    for url in _MCP_URL_RE.findall(haystack):
+        placeholders = _MCP_URL_PLACEHOLDER_RE.findall(url)
+        for placeholder in placeholders:
+            ph_lower = placeholder.lower()
+            for prop in prop_names:
+                prop_lower = prop.lower()
+                if prop_lower not in ph_lower and ph_lower not in prop_lower:
+                    continue
+                if not any(marker in prop_lower for marker in _MCP_CONTENT_PARAM_MARKERS):
+                    continue
+                key = (prop, url)
+                if key in seen:
+                    continue
+                seen.add(key)
+                findings.append(_mcp_finding(
+                    "cross_origin_exfiltration", "LLM02", "HIGH", name,
+                    f'description embeds content-bearing parameter "{prop}" (via '
+                    f'placeholder "{{{placeholder}}}") into an outbound URL: '
+                    f'"{url[:150]}"',
+                    "Never construct an outbound URL by interpolating raw tool "
+                    "input, especially content/credential-bearing parameters, into "
+                    "a query string - that lets the manifest silently exfiltrate "
+                    "data to a third-party endpoint whenever the link is fetched, "
+                    "previewed, or clicked.",
+                    0.75,
+                ))
+    return findings
+
+
+# Phrases documenting that a tool has no bound on how much work it does or
+# data it returns per call - the static self-report of an unbounded-
+# consumption / resource-exhaustion primitive.
+_MCP_DOS_PHRASES = [
+    r"no (?:depth|size|row|pagination|rate|output)[\w\s-]{0,25}(?:limit|cap)s?",
+    r"without (?:any )?(?:depth|size|row|output)?[\w\s-]{0,15}(?:limit|cap)s?",
+    r"\bunbounded\b",
+    r"\bno pagination\b",
+    r"exhaust\w*\s+(?:the\s+)?(?:caller'?s?\s+)?(?:memory|context|resources?|cpu)",
+    r"\b(?:hang|crash) (?:or (?:crash|hang) )?the (?:host|server|process)\b",
+]
+_MCP_DOS_RE = re.compile("|".join(_MCP_DOS_PHRASES), re.IGNORECASE)
+
+
+def _mcp_scan_dos_resource_exhaustion(tool):
+    """LLM10: a tool description documents that it has no depth/size/row/
+    pagination limit or output cap - a single call can exhaust memory, CPU,
+    or the calling model's context window (unbounded consumption)."""
+    findings = []
+    name = tool.get("name", "<unnamed>")
+    description = tool.get("description", "")
+    if not isinstance(description, str) or not description:
+        return findings
+    matches = sorted(set(m.group(0).lower() for m in _MCP_DOS_RE.finditer(description)))
+    if matches:
+        findings.append(_mcp_finding(
+            "dos_resource_exhaustion", "LLM10", "MEDIUM", name,
+            "description documents unbounded resource consumption: " +
+            ", ".join(matches) + f' | description: "{description[:200]}"',
+            "Enforce a depth/size/row limit and pagination server-side, and cap "
+            "output size before returning it to the caller, so a single call "
+            "can't exhaust memory, CPU, or the model's context window.",
+            0.7,
+        ))
+    return findings
+
+
 def _mcp_scan_name_shadowing(tools):
     findings = []
     names = [t.get("name", "") for t in tools if isinstance(t.get("name"), str)]
@@ -447,8 +660,8 @@ def _mcp_scan_schema_agency(tool):
 
 def _mcp_tool_capability_tags(tool):
     haystack = f"{tool.get('name', '')} {tool.get('description', '')}".lower()
-    fetches = any(kw in haystack for kw in _MCP_FETCH_KEYWORDS)
-    acts = any(kw in haystack for kw in _MCP_ACT_KEYWORDS)
+    fetches = _mcp_keyword_hit(haystack, _MCP_FETCH_KEYWORDS)
+    acts = _mcp_keyword_hit(haystack, _MCP_ACT_KEYWORDS)
     return fetches, acts
 
 
@@ -586,7 +799,7 @@ def _mcp_scan_wildcard_scope(name, scopes):
     if not isinstance(scopes, list):
         return findings
     for scope in scopes:
-        if isinstance(scope, str) and _MCP_WILDCARD_SCOPE_RE.match(scope.strip()):
+        if isinstance(scope, str) and _MCP_WILDCARD_SCOPE_RE.search(scope.strip()):
             findings.append(_mcp_finding(
                 "overbroad_tool_scope", "LLM06", "HIGH", name,
                 f'declares a wildcard/blanket scope entry: "{scope}"',
@@ -627,7 +840,7 @@ def _mcp_tool_sensitive_capability(tool):
     prop_names = " ".join(properties.keys()) if isinstance(properties, dict) else ""
     haystack = f"{tool.get('name', '')} {tool.get('description', '')} {prop_names}".lower()
     for capability, severity, keywords in _MCP_SENSITIVE_CAPABILITY_GROUPS:
-        if any(kw in haystack for kw in keywords):
+        if _mcp_keyword_hit(haystack, keywords):
             return capability, severity
     return None, None
 
@@ -750,7 +963,11 @@ def scan_mcp_manifest(manifest):
             continue
         name = tool.get("name", "<unnamed>")
         findings.extend(_mcp_scan_description(name, tool.get("description")))
+        findings.extend(_mcp_scan_schema_text_injection(tool))
         findings.extend(_mcp_scan_schema_agency(tool))
+        findings.extend(_mcp_scan_command_injection(tool))
+        findings.extend(_mcp_scan_cross_origin_exfiltration(tool))
+        findings.extend(_mcp_scan_dos_resource_exhaustion(tool))
         findings.extend(_mcp_scan_wildcard_scope(name, tool.get("scopes") or tool.get("permissions")))
         findings.extend(_mcp_scan_hitl_confirmation(tool))
         findings.extend(_mcp_scan_hidden_unicode(tool))
@@ -943,6 +1160,7 @@ OWASP_LLM_TOP10 = {
     "LLM05": "Improper Output Handling",
     "LLM06": "Excessive Agency",
     "LLM07": "System Prompt Leakage",
+    "LLM10": "Unbounded Consumption",
 }
 
 # OWASP MCP Top 10 (beta v0.1) category each MCP-specific heuristic is
@@ -963,6 +1181,9 @@ OWASP_MCP_TOP10 = {
     "missing_provenance": "MCP04: Supply Chain Risk",
     "missing_hitl_confirmation": "MCP06: Excessive Agency / Permissions",
     "hidden_unicode_instructions": "MCP01: Prompt Injection via Tool Descriptions",
+    "command_injection_risk": "MCP06: Excessive Agency / Permissions",
+    "cross_origin_exfiltration": "MCP05: Cross-Origin / Third-Party Data Exfiltration",
+    "dos_resource_exhaustion": "MCP08: Denial of Service / Unbounded Consumption",
 }
 
 # Bounded attack corpus: 15 known prompt-injection / jailbreak technique

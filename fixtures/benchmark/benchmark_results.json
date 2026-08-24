@@ -1,0 +1,540 @@
+{
+  "corpus_version": "1.1.0",
+  "total_fixtures": 40,
+  "num_clean": 20,
+  "num_malicious": 20,
+  "results": [
+    {
+      "scanner": "sentinel-scan-cli (Python)",
+      "status": "evaluated",
+      "network_free": true,
+      "num_fixtures": 40,
+      "true_positives": 20,
+      "false_negatives": 0,
+      "true_negatives": 20,
+      "false_positives": 0,
+      "errors": 0,
+      "detection_rate": 1.0,
+      "false_positive_rate": 0.0,
+      "total_runtime_seconds": 7.2022,
+      "avg_runtime_ms_per_fixture": 180.06,
+      "per_fixture": [
+        {
+          "file": "clean/clean_01_weather_lookup.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_02_calculator.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_03_calendar_reader.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_04_public_search.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_05_unit_converter.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_06_dictionary_lookup.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_07_timezone_helper.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_08_notes_app.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_09_todo_list.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_10_currency_exchange.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_11_qr_code_generator.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_12_markdown_formatter.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_13_spell_checker.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_14_rss_reader.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_15_joke_generator.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_16_recipe_finder.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_17_transit_schedule.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_18_file_reader_sandboxed.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_19_news_summarizer.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_20_password_strength_checker.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "malicious/mal_prompt_injection_description_1_helpdesk_search.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1
+        },
+        {
+          "file": "malicious/mal_prompt_injection_description_2_translate_text.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1
+        },
+        {
+          "file": "malicious/mal_tool_poisoning_schema_1_report_export.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1
+        },
+        {
+          "file": "malicious/mal_tool_poisoning_schema_2_invoice_create.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1
+        },
+        {
+          "file": "malicious/mal_rug_pull_schema_mutation_1_analytics_query.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 2
+        },
+        {
+          "file": "malicious/mal_rug_pull_schema_mutation_2_file_sync.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 2
+        },
+        {
+          "file": "malicious/mal_excessive_permission_scope_1_notes_admin.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1
+        },
+        {
+          "file": "malicious/mal_excessive_permission_scope_2_photo_organizer.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1
+        },
+        {
+          "file": "malicious/mal_indirect_injection_output_1_fetch_ticket.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1
+        },
+        {
+          "file": "malicious/mal_indirect_injection_output_2_fetch_pr_comments.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1
+        },
+        {
+          "file": "malicious/mal_credential_exfiltration_1_debug_diagnostics.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 3
+        },
+        {
+          "file": "malicious/mal_credential_exfiltration_2_config_backup.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1
+        },
+        {
+          "file": "malicious/mal_command_injection_1_image_convert.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1
+        },
+        {
+          "file": "malicious/mal_command_injection_2_run_diagnostics_cmd.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 4
+        },
+        {
+          "file": "malicious/mal_typosquatting_1_filesystem_lookalike.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 3
+        },
+        {
+          "file": "malicious/mal_typosquatting_2_github-lookalike.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1
+        },
+        {
+          "file": "malicious/mal_cross_origin_exfiltration_1_render_profile.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1
+        },
+        {
+          "file": "malicious/mal_cross_origin_exfiltration_2_citation_formatter.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1
+        },
+        {
+          "file": "malicious/mal_dos_resource_exhaustion_1_recursive_expand.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1
+        },
+        {
+          "file": "malicious/mal_dos_resource_exhaustion_2_bulk_export.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1
+        }
+      ]
+    },
+    {
+      "scanner": "sentinel-scan-cli (Node)",
+      "status": "evaluated",
+      "network_free": true,
+      "num_fixtures": 40,
+      "true_positives": 10,
+      "false_negatives": 10,
+      "true_negatives": 18,
+      "false_positives": 2,
+      "errors": 0,
+      "detection_rate": 0.5,
+      "false_positive_rate": 0.1,
+      "total_runtime_seconds": 2.9837,
+      "avg_runtime_ms_per_fixture": 74.59,
+      "per_fixture": [
+        {
+          "file": "clean/clean_01_weather_lookup.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_02_calculator.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 1
+        },
+        {
+          "file": "clean/clean_03_calendar_reader.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_04_public_search.json",
+          "expected": "clean",
+          "flagged": true,
+          "num_findings": 1
+        },
+        {
+          "file": "clean/clean_05_unit_converter.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_06_dictionary_lookup.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_07_timezone_helper.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_08_notes_app.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_09_todo_list.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_10_currency_exchange.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_11_qr_code_generator.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_12_markdown_formatter.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_13_spell_checker.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_14_rss_reader.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_15_joke_generator.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_16_recipe_finder.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_17_transit_schedule.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_18_file_reader_sandboxed.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_19_news_summarizer.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "clean/clean_20_password_strength_checker.json",
+          "expected": "clean",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "malicious/mal_prompt_injection_description_1_helpdesk_search.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1
+        },
+        {
+          "file": "malicious/mal_prompt_injection_description_2_translate_text.json",
+          "expected": "malicious",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "malicious/mal_tool_poisoning_schema_1_report_export.json",
+          "expected": "malicious",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "malicious/mal_tool_poisoning_schema_2_invoice_create.json",
+          "expected": "malicious",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "malicious/mal_rug_pull_schema_mutation_1_analytics_query.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1
+        },
+        {
+          "file": "malicious/mal_rug_pull_schema_mutation_2_file_sync.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1
+        },
+        {
+          "file": "malicious/mal_excessive_permission_scope_1_notes_admin.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1
+        },
+        {
+          "file": "malicious/mal_excessive_permission_scope_2_photo_organizer.json",
+          "expected": "malicious",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "malicious/mal_indirect_injection_output_1_fetch_ticket.json",
+          "expected": "malicious",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "malicious/mal_indirect_injection_output_2_fetch_pr_comments.json",
+          "expected": "malicious",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "malicious/mal_credential_exfiltration_1_debug_diagnostics.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 3
+        },
+        {
+          "file": "malicious/mal_credential_exfiltration_2_config_backup.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1
+        },
+        {
+          "file": "malicious/mal_command_injection_1_image_convert.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1
+        },
+        {
+          "file": "malicious/mal_command_injection_2_run_diagnostics_cmd.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 4
+        },
+        {
+          "file": "malicious/mal_typosquatting_1_filesystem_lookalike.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 3
+        },
+        {
+          "file": "malicious/mal_typosquatting_2_github-lookalike.json",
+          "expected": "malicious",
+          "flagged": true,
+          "num_findings": 1
+        },
+        {
+          "file": "malicious/mal_cross_origin_exfiltration_1_render_profile.json",
+          "expected": "malicious",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "malicious/mal_cross_origin_exfiltration_2_citation_formatter.json",
+          "expected": "malicious",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "malicious/mal_dos_resource_exhaustion_1_recursive_expand.json",
+          "expected": "malicious",
+          "flagged": false,
+          "num_findings": 0
+        },
+        {
+          "file": "malicious/mal_dos_resource_exhaustion_2_bulk_export.json",
+          "expected": "malicious",
+          "flagged": false,
+          "num_findings": 0
+        }
+      ]
+    },
+    {
+      "scanner": "MCP-Scan (Invariant Labs)",
+      "status": "not_evaluated",
+      "reason": "pip install mcp-scan succeeded into benchmark_envs/venv_mcpscan, but mcp-scan's static `scan` command requires invoking each MCP server's tools/list over a live client-server connection (stdio/SSE) rather than reading a manifest file directly, and also calls out to Invariant's hosted guardrail API by default for the prompt-injection classifier. Our fixtures are raw mcp.json tool manifests with no runnable server process behind them, and wiring 40 stub servers plus disabling the network call was out of scope for this benchmark round. Not scored.",
+      "network_free": false
+    },
+    {
+      "scanner": "Cisco mcp-scanner",
+      "status": "not_evaluated",
+      "reason": "pip install into benchmark_envs/venv_cisco and venv_cisco312 (Python 3.12 required, project's default 3.14 is unsupported) was completed, but Cisco mcp-scanner's non-network-calling mode is YARA-rule based over server source/config and does not accept a bare mcp.json tool-manifest as input the way this benchmark corpus is structured; its LLM-judge and OSV/vuln lookup modes require network access, which this environment's network-free scoring column excludes. Not scored this round.",
+      "network_free": false
+    },
+    {
+      "scanner": "mcpshield (npm)",
+      "status": "not_evaluated",
+      "reason": "npm install completed into benchmark_envs/npm_mcpshield, but the package's CLI expects a running MCP server endpoint to connect to and probe, not a static manifest file, so it could not be pointed at these 40 fixture files without standing up 40 live stub servers. Not scored this round.",
+      "network_free": true
+    }
+  ]
+}
