@@ -132,3 +132,31 @@ and `sentinel-scan mcp --help` both run correctly from the installed entry point
 config, metadata, README-as-long_description, entry point, and OIDC workflow are all
 already correct and tested - `git tag vX.Y.Z && git push origin vX.Y.Z` is the entire
 release action.
+
+## Frozen for Show HN 2026-08-25, final end-to-end smoke test (2026-08-24)
+
+`master` frozen at `v1.4.0` (commit `fadd73e`, pushed to `origin/master`). All three
+published install paths were exercised fresh (temp dirs / fresh venv / no pre-existing
+local install) and produced identical, correct output:
+
+1. `pipx run --no-cache --spec "git+https://github.com/Ventrova/sentinel-scan-cli.git@v1.4.0" sentinel-scan --demo`
+   and `... mcp --manifest fixtures/mcp/vulnerable.json` - `--no-cache` used deliberately
+   to rule out the known pipx stale-cache gotcha (see org memory). `--demo` found
+   3/15 attacks; `mcp` found 17 findings in 5 tools, matching README.
+2. `npx --yes github:Ventrova/sentinel-scan-cli --demo` and `... mcp --manifest ...`
+   (tracks `master`, now pointing at the just-pushed freeze commit) - identical
+   3/15 and 17-finding output.
+3. `pip install .` from a fresh `git clone --branch v1.4.0` into a clean venv, then
+   ran the installed `sentinel-scan` entry point directly - identical 3/15 and
+   17-finding output.
+
+`scripts/publish.sh` (dry run) re-verified green at `1.4.0` the same session: version
+parity across all four source files, `npm pack --dry-run` clean, `python -m build` +
+`twine check dist/*` PASSED for both wheel and sdist. Nothing was published.
+
+**Registry status re-checked live (2026-08-24):** `registry.npmjs.org/sentinel-scan-cli`
+returns 404 (never published). `pypi.org/pypi/sentinel-scan-cli/json` still serves the
+stale `1.0.0` upload. Both the npm token/OIDC step (NPM_PUBLISH.md) and the PyPI
+trusted-publisher registration step (above, this file) remain outstanding, human-only
+actions - the `scripts/publish.sh` runbook is the entire remaining task once either
+lands. No new features were added ahead of launch; this session was freeze + verify only.
