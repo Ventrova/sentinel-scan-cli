@@ -263,6 +263,11 @@ jobs:
 No network calls, no secrets required - it's the same static heuristic
 scanner described above, just wired into CI.
 
+Want history across runs instead of digging through per-PR logs? We're
+gauging demand for a hosted dashboard that trends findings by severity and
+OWASP category over time: **https://ventrova.dev/hosted-dashboard** (pre-launch
+waitlist, no product yet).
+
 Each SARIF result maps to a rule ID (the heuristic name, e.g.
 `tool_description_injection`), an OWASP LLM Top 10 category
 (`shortDescription`/`properties.owasp_category` on the rule, e.g. `LLM01:
