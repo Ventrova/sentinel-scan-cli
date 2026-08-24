@@ -1647,4 +1647,7 @@ if (require.main === module) {
   });
 }
 
-module.exports = { scanMcpManifest, buildMcpSarif, DEMO_MCP_MANIFEST, VERSION };
+// mcpSarifLineForTool is also useful to embedders (e.g. the sentinel-scan
+// VS Code extension) that want a best-effort source line per finding
+// in-process instead of the SARIF file this normally feeds.
+module.exports = { scanMcpManifest, buildMcpSarif, mcpSarifLineForTool, DEMO_MCP_MANIFEST, VERSION };
