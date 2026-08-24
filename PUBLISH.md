@@ -1,38 +1,56 @@
 # PyPI publish
 
-## Token-based release (2026-08-24)
+## Trusted Publishing (OIDC) - blocked on a pypi.org manual step (2026-08-24)
 
 `.github/workflows/release.yml` builds the package (`python -m build`) and publishes it
-via `pypa/gh-action-pypi-publish@release/v1` using a `PYPI_API_TOKEN` repo secret
-(`password: ${{ secrets.PYPI_API_TOKEN }}`). The workflow triggers on pushing a tag
-matching `v*.*.*` (e.g. `v1.3.0`) and publishes through the `pypi` GitHub Environment.
+via `pypa/gh-action-pypi-publish@release/v1` using GitHub Actions OIDC (`permissions:
+id-token: write`, no stored token/password anywhere in the repo or its secrets). The
+workflow triggers on pushing a tag matching `v*.*.*` (e.g. `v1.3.0`) and publishes
+through the `pypi` GitHub Environment.
 
-This means the entire release flow, once the `PYPI_API_TOKEN` secret exists in the repo
-(Settings -> Secrets and variables -> Actions -> New repository secret, or scoped to the
-`pypi` environment), is:
+A token-based variant (`PYPI_API_TOKEN` secret) was tried and reverted on 2026-08-24:
+storing a long-lived API token is a worse security posture than OIDC and was explicitly
+out of scope for this release, so the workflow stays OIDC-only.
+
+### Confirmed blocker: trusted publisher not registered on PyPI
+
+Pushing `v1.3.0` on 2026-08-24T02:29 UTC triggered the OIDC workflow and it failed with:
 
 ```
-git tag v1.3.0
-git push origin v1.3.0
+Trusted publishing exchange failure:
+Token request failed: the server refused the request for the following reasons:
+* `invalid-publisher`: valid token, but no corresponding publisher (Publisher with
+  matching claims was not found)
 ```
 
-No PyPI-side dashboard configuration is required first (unlike OIDC Trusted Publishing,
-which needs a one-time manual "add trusted publisher" step on pypi.org before it works).
-A token-scoped-to-this-project API token (created at
-https://pypi.org/manage/account/token/, scope: "Entire account" for the very first
-upload of a new project, or scoped to `sentinel-scan-cli` once the project exists) is
-the only prerequisite.
+(GitHub Actions run 32683219284.) This is expected: `sentinel-scan-cli` already exists
+on PyPI (a stale manual `1.0.0` upload from 2026-08-23T15:53 UTC), so PyPI requires the
+project owner to register the trusted publisher from the *existing-project* settings
+page rather than auto-creating one from a "pending publisher" request.
 
-### Note: the project already exists on PyPI
+**One-time manual step required (human, PyPI account owner only):**
 
-`sentinel-scan-cli` is already live on PyPI, but only as a stale `1.0.0` (uploaded
-2026-08-23T15:53 UTC via a manual token upload - README quickstart's plain
-`pip install sentinel-scan-cli` reflects that version and is missing everything from
-`1.1.0` onward, including the `sentinel-scan mcp` subcommand). Whoever owns that PyPI
-project needs to create a scoped API token for it and add it as the `PYPI_API_TOKEN`
-secret; then tag-and-push closes the gap with `master` (currently `1.3.0`).
+1. Log into https://pypi.org with the account that owns the `sentinel-scan-cli` project.
+2. Go to https://pypi.org/manage/project/sentinel-scan-cli/settings/publishing/.
+3. Add a trusted publisher with:
+   - Owner: `Ventrova`
+   - Repository name: `sentinel-scan-cli`
+   - Workflow name: `release.yml`
+   - Environment name: `pypi`
+4. Submit. No token, password, or TOTP seed needs to be stored anywhere.
 
-## Manual fallback (if you'd rather publish from a local machine once)
+### After PyPI-side registration lands
+
+```
+git tag v1.3.1 && git push origin v1.3.1
+```
+
+(or delete and re-push `v1.3.0` if no code changes are needed) - GitHub Actions builds
+and publishes automatically, closing the gap between PyPI (`1.0.0`) and `master`
+(currently `1.3.0`). No manual approval step once registered, unless the `pypi`
+environment is configured with required reviewers.
+
+## Manual fallback (only if Trusted Publishing is ever unavailable)
 
 ```
 python -m twine upload --username __token__ --password <PYPI_TOKEN> dist/*
@@ -52,7 +70,7 @@ venv (`python -m venv` + `pip install dist/*.whl`) and confirmed `sentinel-scan 
 and `sentinel-scan mcp --help` both run correctly from the installed entry point, with
 `sentinel_scan.VERSION == "1.3.0"`.
 
-**Zero remaining prep once `PYPI_API_TOKEN` exists as a repo/environment secret**: the
-build config, metadata, README-as-long_description, entry point, and workflow are all
+**Zero remaining prep once the trusted publisher is registered on pypi.org**: the build
+config, metadata, README-as-long_description, entry point, and OIDC workflow are all
 already correct and tested - `git tag vX.Y.Z && git push origin vX.Y.Z` is the entire
 release action.
