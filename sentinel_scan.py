@@ -44,9 +44,9 @@ import time
 import urllib.error
 import urllib.request
 
-__version__ = "1.4.8"
+__version__ = "1.4.9"
 
-VERSION = "1.4.8"
+VERSION = "1.4.9"
 
 # --- MCP manifest heuristic scanner -----------------------------------------
 #

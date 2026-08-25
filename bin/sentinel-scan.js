@@ -2051,6 +2051,12 @@ async function main() {
     return;
   }
 
+  if (process.argv[2] === 'mcp-server') {
+    const { runMcpServer } = require('./sentinel-scan-mcp-server.js');
+    await runMcpServer();
+    return;
+  }
+
   const args = parseArgs(process.argv.slice(2));
   if (args.version) {
     console.log(VERSION);
@@ -2072,6 +2078,19 @@ async function main() {
   await runScan(args);
 }
 
+// mcpSarifLineForTool is also useful to embedders (e.g. the sentinel-scan
+// VS Code extension) that want a best-effort source line per finding
+// in-process instead of the SARIF file this normally feeds.
+//
+// This must be assigned before the require.main entrypoint below runs,
+// because the `mcp-server` subcommand does a circular require() of this
+// file from sentinel-scan-mcp-server.js - if exports aren't set yet at
+// that point, it gets an empty object back instead of scanMcpManifest.
+module.exports = {
+  scanMcpManifest, buildMcpSarif, mcpSarifLineForTool, DEMO_MCP_MANIFEST, VERSION,
+  mcpFindingsBreachThreshold, parseEvidenceArgs, runEvidenceCommand,
+};
+
 if (require.main === module) {
   main().catch((e) => {
     console.error(e);
@@ -2081,11 +2100,3 @@ if (require.main === module) {
     process.exit(1);
   });
 }
-
-// mcpSarifLineForTool is also useful to embedders (e.g. the sentinel-scan
-// VS Code extension) that want a best-effort source line per finding
-// in-process instead of the SARIF file this normally feeds.
-module.exports = {
-  scanMcpManifest, buildMcpSarif, mcpSarifLineForTool, DEMO_MCP_MANIFEST, VERSION,
-  mcpFindingsBreachThreshold, parseEvidenceArgs, runEvidenceCommand,
-};

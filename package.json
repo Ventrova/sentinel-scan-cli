@@ -1,6 +1,6 @@
 {
   "name": "sentinel-scan-cli",
-  "version": "1.4.8",
+  "version": "1.4.9",
   "description": "Free, zero-dependency 15-attack prompt-injection / jailbreak smoke test for your own LLM endpoint (OWASP LLM Top 10), plus a static MCP tool-manifest heuristic scanner (`sentinel-scan mcp`).",
   "license": "MIT",
   "author": "Ventrova",
@@ -26,7 +26,9 @@
   },
   "files": [
     "bin/sentinel-scan.js",
-    "lib/evidence-pack.js"
+    "bin/sentinel-scan-mcp-server.js",
+    "lib/evidence-pack.js",
+    "server.json"
   ],
   "scripts": {
     "test": "node --test tests/*.test.js",
@@ -34,5 +36,9 @@
   },
   "engines": {
     "node": ">=18"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "zod": "^4.4.3"
   }
 }
