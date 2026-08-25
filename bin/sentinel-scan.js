@@ -1512,6 +1512,9 @@ function runMcpScan(mcpArgs) {
     console.log();
     console.log('No heuristic findings on this manifest. This is a static pattern scan,');
     console.log('not a guarantee - it does not execute the server or call an LLM.');
+    console.log();
+    console.log('Want this on file for an auditor or customer? `sentinel-scan evidence`');
+    console.log('turns it into a filled EU AI Act Annex IV evidence pack (free).');
   }
 
   if (mcpFindingsBreachThreshold(out.results, mcpArgs.failOn)) {
@@ -1959,6 +1962,10 @@ async function runScan(args) {
     console.log('`sentinel-scan evidence` turns this same scan into a filled EU AI Act Annex IV');
     console.log('evidence pack (free). Want a human to run the deeper, LLM-judged version and');
     console.log('scope a fix? Email business@ventrova.dev with this output attached.');
+  } else {
+    console.log();
+    console.log('Clean run. Want it on file for an auditor or customer? `sentinel-scan evidence`');
+    console.log('turns it into a filled EU AI Act Annex IV evidence pack (free).');
   }
   console.log();
   console.log('Want this scan running on a schedule instead of by hand? We\'re building');

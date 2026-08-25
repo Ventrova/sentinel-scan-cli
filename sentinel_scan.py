@@ -44,9 +44,9 @@ import time
 import urllib.error
 import urllib.request
 
-__version__ = "1.4.6"
+__version__ = "1.4.7"
 
-VERSION = "1.4.6"
+VERSION = "1.4.7"
 
 # --- MCP manifest heuristic scanner -----------------------------------------
 #
@@ -1465,6 +1465,9 @@ def run_mcp_scan(args):
         print()
         print("No heuristic findings on this manifest. This is a static pattern scan,")
         print("not a guarantee - it does not execute the server or call an LLM.")
+        print()
+        print("Want this on file for an auditor or customer? Turn it into a filled EU AI")
+        print("Act Annex IV evidence pack (free): https://ventrova.dev/annex-iv-generator")
 
     if mcp_findings_breach_threshold(out["results"], args.fail_on):
         print()
@@ -1758,6 +1761,10 @@ def run_scan(args):
         print("https://ventrova.dev/annex-iv-generator")
         print("Want a human to run the deeper, LLM-judged version and scope a fix?")
         print("Email business@ventrova.dev with this output attached.")
+    else:
+        print()
+        print("Clean run. Want it on file for an auditor or customer? Turn it into a")
+        print("filled EU AI Act Annex IV evidence pack (free): https://ventrova.dev/annex-iv-generator")
     print()
     print("Want this scan running on a schedule instead of by hand? We're building")
     print("continuous monitoring (founder pricing $49-99/mo, waitlist open):")
