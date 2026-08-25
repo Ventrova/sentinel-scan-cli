@@ -1,8 +1,8 @@
 {
   "name": "sentinel-scan-cli",
-  "version": "1.4.11",
+  "version": "1.4.12",
   "mcpName": "io.github.Ventrova/sentinel-scan-cli",
-  "description": "Static MCP security scanner (CLI + MCP server): detects tool poisoning, prompt injection, tool-name shadowing, excessive-agency schemas, unpinned/remote sources, and rug-pulls in MCP manifests. Also includes a 15-attack OWASP LLM Top 10 prompt-injection/jailbreak smoke test for your own LLM endpoint.",
+  "description": "Scan MCP servers and tool manifests for tool poisoning, prompt injection, tool-name shadowing, excessive-agency schemas, unpinned/remote sources, and rug-pulls - 10 OWASP-mapped heuristics, CLI + MCP server, fully offline. Also runs a 15-attack OWASP LLM Top 10 jailbreak smoke test against your own LLM endpoint.",
   "license": "MIT",
   "author": "Ventrova",
   "homepage": "https://github.com/Ventrova/sentinel-scan-cli",
@@ -29,7 +29,12 @@
     "ai-security",
     "red-team",
     "owasp",
-    "sarif"
+    "sarif",
+    "llm-security",
+    "devsecops",
+    "vulnerability-scanner",
+    "static-analysis",
+    "mcp-client"
   ],
   "bin": {
     "sentinel-scan": "bin/sentinel-scan.js"

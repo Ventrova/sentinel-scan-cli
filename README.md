@@ -18,6 +18,8 @@
 
 # Sentinel Scan CLI - MCP Security Scanner
 
+**10 OWASP-mapped heuristics · 15-attack jailbreak suite · 100% offline · CLI + MCP server**
+
 A free, open-source **MCP security scanner**, available as both a CLI and an
 MCP server, that statically scans MCP tool manifests (`mcp.json`) and
 `mcpServers` configs for 10 OWASP-mapped heuristics: tool-description
