@@ -16,36 +16,55 @@
 [![GitHub release](https://img.shields.io/github/v/release/Ventrova/sentinel-scan-cli)](https://github.com/Ventrova/sentinel-scan-cli/releases)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Ventrova/sentinel-scan-cli/blob/v1.4.8/LICENSE)
 
-# Sentinel Scan CLI
+# Sentinel Scan CLI - MCP Security Scanner
 
-A free, open-source command-line tool that scans LLM apps and MCP servers for
-security issues: a 15-attack prompt-injection and jailbreak suite against
-your own LLM-backed endpoint, and a static heuristic scanner for MCP tool
-manifests (`mcp.json`). Every finding is tagged with its **OWASP LLM Top 10**
+A free, open-source **MCP security scanner**, available as both a CLI and an
+MCP server, that statically scans MCP tool manifests (`mcp.json`) and
+`mcpServers` configs for 10 OWASP-mapped heuristics: tool-description
+prompt injection, tool-name shadowing (tool poisoning), excessive-agency
+schema patterns, indirect-injection surface area, unpinned/remote server
+sources, hardcoded credentials, overbroad wildcard scopes, missing
+provenance/signature metadata, missing human-in-the-loop confirmation, and
+hidden-unicode/ASCII-smuggling instructions - see
+[MCP tool manifest scan](#mcp-tool-manifest-scan) below. It also ships a
+15-attack prompt-injection and jailbreak suite you can run against your own
+LLM-backed endpoint. Every finding is tagged with its **OWASP LLM Top 10**
 (and OWASP MCP Top 10) category, so results map straight onto the checklist
 your security team already uses.
 
+**One-line CLI install:**
+
 ```bash
 pipx install sentinel-scan-cli
-sentinel-scan --demo
+sentinel-scan mcp --demo
 ```
+
+**One-line MCP server (no install, `npx`):**
+
+```json
+{
+  "mcpServers": {
+    "sentinel-scan": {
+      "command": "npx",
+      "args": ["-y", "sentinel-scan-cli", "mcp-server"]
+    }
+  }
+}
+```
+
+Drop that into Claude Desktop's or Cursor's MCP config and any client can
+call the `scan_mcp_manifest` tool directly - no CLI invocation needed. See
+[MCP Server](#mcp-server) below for the Python/`uvx` build and tool schema.
 
 No signup, no telemetry, no API key required to run it (`--demo` mode uses a
 built-in target with zero network calls). When you point it at your own
 endpoint, the only network traffic is your machine talking directly to your
 endpoint - nothing is sent to Ventrova.
 
-Also includes `sentinel-scan mcp`, a static heuristic scanner for MCP tool
-manifests (`mcp.json`) that flags tool-description prompt injection,
-tool-name shadowing, excessive-agency schema patterns, indirect-injection
-surface area, unpinned/remote server sources, hardcoded credentials,
-overbroad wildcard scopes, and missing provenance/signature metadata - see
-[MCP tool manifest scan](#mcp-tool-manifest-scan) below.
-
-And `sentinel-scan evidence`, which runs the scan(s) above and renders the
-results straight into a filled EU AI Act Annex IV Lite compliance evidence
-pack in one step - see [Annex IV evidence pack](#annex-iv-evidence-pack)
-below.
+Also includes `sentinel-scan evidence`, which runs the scan(s) above and
+renders the results straight into a filled EU AI Act Annex IV Lite
+compliance evidence pack in one step - see
+[Annex IV evidence pack](#annex-iv-evidence-pack) below.
 
 ## Why this exists
 
