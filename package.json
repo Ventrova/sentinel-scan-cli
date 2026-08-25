@@ -25,7 +25,8 @@
     "sentinel-scan": "bin/sentinel-scan.js"
   },
   "files": [
-    "bin/sentinel-scan.js"
+    "bin/sentinel-scan.js",
+    "lib/evidence-pack.js"
   ],
   "scripts": {
     "test": "node --test tests/*.test.js",
