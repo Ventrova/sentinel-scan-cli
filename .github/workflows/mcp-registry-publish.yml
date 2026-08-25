@@ -52,7 +52,7 @@ jobs:
           OUT="$(./mcp-publisher publish 2>&1)"; CODE=$?
           printf '%s\n' "$OUT"
           if [ $CODE -ne 0 ]; then
-            if printf '%s' "$OUT" | grep -qiE 'already exists|already published'; then
+            if printf '%s' "$OUT" | grep -qiE 'already exists|already published|duplicate version'; then
               echo "::notice::server.json version already published to MCP Registry - treating as success."
               exit 0
             fi
