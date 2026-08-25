@@ -120,6 +120,9 @@ async function callChatEndpoint(url, apiKey, model, system, user, temperature, t
     });
     if (!resp.ok) {
       const body = await resp.text().catch(() => '');
+      if (resp.status === 429) {
+        throw new Error(`RATE_LIMITED: HTTP 429: ${body.slice(0, 200)}`);
+      }
       throw new Error(`HTTP ${resp.status}: ${body.slice(0, 200)}`);
     }
     const data = await resp.json();
@@ -1504,17 +1507,20 @@ function runMcpScan(mcpArgs) {
     console.log('This is a static heuristic scan of the manifest text/schema only - it');
     console.log('does not execute the MCP server or call an LLM, so it will miss');
     console.log('injection payloads that don\'t match these patterns and cannot judge');
-    console.log('runtime behavior. For an LLM-judged review: https://ventrova.dev/audit');
+    console.log('runtime behavior. For an LLM-judged review:');
+    console.log('https://ventrova.dev/audit?utm_source=cli&utm_medium=cli-output&utm_campaign=mcp-findings');
     console.log();
     console.log('Need this in writing for an auditor or customer? `sentinel-scan evidence`');
-    console.log('turns this same scan into a filled EU AI Act Annex IV evidence pack (free).');
+    console.log('turns this same scan into a filled EU AI Act Annex IV evidence pack (free):');
+    console.log('https://ventrova.dev/annex-iv-generator?utm_source=cli&utm_medium=cli-output&utm_campaign=mcp-findings');
   } else {
     console.log();
     console.log('No heuristic findings on this manifest. This is a static pattern scan,');
     console.log('not a guarantee - it does not execute the server or call an LLM.');
     console.log();
     console.log('Want this on file for an auditor or customer? `sentinel-scan evidence`');
-    console.log('turns it into a filled EU AI Act Annex IV evidence pack (free).');
+    console.log('turns it into a filled EU AI Act Annex IV evidence pack (free):');
+    console.log('https://ventrova.dev/annex-iv-generator?utm_source=cli&utm_medium=cli-output&utm_campaign=mcp-clean');
   }
 
   if (mcpFindingsBreachThreshold(out.results, mcpArgs.failOn)) {
@@ -1542,6 +1548,7 @@ function parseMcpArgs(argv) {
         const fmt = next();
         if (fmt !== 'json' && fmt !== 'sarif') {
           console.error(`error: argument --format: invalid choice: '${fmt}' (choose from 'json', 'sarif')`);
+          console.error('Run `sentinel-scan mcp --help` for usage.');
           process.exit(2);
         }
         args.format = fmt;
@@ -1551,6 +1558,7 @@ function parseMcpArgs(argv) {
         const level = next();
         if (!['high', 'medium', 'low', 'none'].includes(level)) {
           console.error(`error: argument --fail-on: invalid choice: '${level}' (choose from 'high', 'medium', 'low', 'none')`);
+          console.error('Run `sentinel-scan mcp --help` for usage.');
           process.exit(2);
         }
         args.failOn = level;
@@ -1561,6 +1569,7 @@ function parseMcpArgs(argv) {
       case '--help': args.help = true; break;
       default:
         console.error(`error: unrecognized argument: ${a}`);
+        console.error('Run `sentinel-scan mcp --help` for usage.');
         process.exit(2);
     }
   }
@@ -1634,6 +1643,7 @@ function parseArgs(argv) {
         const level = next();
         if (!['any', 'none'].includes(level)) {
           console.error(`error: argument --fail-on: invalid choice: '${level}' (choose from 'any', 'none')`);
+          console.error('Run `sentinel-scan --help` for usage.');
           process.exit(2);
         }
         args.failOn = level;
@@ -1645,6 +1655,7 @@ function parseArgs(argv) {
       case '--version': args.version = true; break;
       default:
         console.error(`error: unrecognized argument: ${a}`);
+        console.error('Run `sentinel-scan --help` for usage.');
         process.exit(2);
     }
   }
@@ -1728,6 +1739,7 @@ function parseEvidenceArgs(argv) {
       case '--help': args.help = true; break;
       default:
         console.error(`error: unrecognized argument: ${a}`);
+        console.error('Run `sentinel-scan evidence --help` for usage.');
         process.exit(2);
     }
   }
@@ -1791,6 +1803,7 @@ async function runEvidenceCommand(argv) {
 
   if (!wantLlm && !wantMcp) {
     console.error('error: evidence requires --demo, --url/--model (LLM scan), and/or --manifest (MCP scan)');
+    console.error('Run `sentinel-scan evidence --help` for usage.');
     process.exit(2);
   }
 
@@ -1798,6 +1811,7 @@ async function runEvidenceCommand(argv) {
   if (wantLlm) {
     if (!args.demo && (!args.url || !args.model)) {
       console.error('error: --url and --model are both required for the LLM scan unless --demo is set');
+      console.error('Run `sentinel-scan evidence --help` for usage.');
       process.exit(2);
     }
     if (!args.demo && typeof fetch !== 'function') {
@@ -1849,7 +1863,7 @@ async function runEvidenceCommand(argv) {
   console.log();
   console.log('This is a scan-derived draft, not a customer deliverable - review before');
   console.log('sharing with an auditor or customer. For a thorough, LLM-judged audit:');
-  console.log('https://ventrova.dev/audit');
+  console.log('https://ventrova.dev/audit?utm_source=cli&utm_medium=cli-output&utm_campaign=evidence-pack-output');
 }
 
 async function runScan(args) {
@@ -1913,6 +1927,8 @@ async function runScan(args) {
   const wall = (Date.now() - tStart) / 1000;
   const scored = results.filter((r) => 'verdict' in r);
   const vulnerableResults = scored.filter((r) => r.verdict === 'VULNERABLE');
+  const errored = results.filter((r) => 'error' in r);
+  const rateLimited = errored.length > 0 && errored.every((r) => r.error.startsWith('RATE_LIMITED:'));
 
   const byCategory = {};
   for (const r of vulnerableResults) {
@@ -1945,7 +1961,24 @@ async function runScan(args) {
   console.log(stringifyWithWall(summary));
   console.log();
   console.log(`Full results written to ${args.output}`);
-  if (vulnerableResults.length > 0) {
+  if (scored.length === 0 && errored.length > 0) {
+    console.log();
+    if (rateLimited) {
+      console.log(`All ${errored.length}/${summary.num_attacks} attacks were rate-limited (HTTP 429) by the endpoint.`);
+      console.log('No attack actually ran - this is NOT a clean result. Wait a bit and re-run with');
+      console.log('fewer attacks in flight, or check your provider\'s rate limits.');
+    } else {
+      console.log(`All ${errored.length}/${summary.num_attacks} attacks failed to reach the endpoint - this is NOT a clean result.`);
+      console.log('Check that --url is reachable and --api-key/--model are correct. See the error');
+      console.log('lines above for details, or try `--demo` to verify the CLI itself works:');
+      console.log('https://ventrova.dev/sample-report?utm_source=cli&utm_medium=cli-output&utm_campaign=scan-network-error');
+    }
+  } else if (vulnerableResults.length > 0) {
+    if (errored.length > 0) {
+      console.log();
+      console.log(`Note: ${errored.length}/${summary.num_attacks} attacks errored out and were not scored (see`);
+      console.log(`the error lines above) - actual coverage was ${scored.length}/${summary.num_attacks}, not ${summary.num_attacks}/${summary.num_attacks}.`);
+    }
     console.log();
     console.log(`${summary.vulnerable_count}/${summary.num_attacks} attacks got past this system prompt:`);
     for (const r of vulnerableResults) {
@@ -1955,26 +1988,39 @@ async function runScan(args) {
     console.log();
     console.log('This heuristic scan checks literal secret leakage and refusal-language');
     console.log('presence only - it will miss subtler leaks and false-negatives on both sides.');
-    console.log('For a thorough, LLM-judged audit with a full report: https://ventrova.dev/audit');
-    console.log('See what a real finding looks like: https://ventrova.dev/teardown');
+    console.log('For a thorough, LLM-judged audit with a full report: https://ventrova.dev/audit?utm_source=cli&utm_medium=cli-output&utm_campaign=scan-findings');
+    console.log('See what a real finding looks like: https://ventrova.dev/teardown?utm_source=cli&utm_medium=cli-output&utm_campaign=scan-findings');
     console.log();
     console.log('Need this in writing for an auditor, customer, or procurement questionnaire?');
     console.log('`sentinel-scan evidence` turns this same scan into a filled EU AI Act Annex IV');
-    console.log('evidence pack (free). Want a human to run the deeper, LLM-judged version and');
-    console.log('scope a fix? Email business@ventrova.dev with this output attached.');
+    console.log('evidence pack (free): https://ventrova.dev/annex-iv-generator?utm_source=cli&utm_medium=cli-output&utm_campaign=scan-findings');
+    console.log('Want a human to run the deeper, LLM-judged version and scope a fix? Email');
+    console.log('business@ventrova.dev with this output attached.');
+  } else if (errored.length > 0) {
+    console.log();
+    console.log(`Note: ${errored.length}/${summary.num_attacks} attacks errored out and were not scored (see`);
+    console.log(`the error lines above) - only ${scored.length}/${summary.num_attacks} actually ran and came back clean.`);
+    console.log('This is NOT a full clean run. Re-run once the endpoint is reliably reachable before');
+    console.log('treating this as a pass.');
   } else {
     console.log();
     console.log('Clean run. Want it on file for an auditor or customer? `sentinel-scan evidence`');
-    console.log('turns it into a filled EU AI Act Annex IV evidence pack (free).');
+    console.log('turns it into a filled EU AI Act Annex IV evidence pack (free):');
+    console.log('https://ventrova.dev/annex-iv-generator?utm_source=cli&utm_medium=cli-output&utm_campaign=scan-clean');
   }
   console.log();
   console.log('Want this scan running on a schedule instead of by hand? We\'re building');
   console.log('continuous monitoring (founder pricing $49-99/mo, waitlist open):');
-  console.log('https://ventrova.dev/audit#monitoring');
+  console.log('https://ventrova.dev/audit?utm_source=cli&utm_medium=cli-output&utm_campaign=monitoring-waitlist#monitoring');
 
   if (args.failOn === 'any' && vulnerableResults.length > 0) {
     console.log();
     console.error(`Exiting 1: ${vulnerableResults.length} attack(s) got past the system prompt (--fail-on any).`);
+    process.exit(1);
+  }
+  if (scored.length === 0 && errored.length > 0) {
+    console.log();
+    console.error(`Exiting 1: all ${errored.length} attack(s) failed - no scan actually ran.`);
     process.exit(1);
   }
   return out;
@@ -1993,6 +2039,7 @@ async function main() {
     }
     if (!mcpArgs.demo && !mcpArgs.manifest) {
       console.error('error: --manifest is required unless --demo is set');
+      console.error('Run `sentinel-scan mcp --help` for usage.');
       process.exit(2);
     }
     runMcpScan(mcpArgs);
@@ -2015,6 +2062,7 @@ async function main() {
   }
   if (!args.demo && (!args.url || !args.model)) {
     console.error('error: --url and --model are required unless --demo is set');
+    console.error('Run `sentinel-scan --help` for usage, or try `sentinel-scan --demo` to see it work.');
     process.exit(2);
   }
   if (typeof fetch !== 'function') {
@@ -2027,6 +2075,9 @@ async function main() {
 if (require.main === module) {
   main().catch((e) => {
     console.error(e);
+    console.error();
+    console.error('Unexpected error - this is a bug. Please report it with the command you ran:');
+    console.error('https://github.com/Ventrova/sentinel-scan-cli/issues/new');
     process.exit(1);
   });
 }

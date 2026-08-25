@@ -44,9 +44,9 @@ import time
 import urllib.error
 import urllib.request
 
-__version__ = "1.4.7"
+__version__ = "1.4.8"
 
-VERSION = "1.4.7"
+VERSION = "1.4.8"
 
 # --- MCP manifest heuristic scanner -----------------------------------------
 #
@@ -1457,17 +1457,20 @@ def run_mcp_scan(args):
         print("This is a static heuristic scan of the manifest text/schema only - it")
         print("does not execute the MCP server or call an LLM, so it will miss")
         print("injection payloads that don't match these patterns and cannot judge")
-        print("runtime behavior. For an LLM-judged review: https://ventrova.dev/audit")
+        print("runtime behavior. For an LLM-judged review:")
+        print("https://ventrova.dev/audit?utm_source=cli&utm_medium=cli-output&utm_campaign=mcp-findings")
         print()
         print("Need this in writing for an auditor or customer? Turn this scan into a")
-        print("filled EU AI Act Annex IV evidence pack (free): https://ventrova.dev/annex-iv-generator")
+        print("filled EU AI Act Annex IV evidence pack (free):")
+        print("https://ventrova.dev/annex-iv-generator?utm_source=cli&utm_medium=cli-output&utm_campaign=mcp-findings")
     else:
         print()
         print("No heuristic findings on this manifest. This is a static pattern scan,")
         print("not a guarantee - it does not execute the server or call an LLM.")
         print()
         print("Want this on file for an auditor or customer? Turn it into a filled EU AI")
-        print("Act Annex IV evidence pack (free): https://ventrova.dev/annex-iv-generator")
+        print("Act Annex IV evidence pack (free):")
+        print("https://ventrova.dev/annex-iv-generator?utm_source=cli&utm_medium=cli-output&utm_campaign=mcp-clean")
 
     if mcp_findings_breach_threshold(out["results"], args.fail_on):
         print()
@@ -1685,10 +1688,11 @@ def run_scan(args):
                     temperature=args.temperature,
                 )
         except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError) as e:
+            err = f"RATE_LIMITED: {e}" if isinstance(e, urllib.error.HTTPError) and e.code == 429 else str(e)
             results.append({
                 "attack": name,
                 "owasp_category": f"{owasp_code}: {OWASP_LLM_TOP10[owasp_code]}",
-                "error": str(e),
+                "error": err,
             })
             print(f"[{name}] ERROR: {e}", file=sys.stderr)
             continue
@@ -1716,6 +1720,8 @@ def run_scan(args):
     wall = time.time() - t_start
     scored = [r for r in results if "verdict" in r]
     vulnerable_results = [r for r in scored if r["verdict"] == "VULNERABLE"]
+    errored = [r for r in results if "error" in r]
+    rate_limited = bool(errored) and all(r["error"].startswith("RATE_LIMITED:") for r in errored)
 
     by_category = {}
     for r in vulnerable_results:
@@ -1744,7 +1750,22 @@ def run_scan(args):
     print(json.dumps(summary, indent=2))
     print()
     print(f"Full results written to {args.output}")
-    if vulnerable_results:
+    if not scored and errored:
+        print()
+        if rate_limited:
+            print(f"All {len(errored)}/{summary['num_attacks']} attacks were rate-limited (HTTP 429) by the endpoint.")
+            print("No attack actually ran - this is NOT a clean result. Wait a bit and re-run with")
+            print("fewer attacks in flight, or check your provider's rate limits.")
+        else:
+            print(f"All {len(errored)}/{summary['num_attacks']} attacks failed to reach the endpoint - this is NOT a clean result.")
+            print("Check that --url is reachable and --api-key/--model are correct. See the error")
+            print("lines above for details, or try --demo to verify the CLI itself works:")
+            print("https://ventrova.dev/sample-report?utm_source=cli&utm_medium=cli-output&utm_campaign=scan-network-error")
+    elif vulnerable_results:
+        if errored:
+            print()
+            print(f"Note: {len(errored)}/{summary['num_attacks']} attacks errored out and were not scored (see")
+            print(f"the error lines above) - actual coverage was {len(scored)}/{summary['num_attacks']}, not {summary['num_attacks']}/{summary['num_attacks']}.")
         print()
         print(f"{summary['vulnerable_count']}/{summary['num_attacks']} attacks got past this system prompt:")
         for r in vulnerable_results:
@@ -1753,27 +1774,37 @@ def run_scan(args):
         print()
         print("This heuristic scan checks literal secret leakage and refusal-language")
         print("presence only - it will miss subtler leaks and false-negatives on both sides.")
-        print("For a thorough, LLM-judged audit with a full report: https://ventrova.dev/audit")
-        print("See what a real finding looks like: https://ventrova.dev/teardown")
+        print("For a thorough, LLM-judged audit with a full report: https://ventrova.dev/audit?utm_source=cli&utm_medium=cli-output&utm_campaign=scan-findings")
+        print("See what a real finding looks like: https://ventrova.dev/teardown?utm_source=cli&utm_medium=cli-output&utm_campaign=scan-findings")
         print()
         print("Need this in writing for an auditor, customer, or procurement questionnaire?")
         print("Turn this scan into a filled EU AI Act Annex IV evidence pack (free):")
-        print("https://ventrova.dev/annex-iv-generator")
+        print("https://ventrova.dev/annex-iv-generator?utm_source=cli&utm_medium=cli-output&utm_campaign=scan-findings")
         print("Want a human to run the deeper, LLM-judged version and scope a fix?")
         print("Email business@ventrova.dev with this output attached.")
+    elif errored:
+        print()
+        print(f"Note: {len(errored)}/{summary['num_attacks']} attacks errored out and were not scored (see")
+        print(f"the error lines above) - only {len(scored)}/{summary['num_attacks']} actually ran and came back clean.")
+        print("This is NOT a full clean run. Re-run once the endpoint is reliably reachable before")
+        print("treating this as a pass.")
     else:
         print()
         print("Clean run. Want it on file for an auditor or customer? Turn it into a")
-        print("filled EU AI Act Annex IV evidence pack (free): https://ventrova.dev/annex-iv-generator")
+        print("filled EU AI Act Annex IV evidence pack (free): https://ventrova.dev/annex-iv-generator?utm_source=cli&utm_medium=cli-output&utm_campaign=scan-clean")
     print()
     print("Want this scan running on a schedule instead of by hand? We're building")
     print("continuous monitoring (founder pricing $49-99/mo, waitlist open):")
-    print("https://ventrova.dev/audit#monitoring")
+    print("https://ventrova.dev/audit?utm_source=cli&utm_medium=cli-output&utm_campaign=monitoring-waitlist#monitoring")
 
     if args.fail_on == "any" and vulnerable_results:
         print()
         print(f"Exiting 1: {len(vulnerable_results)} attack(s) got past the system prompt "
               f"(--fail-on any).", file=sys.stderr)
+        sys.exit(1)
+    if not scored and errored:
+        print()
+        print(f"Exiting 1: all {len(errored)} attack(s) failed - no scan actually ran.", file=sys.stderr)
         sys.exit(1)
     return out
 
@@ -1818,4 +1849,14 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except SystemExit:
+        raise
+    except Exception:
+        import traceback
+        traceback.print_exc()
+        print(file=sys.stderr)
+        print("Unexpected error - this is a bug. Please report it with the command you ran:", file=sys.stderr)
+        print("https://github.com/Ventrova/sentinel-scan-cli/issues/new", file=sys.stderr)
+        sys.exit(1)
