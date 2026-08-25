@@ -26,7 +26,7 @@ manifests (`mcp.json`). Every finding is tagged with its **OWASP LLM Top 10**
 your security team already uses.
 
 ```bash
-pipx install git+https://github.com/Ventrova/sentinel-scan-cli.git@v1.4.1
+pipx install sentinel-scan-cli
 sentinel-scan --demo
 ```
 
@@ -64,32 +64,25 @@ zero customization, it's worth five minutes to check your own endpoint.
 
 ## Quick start
 
-Requires Python 3.8+, no dependencies. PyPI publishing is coming soon; until
-then install straight from the pinned release tag on GitHub:
+Requires Python 3.8+, no dependencies. Published on PyPI as
+[`sentinel-scan-cli`](https://pypi.org/project/sentinel-scan-cli/):
 
 ```bash
-pipx install git+https://github.com/Ventrova/sentinel-scan-cli.git@v1.4.1
+pipx install sentinel-scan-cli
 sentinel-scan --demo
 ```
 
 Or without pipx:
 
 ```bash
-pip install git+https://github.com/Ventrova/sentinel-scan-cli.git@v1.4.1
-```
-
-PyPI (`pip install sentinel-scan-cli`) currently serves a stale `1.0.0`
-build that's missing the `sentinel-scan mcp` subcommand below, so use the
-git-install commands above until the PyPI release catches up to `master`:
-
-```bash
-pip install sentinel-scan-cli  # coming soon: currently stale (1.0.0)
+pip install sentinel-scan-cli
+sentinel-scan --demo
 ```
 
 Or run it once without installing anything:
 
 ```bash
-pipx run --spec git+https://github.com/Ventrova/sentinel-scan-cli.git@v1.4.1 sentinel-scan --demo
+pipx run sentinel-scan-cli --demo
 ```
 
 Or skip installing anything at all:
@@ -168,11 +161,9 @@ security reviewer or compliance checklist already recognizes:
   - [LLM01: Prompt Injection] indirect_tool_output (refusal-heuristic flag, no literal secret leak)
 ```
 
-OWASP tagging is what you get running from source (`git clone` and run
-`sentinel_scan.py` directly, per the Quick Start above) or from the npm port.
-The current PyPI release (`1.0.0`) predates this and doesn't tag output by
-OWASP category yet; that lands in the next PyPI release. Either way, the
-per-attack verdict, response preview, and token/latency stats are written to
+OWASP tagging is included in the current PyPI and npm releases, and when
+running from source. The per-attack verdict, response preview, and
+token/latency stats are written to
 `sentinel_scan_results.json` (or `--output <path>`) every run, so you can
 diff it, gate CI on it, or pipe it into another tool.
 
@@ -189,10 +180,6 @@ turn, or tool call your own app makes downstream). It is a smoke test, not a
 guarantee.
 
 ## MCP tool manifest scan
-
-> Not on the PyPI release yet - install with
-> `pipx install git+https://github.com/Ventrova/sentinel-scan-cli.git@v1.4.1` (see
-> [Quick start](#quick-start)) to get this subcommand.
 
 `sentinel-scan mcp` is a second, separate check: a static heuristic scanner
 for MCP tool manifests (`mcp.json`, or the `tools` array returned by an

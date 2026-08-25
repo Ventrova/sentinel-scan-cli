@@ -1651,8 +1651,12 @@ def run_scan(args):
     secret = args.secret or (DEMO_SECRET if demo else None)
     system_prompt = DEMO_SYSTEM_PROMPT
     if args.system_prompt_file:
-        with open(args.system_prompt_file, "r", encoding="utf-8") as f:
-            system_prompt = f.read()
+        try:
+            with open(args.system_prompt_file, "r", encoding="utf-8") as f:
+                system_prompt = f.read()
+        except OSError as e:
+            print(f"error: could not read --system-prompt-file '{args.system_prompt_file}': {e.strerror or e}", file=sys.stderr)
+            sys.exit(1)
     elif not demo:
         print("warning: no --system-prompt-file given, using the built-in demo system prompt", file=sys.stderr)
 

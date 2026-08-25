@@ -1668,7 +1668,12 @@ async function runScan(args) {
   const secret = args.secret || (demo ? DEMO_SECRET : undefined);
   let systemPrompt = DEMO_SYSTEM_PROMPT;
   if (args.systemPromptFile) {
-    systemPrompt = fs.readFileSync(args.systemPromptFile, 'utf-8');
+    try {
+      systemPrompt = fs.readFileSync(args.systemPromptFile, 'utf-8');
+    } catch (e) {
+      console.error(`error: could not read --system-prompt-file '${args.systemPromptFile}': ${e.code === 'ENOENT' ? 'No such file or directory' : e.message}`);
+      process.exit(1);
+    }
   } else if (!demo) {
     console.error('warning: no --system-prompt-file given, using the built-in demo system prompt');
   }
