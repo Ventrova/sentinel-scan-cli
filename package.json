@@ -1,6 +1,6 @@
 {
   "name": "sentinel-scan-cli",
-  "version": "1.4.12",
+  "version": "1.4.13",
   "mcpName": "io.github.Ventrova/sentinel-scan-cli",
   "description": "Scan MCP servers and tool manifests for tool poisoning, prompt injection, tool-name shadowing, excessive-agency schemas, unpinned/remote sources, and rug-pulls - 10 OWASP-mapped heuristics, CLI + MCP server, fully offline. Also runs a 15-attack OWASP LLM Top 10 jailbreak smoke test against your own LLM endpoint.",
   "license": "MIT",
