@@ -7,13 +7,13 @@
     "url": "https://github.com/Ventrova/sentinel-scan-cli",
     "source": "github"
   },
-  "version": "1.4.9",
+  "version": "1.4.10",
   "packages": [
     {
       "registryType": "npm",
       "registryBaseUrl": "https://registry.npmjs.org",
       "identifier": "sentinel-scan-cli",
-      "version": "1.4.9",
+      "version": "1.4.10",
       "runtimeHint": "npx",
       "transport": {
         "type": "stdio"
