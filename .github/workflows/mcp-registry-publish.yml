@@ -46,6 +46,24 @@ jobs:
       - name: Validate server.json
         run: ./mcp-publisher validate
 
+      - name: Wait for npm package version to propagate
+        # This workflow and npm-publish.yml both trigger on the same tag push with
+        # no ordering guarantee, and mcp-publisher publish 400s if the npm version
+        # it references isn't live yet. Poll the npm registry directly instead of
+        # racing it.
+        run: |
+          VERSION="$(node -p "require('./server.json').version")"
+          for i in $(seq 1 20); do
+            if curl -sf "https://registry.npmjs.org/sentinel-scan-cli/${VERSION}" > /dev/null; then
+              echo "sentinel-scan-cli@${VERSION} is live on npm."
+              exit 0
+            fi
+            echo "sentinel-scan-cli@${VERSION} not yet on npm, waiting (attempt $i/20)..."
+            sleep 15
+          done
+          echo "::error::sentinel-scan-cli@${VERSION} did not appear on npm within 5 minutes."
+          exit 1
+
       - name: Publish server to MCP Registry
         run: |
           set +e
