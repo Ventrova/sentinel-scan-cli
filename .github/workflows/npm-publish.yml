@@ -41,6 +41,8 @@ jobs:
           node-version: "22"
       - name: Upgrade npm (Trusted Publishing OIDC needs >= 11.5.1)
         run: npm install -g npm@latest
+      - name: Install dependencies (needed by prepublishOnly test run)
+        run: npm ci
       - name: Verify tag matches package.json version
         if: startsWith(github.ref, 'refs/tags/')
         run: |
