@@ -35,6 +35,7 @@ Sentinel Scan audit at https://ventrova.dev/audit.
 """
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -43,9 +44,9 @@ import time
 import urllib.error
 import urllib.request
 
-__version__ = "1.4.2"
+__version__ = "1.4.3"
 
-VERSION = "1.4.2"
+VERSION = "1.4.3"
 
 # --- MCP manifest heuristic scanner -----------------------------------------
 #
@@ -917,6 +918,55 @@ def _mcp_scan_provenance(server_name, server):
     return findings
 
 
+def _mcp_tool_definition_hash(tool):
+    """Stable hash of the parts of a tool definition a user/agent actually
+    reviews and trusts on first approval (name, description, input schema).
+    Used by _mcp_scan_definition_drift to detect an MCP "rug pull": a server
+    silently changing an already-approved tool's definition later, without
+    ever presenting the new definition for re-review."""
+    payload = {
+        "name": tool.get("name"),
+        "description": tool.get("description"),
+        "inputSchema": tool.get("inputSchema") or tool.get("input_schema"),
+    }
+    blob = json.dumps(payload, sort_keys=True, default=str).encode("utf-8")
+    return hashlib.sha256(blob).hexdigest()
+
+
+def _mcp_scan_definition_drift(tools, baseline):
+    """MCP04: a tool's current definition hash no longer matches a
+    previously recorded baseline for that tool name - the "MCP rug pull"
+    pattern (https://invariantlabs.ai/blog/mcp-security-notification-tool-poisoning-attacks),
+    where a server changes a tool's description/schema after it was already
+    reviewed and trusted, so a static single-scan check can't catch it but a
+    baseline comparison across scans can. `baseline` is a {tool_name: hash}
+    dict from a prior scan (empty/None on a first run, when there's nothing
+    to compare against yet)."""
+    findings = []
+    if not baseline:
+        return findings
+    for tool in tools:
+        if not isinstance(tool, dict):
+            continue
+        name = tool.get("name")
+        if not name or name not in baseline:
+            continue
+        current_hash = _mcp_tool_definition_hash(tool)
+        if current_hash != baseline[name]:
+            findings.append(_mcp_finding(
+                "tool_definition_drift", "LLM03", "HIGH", name,
+                f"tool '{name}' description/input schema no longer matches the "
+                "recorded baseline hash - the server changed this tool's "
+                "definition after it was already approved",
+                "Treat this as a possible MCP 'rug pull': re-review the tool's "
+                "new description and input schema before trusting it again, "
+                "then re-run with --update-baseline once you've verified the "
+                "change is legitimate.",
+                confidence=0.95,
+            ))
+    return findings
+
+
 def _mcp_tool_sensitive_capability(tool):
     """Classify a tool as exposing a sensitive capability (exec, filesystem
     write/delete, or outbound send/network action) based on its name,
@@ -1073,8 +1123,11 @@ def _mcp_scan_homoglyph_typosquat(name):
     return []
 
 
-def scan_mcp_manifest(manifest):
-    """Run all MCP manifest heuristics. manifest is the parsed mcp.json dict."""
+def scan_mcp_manifest(manifest, baseline=None):
+    """Run all MCP manifest heuristics. manifest is the parsed mcp.json dict.
+    `baseline` is an optional {tool_name: hash} dict from a prior scan (see
+    _mcp_scan_definition_drift) used to detect tool definitions that changed
+    since they were last reviewed."""
     tools = manifest.get("tools")
     if not isinstance(tools, list):
         tools = []
@@ -1102,6 +1155,13 @@ def scan_mcp_manifest(manifest):
         findings.extend(_mcp_scan_homoglyph_typosquat(name))
     findings.extend(_mcp_scan_name_shadowing(tools))
     findings.extend(_mcp_scan_indirect_injection_surface(tools))
+    findings.extend(_mcp_scan_definition_drift(tools, baseline))
+
+    tool_hashes = {
+        tool.get("name"): _mcp_tool_definition_hash(tool)
+        for tool in tools
+        if isinstance(tool, dict) and tool.get("name")
+    }
 
     source_pinning_findings = []
     for server_name, server in servers.items():
@@ -1140,7 +1200,7 @@ def scan_mcp_manifest(manifest):
         "findings_by_severity": by_severity,
         "findings_by_heuristic": by_heuristic,
     }
-    return {"summary": summary, "results": findings}
+    return {"summary": summary, "results": findings, "tool_hashes": tool_hashes}
 
 
 # --- SARIF 2.1.0 output ------------------------------------------------------
@@ -1349,8 +1409,28 @@ def run_mcp_scan(args):
         print(f"Error: {source} does not contain a JSON object at the top level", file=sys.stderr)
         sys.exit(1)
 
-    out = scan_mcp_manifest(manifest)
+    if args.update_baseline and not args.baseline:
+        print("Error: --update-baseline requires --baseline <path>", file=sys.stderr)
+        sys.exit(2)
+
+    baseline = None
+    if args.baseline:
+        try:
+            with open(args.baseline, "r", encoding="utf-8") as f:
+                baseline = json.load(f)
+        except FileNotFoundError:
+            baseline = None
+        except json.JSONDecodeError as e:
+            print(f"Error: {args.baseline} is not valid JSON: {e}", file=sys.stderr)
+            sys.exit(1)
+
+    out = scan_mcp_manifest(manifest, baseline)
     out["summary"]["manifest"] = source
+
+    if args.update_baseline:
+        with open(args.baseline, "w", encoding="utf-8") as f:
+            json.dump(out["tool_hashes"], f, indent=2)
+        print(f"Baseline written to {args.baseline} ({len(out['tool_hashes'])} tool(s)).")
 
     if args.format == "sarif":
         sarif_source = source if not args.demo else "demo-mcp-manifest.json"
@@ -1398,8 +1478,9 @@ def build_mcp_arg_parser():
             "tool-description prompt injection, tool-name shadowing, "
             "excessive-agency schema patterns, indirect-injection surface, "
             "unpinned/remote server sources, hardcoded credentials, overbroad "
-            "wildcard scopes, and missing provenance/signature metadata. No "
-            "server execution, no network calls, no LLM calls."
+            "wildcard scopes, missing provenance/signature metadata, and (with "
+            "--baseline) tool definitions that changed since they were last "
+            "approved. No server execution, no network calls, no LLM calls."
         ),
     )
     parser.add_argument("--manifest", help="Path to an mcp.json tool manifest to scan")
@@ -1415,6 +1496,16 @@ def build_mcp_arg_parser():
                          help="Exit 1 if any finding is at or above this severity (high/medium/low), "
                               "or never fail with 'none' (default). CI pipelines should pass "
                               "--fail-on high (or their own threshold) explicitly.")
+    parser.add_argument("--baseline", default=None,
+                         help="Path to a JSON file of {tool_name: hash} recorded by a prior "
+                              "--update-baseline run. If a tool's current definition hash no "
+                              "longer matches its baseline entry, flag a tool_definition_drift "
+                              "finding (a possible MCP 'rug pull'). Missing file is treated as "
+                              "no baseline yet, not an error.")
+    parser.add_argument("--update-baseline", action="store_true",
+                         help="After scanning, write the current tool definition hashes to "
+                              "--baseline (creating or overwriting it). Use once you've "
+                              "reviewed and trust the current tool definitions.")
     return parser
 
 
@@ -1466,6 +1557,7 @@ OWASP_MCP_TOP10 = {
     "command_injection_risk": "MCP06: Excessive Agency / Permissions",
     "cross_origin_exfiltration": "MCP05: Cross-Origin / Third-Party Data Exfiltration",
     "dos_resource_exhaustion": "MCP08: Denial of Service / Unbounded Consumption",
+    "tool_definition_drift": "MCP04: Supply Chain Risk",
 }
 
 # Bounded attack corpus: 15 known prompt-injection / jailbreak technique

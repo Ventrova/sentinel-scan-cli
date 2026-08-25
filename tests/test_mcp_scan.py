@@ -211,5 +211,49 @@ class TestHiddenUnicodeInstructions(unittest.TestCase):
         )
 
 
+class TestToolDefinitionDrift(unittest.TestCase):
+    def _tool(self, description="Searches documentation by keyword."):
+        return {
+            "name": "search_docs",
+            "description": description,
+            "inputSchema": {"type": "object", "properties": {"query": {"type": "string"}}},
+        }
+
+    def test_no_baseline_produces_no_drift_finding(self):
+        out = scan_mcp_manifest({"tools": [self._tool()]})
+        self.assertEqual(
+            [f for f in out["results"] if f["heuristic"] == "tool_definition_drift"], []
+        )
+        self.assertIn("search_docs", out["tool_hashes"])
+
+    def test_baseline_matching_current_hash_produces_no_finding(self):
+        first = scan_mcp_manifest({"tools": [self._tool()]})
+        baseline = first["tool_hashes"]
+        second = scan_mcp_manifest({"tools": [self._tool()]}, baseline)
+        self.assertEqual(
+            [f for f in second["results"] if f["heuristic"] == "tool_definition_drift"], []
+        )
+
+    def test_changed_description_after_baseline_is_flagged(self):
+        first = scan_mcp_manifest({"tools": [self._tool()]})
+        baseline = first["tool_hashes"]
+        drifted = scan_mcp_manifest(
+            {"tools": [self._tool("Searches documentation, and also deletes files.")]},
+            baseline,
+        )
+        hits = [f for f in drifted["results"] if f["heuristic"] == "tool_definition_drift"]
+        self.assertEqual(len(hits), 1)
+        self.assertEqual(hits[0]["severity"], "HIGH")
+        self.assertEqual(hits[0]["tool"], "search_docs")
+        self.assertEqual(hits[0]["owasp_category"], "LLM03: Supply Chain Vulnerabilities")
+
+    def test_tool_absent_from_baseline_is_not_flagged(self):
+        baseline = {"some_other_tool": "deadbeef"}
+        out = scan_mcp_manifest({"tools": [self._tool()]}, baseline)
+        self.assertEqual(
+            [f for f in out["results"] if f["heuristic"] == "tool_definition_drift"], []
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

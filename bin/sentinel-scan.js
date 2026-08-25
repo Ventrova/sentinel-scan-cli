@@ -29,6 +29,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 const VERSION = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'package.json'), 'utf-8')).version;
 
@@ -261,6 +262,7 @@ const OWASP_MCP_TOP10 = {
   command_injection_risk: 'MCP06: Excessive Agency / Permissions',
   cross_origin_exfiltration: 'MCP05: Cross-Origin / Third-Party Data Exfiltration',
   dos_resource_exhaustion: 'MCP08: Denial of Service / Unbounded Consumption',
+  tool_definition_drift: 'MCP04: Supply Chain Risk',
 };
 
 function mcpEditDistanceLe(a, b, limit) {
@@ -1081,7 +1083,75 @@ function mcpScanHomoglyphTyposquat(name) {
   return [];
 }
 
-function scanMcpManifest(manifest) {
+// Deterministic key-sorted JSON stringify (mirrors Python's
+// json.dumps(..., sort_keys=True)) so a tool definition hashes the same
+// way run over run regardless of key insertion order. Not guaranteed to
+// byte-match the Python implementation's output - each entrypoint only
+// needs to be stable against its own prior baseline.
+function mcpStableStringify(value) {
+  if (Array.isArray(value)) {
+    return `[${value.map(mcpStableStringify).join(',')}]`;
+  }
+  if (value && typeof value === 'object') {
+    const keys = Object.keys(value).sort();
+    return `{${keys.map((k) => `${JSON.stringify(k)}:${mcpStableStringify(value[k])}`).join(',')}}`;
+  }
+  return JSON.stringify(value);
+}
+
+// Stable hash of the parts of a tool definition a user/agent actually
+// reviews and trusts on first approval (name, description, input schema).
+// Used by mcpScanDefinitionDrift to detect an MCP "rug pull": a server
+// silently changing an already-approved tool's definition later, without
+// ever presenting the new definition for re-review.
+function mcpToolDefinitionHash(tool) {
+  const payload = {
+    name: tool.name !== undefined ? tool.name : null,
+    description: tool.description !== undefined ? tool.description : null,
+    inputSchema: tool.inputSchema !== undefined
+      ? tool.inputSchema
+      : (tool.input_schema !== undefined ? tool.input_schema : null),
+  };
+  return crypto.createHash('sha256').update(mcpStableStringify(payload), 'utf-8').digest('hex');
+}
+
+// MCP04: a tool's current definition hash no longer matches a previously
+// recorded baseline for that tool name - the "MCP rug pull" pattern
+// (https://invariantlabs.ai/blog/mcp-security-notification-tool-poisoning-attacks),
+// where a server changes a tool's description/schema after it was already
+// reviewed and trusted, so a static single-scan check can't catch it but a
+// baseline comparison across scans can. `baseline` is a {tool_name: hash}
+// object from a prior scan (undefined/empty on a first run, when there's
+// nothing to compare against yet).
+function mcpScanDefinitionDrift(tools, baseline) {
+  const findings = [];
+  if (!baseline) return findings;
+  for (const tool of tools) {
+    if (!tool || typeof tool !== 'object' || Array.isArray(tool)) continue;
+    const name = tool.name;
+    if (!name || !(name in baseline)) continue;
+    const currentHash = mcpToolDefinitionHash(tool);
+    if (currentHash !== baseline[name]) {
+      findings.push(mcpFinding(
+        'tool_definition_drift', 'LLM03', 'HIGH', name,
+        `tool '${name}' description/input schema no longer matches the ` +
+        'recorded baseline hash - the server changed this tool\'s ' +
+        'definition after it was already approved',
+        'Treat this as a possible MCP \'rug pull\': re-review the tool\'s ' +
+        'new description and input schema before trusting it again, ' +
+        'then re-run with --update-baseline once you\'ve verified the ' +
+        'change is legitimate.',
+        0.95,
+      ));
+    }
+  }
+  return findings;
+}
+
+// `baseline` is an optional {tool_name: hash} object from a prior scan (see
+// mcpScanDefinitionDrift) used to detect tool definitions that changed
+// since they were last reviewed.
+function scanMcpManifest(manifest, baseline) {
   let tools = manifest.tools;
   if (!Array.isArray(tools)) tools = [];
   let servers = manifest.mcpServers;
@@ -1106,6 +1176,14 @@ function scanMcpManifest(manifest) {
   }
   findings.push(...mcpScanNameShadowing(tools));
   findings.push(...mcpScanIndirectInjectionSurface(tools));
+  findings.push(...mcpScanDefinitionDrift(tools, baseline));
+
+  const toolHashes = {};
+  for (const tool of tools) {
+    if (tool && typeof tool === 'object' && !Array.isArray(tool) && tool.name) {
+      toolHashes[tool.name] = mcpToolDefinitionHash(tool);
+    }
+  }
 
   const sourcePinningFindings = [];
   for (const [serverName, server] of Object.entries(servers)) {
@@ -1151,7 +1229,7 @@ function scanMcpManifest(manifest) {
     findings_by_severity: bySeverity,
     findings_by_heuristic: byHeuristic,
   };
-  return { summary, results: findings };
+  return { summary, results: findings, tool_hashes: toolHashes };
 }
 
 // --- SARIF 2.1.0 output ------------------------------------------------------
@@ -1366,8 +1444,34 @@ function runMcpScan(mcpArgs) {
     process.exit(1);
   }
 
-  const out = scanMcpManifest(manifest);
+  if (mcpArgs.updateBaseline && !mcpArgs.baseline) {
+    console.error('Error: --update-baseline requires --baseline <path>');
+    process.exit(2);
+  }
+
+  let baseline;
+  if (mcpArgs.baseline) {
+    try {
+      baseline = JSON.parse(fs.readFileSync(mcpArgs.baseline, 'utf-8'));
+    } catch (e) {
+      if (e.code === 'ENOENT') {
+        baseline = undefined;
+      } else if (e instanceof SyntaxError) {
+        console.error(`Error: ${mcpArgs.baseline} is not valid JSON: ${e.message}`);
+        process.exit(1);
+      } else {
+        throw e;
+      }
+    }
+  }
+
+  const out = scanMcpManifest(manifest, baseline);
   out.summary.manifest = source;
+
+  if (mcpArgs.updateBaseline) {
+    fs.writeFileSync(mcpArgs.baseline, JSON.stringify(out.tool_hashes, null, 2), 'utf-8');
+    console.log(`Baseline written to ${mcpArgs.baseline} (${Object.keys(out.tool_hashes).length} tool(s)).`);
+  }
 
   if (mcpArgs.format === 'sarif') {
     const sarifSource = mcpArgs.demo ? 'demo-mcp-manifest.json' : source;
@@ -1409,13 +1513,18 @@ function runMcpScan(mcpArgs) {
 }
 
 function parseMcpArgs(argv) {
-  const args = { manifest: undefined, output: undefined, format: 'json', demo: false, help: false, failOn: 'none' };
+  const args = {
+    manifest: undefined, output: undefined, format: 'json', demo: false, help: false,
+    failOn: 'none', baseline: undefined, updateBaseline: false,
+  };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     const next = () => argv[++i];
     switch (a) {
       case '--manifest': args.manifest = next(); break;
       case '--output': args.output = next(); break;
+      case '--baseline': args.baseline = next(); break;
+      case '--update-baseline': args.updateBaseline = true; break;
       case '--format': {
         const fmt = next();
         if (fmt !== 'json' && fmt !== 'sarif') {
@@ -1453,8 +1562,9 @@ function printMcpHelp() {
 tool-description prompt injection, tool-name shadowing, excessive-agency
 schema patterns, indirect-injection surface, unpinned/remote server sources,
 hardcoded credentials, overbroad wildcard scopes, missing provenance/signature
-metadata, missing human-in-the-loop confirmation, and hidden/unicode-
-obfuscated instruction text. No server execution, no network calls, no LLM calls.
+metadata, missing human-in-the-loop confirmation, hidden/unicode-obfuscated
+instruction text, and (with --baseline) tool definitions that changed since
+they were last approved. No server execution, no network calls, no LLM calls.
 
 Usage: sentinel-scan mcp --demo
        sentinel-scan mcp --manifest <path> [options]
@@ -1468,6 +1578,14 @@ Options:
   --demo             Scan a built-in deliberately vulnerable demo manifest, no file needed
   --fail-on <level>  Exit 1 if any finding is at or above this severity: high, medium,
                      low, or none to never fail (default: none)
+  --baseline <path>  Path to a JSON file of {tool_name: hash} recorded by a prior
+                     --update-baseline run. If a tool's current definition hash no
+                     longer matches its baseline entry, flag a tool_definition_drift
+                     finding (a possible MCP "rug pull"). Missing file is treated as
+                     no baseline yet, not an error.
+  --update-baseline  After scanning, write the current tool definition hashes to
+                     --baseline (creating or overwriting it). Use once you've
+                     reviewed and trust the current tool definitions.
   -h, --help         Show this help`);
 }
 

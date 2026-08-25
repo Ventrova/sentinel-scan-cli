@@ -1,3 +1,4 @@
+.npmrc
 sentinel_scan_results.json
 sentinel_scan_mcp_results.json
 __pycache__/
