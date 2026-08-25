@@ -1,20 +1,20 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.Ventrova/sentinel-scan-cli",
-  "description": "MCP security scanner: detect tool poisoning, prompt injection & rug-pulls - 10 OWASP heuristics, offline.",
+  "description": "MCP security scanner: detect tool poisoning, prompt injection & rug-pulls - 10 OWASP heuristics.",
   "title": "Sentinel Scan",
   "repository": {
     "url": "https://github.com/Ventrova/sentinel-scan-cli",
     "source": "github"
   },
   "websiteUrl": "https://ventrova.dev",
-  "version": "1.4.15",
+  "version": "1.4.16",
   "packages": [
     {
       "registryType": "npm",
       "registryBaseUrl": "https://registry.npmjs.org",
       "identifier": "sentinel-scan-cli",
-      "version": "1.4.15",
+      "version": "1.4.16",
       "runtimeHint": "npx",
       "transport": {
         "type": "stdio"

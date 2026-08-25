@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sentinel-scan-cli"
-version = "1.4.15"
+version = "1.4.16"
 description = "MCP security scanner: scan MCP servers and tool manifests for tool poisoning, prompt injection, and rug-pulls - 10 OWASP-mapped heuristics, CLI + MCP server, fully offline. Also runs an OWASP LLM Top 10 prompt-injection/jailbreak smoke test against your own LLM endpoint."
 readme = "README.md"
 license = "MIT"
