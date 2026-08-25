@@ -1505,6 +1505,9 @@ function runMcpScan(mcpArgs) {
     console.log('does not execute the MCP server or call an LLM, so it will miss');
     console.log('injection payloads that don\'t match these patterns and cannot judge');
     console.log('runtime behavior. For an LLM-judged review: https://ventrova.dev/audit');
+    console.log();
+    console.log('Need this in writing for an auditor or customer? `sentinel-scan evidence`');
+    console.log('turns this same scan into a filled EU AI Act Annex IV evidence pack (free).');
   } else {
     console.log();
     console.log('No heuristic findings on this manifest. This is a static pattern scan,');
@@ -1951,6 +1954,11 @@ async function runScan(args) {
     console.log('presence only - it will miss subtler leaks and false-negatives on both sides.');
     console.log('For a thorough, LLM-judged audit with a full report: https://ventrova.dev/audit');
     console.log('See what a real finding looks like: https://ventrova.dev/teardown');
+    console.log();
+    console.log('Need this in writing for an auditor, customer, or procurement questionnaire?');
+    console.log('`sentinel-scan evidence` turns this same scan into a filled EU AI Act Annex IV');
+    console.log('evidence pack (free). Want a human to run the deeper, LLM-judged version and');
+    console.log('scope a fix? Email business@ventrova.dev with this output attached.');
   }
   console.log();
   console.log('Want this scan running on a schedule instead of by hand? We\'re building');
