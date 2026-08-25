@@ -8,3 +8,4 @@ dist/
 *.egg-info/
 node_modules/
 *.tgz
+benchmark_envs/

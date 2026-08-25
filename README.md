@@ -42,6 +42,11 @@ surface area, unpinned/remote server sources, hardcoded credentials,
 overbroad wildcard scopes, and missing provenance/signature metadata - see
 [MCP tool manifest scan](#mcp-tool-manifest-scan) below.
 
+And `sentinel-scan evidence`, which runs the scan(s) above and renders the
+results straight into a filled EU AI Act Annex IV Lite compliance evidence
+pack in one step - see [Annex IV evidence pack](#annex-iv-evidence-pack)
+below.
+
 ## Why this exists
 
 We ran this exact 15-attack corpus against a disposable local test bot (an
@@ -256,6 +261,57 @@ above that severity), or `none` (never fail, the default). `sentinel-scan
 (the default). Exit code is `1` on a breach, `0` otherwise; malformed
 arguments or an unreadable manifest still exit `2`/`1` as before. This works
 with either `--format json` or `--format sarif`.
+
+## Annex IV evidence pack
+
+`sentinel-scan evidence` runs the prompt-injection scan and/or the MCP
+manifest scan above and renders the results directly into a filled EU AI
+Act Annex IV Lite compliance evidence pack (Markdown) - one command instead
+of running a scan, then hand-copying findings into a document:
+
+```bash
+# demo mode: renders a sample pack from the built-in demo scans, no network calls
+sentinel-scan evidence --demo
+
+# real run: same flags as the two subcommands above, plus intake fields for the cover page
+sentinel-scan evidence \
+  --url https://api.your-llm-endpoint.com/v1/chat/completions \
+  --model your-model \
+  --manifest mcp.json \
+  --system-name "Acme Support Bot" \
+  --system-description "Customer-support chatbot with MCP tool access" \
+  --output evidence-pack.md
+```
+
+At least one of `--demo`, (`--url` and `--model`), or `--manifest` is
+required; pass `--skip-llm` or `--skip-mcp` to render a pack from only one
+scan. Every table and paragraph in the pack is generated from the actual
+scan JSON for that run - nothing is hand-typed boilerplate - and the raw
+scan JSON is written alongside the pack (`--llm-scan-output` /
+`--mcp-scan-output`) so an auditor can verify the tables against the
+underlying evidence directly.
+
+The pack maps findings onto the EU AI Act's Annex IV technical
+documentation sections that a security scan can actually evidence
+(prompt-injection resistance into Section 3, MCP supply-chain/provenance
+findings into Section 2, credential and excessive-agency findings into
+Section 5, and so on) and calls out, by name, the sections a scan tool
+cannot fill (general system description, performance metrics, harmonised
+standards, declaration of conformity - Sections 1, 4, 7, 8). It ends with a
+human attestation block that only a named person at the customer
+organization signs, not Ventrova or the tool: **this is a scan-derived
+draft that documents test results, not a certified compliance
+deliverable** - review it before sharing with an auditor or customer. The
+full finding-to-Annex-IV-section mapping is in [`lib/evidence-pack.js`](lib/evidence-pack.js).
+
+Run `sentinel-scan evidence --help` for the full flag list, including
+`--pack-id`, `--scan-date`, and `--report-date` overrides for reproducible
+output.
+
+> **Node build only, for now.** `sentinel-scan evidence` currently ships in
+> the Node/npm build (`npx sentinel-scan-cli`) only; the PyPI/pipx build
+> does not yet have this subcommand. If you installed via `pipx`, run the
+> evidence pack step with `npx sentinel-scan-cli evidence` instead.
 
 ## GitHub Action
 

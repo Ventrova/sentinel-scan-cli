@@ -15,6 +15,11 @@
  * Zero dependencies: uses Node's built-in fetch (Node 18+). Nothing is sent
  * anywhere except your own endpoint - no telemetry, no phone-home.
  *
+ * Also includes `sentinel-scan evidence`, which runs the scan(s) above and
+ * renders the results straight into a filled EU AI Act Annex IV Lite
+ * compliance evidence pack (Markdown) - no server execution beyond what the
+ * underlying scan(s) already do.
+ *
  * Usage:
  *   npx sentinel-scan-cli --demo
  *   npx sentinel-scan-cli \
@@ -25,11 +30,13 @@
  *     --secret "RX-88214-OMEGA"
  *   npx sentinel-scan-cli mcp --demo
  *   npx sentinel-scan-cli mcp --manifest mcp.json
+ *   npx sentinel-scan-cli evidence --demo
  */
 
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { renderPack } = require('../lib/evidence-pack.js');
 
 const VERSION = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'package.json'), 'utf-8')).version;
 
@@ -1645,6 +1652,7 @@ Usage: sentinel-scan --demo
        sentinel-scan --url <url> --model <model> [options]
        sentinel-scan mcp --demo
        sentinel-scan mcp --manifest <path>
+       sentinel-scan evidence --demo
 
 Options:
   --url <url>                  OpenAI-compatible chat completions URL (required unless --demo)
@@ -1660,7 +1668,182 @@ Options:
   -h, --help                   Show this help
   -v, --version                 Show version number and exit
 
-Run "sentinel-scan mcp --help" for the MCP manifest heuristic scanner.`);
+Run "sentinel-scan mcp --help" for the MCP manifest heuristic scanner.
+Run "sentinel-scan evidence --help" for the Annex IV evidence-pack generator.`);
+}
+
+// --- evidence-pack subcommand ------------------------------------------------
+
+function parseEvidenceArgs(argv) {
+  const args = {
+    url: undefined,
+    model: undefined,
+    apiKey: process.env.SENTINEL_SCAN_API_KEY,
+    systemPromptFile: undefined,
+    secret: undefined,
+    temperature: 0.2,
+    manifest: undefined,
+    demo: false,
+    skipLlm: false,
+    skipMcp: false,
+    systemName: undefined,
+    systemDescription: undefined,
+    packId: undefined,
+    scanDate: undefined,
+    reportDate: undefined,
+    output: 'evidence-pack.md',
+    llmScanOutput: 'sentinel_scan_results.json',
+    mcpScanOutput: 'sentinel_scan_mcp_results.json',
+    help: false,
+  };
+  for (let i = 0; i < argv.length; i++) {
+    const a = argv[i];
+    const next = () => argv[++i];
+    switch (a) {
+      case '--url': args.url = next(); break;
+      case '--model': args.model = next(); break;
+      case '--api-key': args.apiKey = next(); break;
+      case '--system-prompt-file': args.systemPromptFile = next(); break;
+      case '--secret': args.secret = next(); break;
+      case '--temperature': args.temperature = parseFloat(next()); break;
+      case '--manifest': args.manifest = next(); break;
+      case '--demo': args.demo = true; break;
+      case '--skip-llm': args.skipLlm = true; break;
+      case '--skip-mcp': args.skipMcp = true; break;
+      case '--system-name': args.systemName = next(); break;
+      case '--system-description': args.systemDescription = next(); break;
+      case '--pack-id': args.packId = next(); break;
+      case '--scan-date': args.scanDate = next(); break;
+      case '--report-date': args.reportDate = next(); break;
+      case '--output': args.output = next(); break;
+      case '--llm-scan-output': args.llmScanOutput = next(); break;
+      case '--mcp-scan-output': args.mcpScanOutput = next(); break;
+      case '-h':
+      case '--help': args.help = true; break;
+      default:
+        console.error(`error: unrecognized argument: ${a}`);
+        process.exit(2);
+    }
+  }
+  return args;
+}
+
+function printEvidenceHelp() {
+  console.log(`Run a sentinel-scan (and/or sentinel-scan mcp) scan and render the
+results into a filled EU AI Act Annex IV Lite compliance evidence pack
+(Markdown), in one step. Zero dependencies, same scan engine as the two
+subcommands above - this only adds a report layer on top.
+
+Usage: sentinel-scan evidence --demo
+       sentinel-scan evidence --url <url> --model <model> [--manifest <path>] [options]
+       sentinel-scan evidence --manifest <path> [options]
+
+At least one of --demo, (--url and --model), or --manifest is required.
+With --demo, both the LLM prompt-injection demo scan and the MCP demo scan
+run by default; pass --skip-mcp or --skip-llm to run only one.
+
+LLM scan options (same meaning as top-level "sentinel-scan"):
+  --url <url>                  OpenAI-compatible chat completions URL
+  --model <model>               Model name as expected by your endpoint
+  --api-key <key>               API key (or set SENTINEL_SCAN_API_KEY)
+  --system-prompt-file <path>   Path to a text file containing your system prompt
+  --secret <marker>             A literal marker string planted in your system prompt
+  --temperature <n>             Sampling temperature, default 0.2
+
+MCP scan options (same meaning as "sentinel-scan mcp"):
+  --manifest <path>             Path to an mcp.json tool manifest to scan
+
+Evidence-pack options:
+  --demo                        Run demo scan(s), no network calls, no files needed
+  --skip-llm                    Skip the LLM prompt-injection scan
+  --skip-mcp                    Skip the MCP manifest scan
+  --system-name <name>          Target system name (client intake field)
+  --system-description <s>      One-line system description (client intake field)
+  --pack-id <id>                Evidence pack ID (default: generated)
+  --scan-date <date>            Scan date to print (default: today, ISO date)
+  --report-date <date>          Report date to print (default: today, ISO date)
+  --output <path>               Where to write the rendered Markdown evidence pack
+                                 (default: evidence-pack.md)
+  --llm-scan-output <path>      Where to also write the raw LLM scan JSON
+                                 (default: sentinel_scan_results.json)
+  --mcp-scan-output <path>      Where to also write the raw MCP scan JSON
+                                 (default: sentinel_scan_mcp_results.json)
+  -h, --help                    Show this help`);
+}
+
+async function runEvidenceCommand(argv) {
+  const args = parseEvidenceArgs(argv);
+  if (args.help) {
+    printEvidenceHelp();
+    return;
+  }
+
+  const hasLlmTarget = args.demo || (args.url && args.model);
+  const hasMcpTarget = args.demo || !!args.manifest;
+  const wantLlm = !args.skipLlm && hasLlmTarget;
+  const wantMcp = !args.skipMcp && hasMcpTarget;
+
+  if (!wantLlm && !wantMcp) {
+    console.error('error: evidence requires --demo, --url/--model (LLM scan), and/or --manifest (MCP scan)');
+    process.exit(2);
+  }
+
+  let llmOut = null;
+  if (wantLlm) {
+    if (!args.demo && (!args.url || !args.model)) {
+      console.error('error: --url and --model are both required for the LLM scan unless --demo is set');
+      process.exit(2);
+    }
+    if (!args.demo && typeof fetch !== 'function') {
+      console.error('error: this tool requires Node 18+ (global fetch not found)');
+      process.exit(1);
+    }
+    llmOut = await runScan({
+      url: args.url,
+      model: args.model,
+      apiKey: args.apiKey,
+      systemPromptFile: args.systemPromptFile,
+      secret: args.secret,
+      temperature: args.temperature,
+      demo: args.demo,
+      output: args.llmScanOutput,
+      failOn: 'none',
+    });
+  }
+
+  let mcpOut = null;
+  if (wantMcp) {
+    mcpOut = runMcpScan({
+      manifest: args.manifest,
+      output: args.mcpScanOutput,
+      format: 'json',
+      demo: args.demo,
+      failOn: 'none',
+      baseline: undefined,
+      updateBaseline: false,
+    });
+  }
+
+  const rendered = renderPack({
+    systemName: args.systemName,
+    systemDescription: args.systemDescription,
+    packId: args.packId,
+    scanDate: args.scanDate,
+    reportDate: args.reportDate,
+  }, llmOut, mcpOut);
+
+  fs.writeFileSync(args.output, rendered, 'utf-8');
+
+  console.log();
+  console.log(`Evidence pack written to ${args.output}`);
+  const rawOutputs = [];
+  if (llmOut) rawOutputs.push(args.llmScanOutput);
+  if (mcpOut) rawOutputs.push(args.mcpScanOutput);
+  console.log(`Raw scan JSON written to ${rawOutputs.join(' and ')} - attach alongside the pack for an auditor to verify the tables against.`);
+  console.log();
+  console.log('This is a scan-derived draft, not a customer deliverable - review before');
+  console.log('sharing with an auditor or customer. For a thorough, LLM-judged audit:');
+  console.log('https://ventrova.dev/audit');
 }
 
 async function runScan(args) {
@@ -1801,6 +1984,11 @@ async function main() {
     return;
   }
 
+  if (process.argv[2] === 'evidence') {
+    await runEvidenceCommand(process.argv.slice(3));
+    return;
+  }
+
   const args = parseArgs(process.argv.slice(2));
   if (args.version) {
     console.log(VERSION);
@@ -1833,5 +2021,5 @@ if (require.main === module) {
 // in-process instead of the SARIF file this normally feeds.
 module.exports = {
   scanMcpManifest, buildMcpSarif, mcpSarifLineForTool, DEMO_MCP_MANIFEST, VERSION,
-  mcpFindingsBreachThreshold,
+  mcpFindingsBreachThreshold, parseEvidenceArgs, runEvidenceCommand,
 };
