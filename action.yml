@@ -1,5 +1,5 @@
 name: 'Sentinel Scan (MCP/LLM security)'
-description: 'Scan an MCP tool manifest for prompt-injection, excessive-agency, and OWASP LLM Top 10 risks. Fails the build on your severity threshold, no network calls.'
+description: "Scan MCP manifests for prompt-injection, excessive-agency & OWASP LLM Top 10 risks; fail your build on a severity gate."
 author: 'Ventrova'
 branding:
   icon: 'shield'
