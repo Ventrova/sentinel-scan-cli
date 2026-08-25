@@ -4,13 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sentinel-scan-cli"
-version = "1.4.13"
-description = "Scan MCP servers and tool manifests for tool poisoning, prompt injection, and rug-pulls - 10 OWASP-mapped heuristics, CLI + MCP server, fully offline. Also runs an OWASP LLM Top 10 prompt-injection/jailbreak smoke test against your own LLM endpoint."
+version = "1.4.14"
+description = "MCP security scanner: scan MCP servers and tool manifests for tool poisoning, prompt injection, and rug-pulls - 10 OWASP-mapped heuristics, CLI + MCP server, fully offline. Also runs an OWASP LLM Top 10 prompt-injection/jailbreak smoke test against your own LLM endpoint."
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.8"
 authors = [{ name = "Ventrova" }]
-keywords = ["mcp", "model-context-protocol", "mcp-security", "mcp-scanner", "tool-poisoning", "rug-pull", "supply-chain-security", "llm", "security", "prompt-injection", "jailbreak", "ai-security", "red-team", "llm-security", "devsecops", "vulnerability-scanner", "static-analysis"]
+keywords = ["mcp", "mcp-server", "mcp-client", "model-context-protocol", "mcp-security", "mcp-scanner", "manifest-scanner", "security-scanner", "tool-poisoning", "rug-pull", "supply-chain-security", "llm", "security", "prompt-injection", "jailbreak", "ai-security", "red-team", "owasp", "sarif", "llm-security", "devsecops", "vulnerability-scanner", "static-analysis"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Environment :: Console",

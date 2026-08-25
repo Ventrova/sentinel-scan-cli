@@ -20,19 +20,20 @@
 
 **10 OWASP-mapped heuristics · 15-attack jailbreak suite · 100% offline · CLI + MCP server**
 
-A free, open-source **MCP security scanner**, available as both a CLI and an
-MCP server, that statically scans MCP tool manifests (`mcp.json`) and
+A free, open-source **MCP security scanner** - available as a CLI and as an
+MCP server - that statically scans MCP tool manifests (`mcp.json`) and
 `mcpServers` configs for 10 OWASP-mapped heuristics: tool-description
 prompt injection, tool-name shadowing (tool poisoning), excessive-agency
 schema patterns, indirect-injection surface area, unpinned/remote server
 sources, hardcoded credentials, overbroad wildcard scopes, missing
 provenance/signature metadata, missing human-in-the-loop confirmation, and
-hidden-unicode/ASCII-smuggling instructions - see
-[MCP tool manifest scan](#mcp-tool-manifest-scan) below. It also ships a
-15-attack prompt-injection and jailbreak suite you can run against your own
-LLM-backed endpoint. Every finding is tagged with its **OWASP LLM Top 10**
-(and OWASP MCP Top 10) category, so results map straight onto the checklist
-your security team already uses.
+hidden-unicode/ASCII-smuggling instructions. See
+[MCP tool manifest scan](#mcp-tool-manifest-scan) below for the full list.
+
+It also ships a 15-attack prompt-injection and jailbreak suite you can run
+against your own LLM-backed endpoint. Every finding is tagged with its
+**OWASP LLM Top 10** (and OWASP MCP Top 10) category, so results map
+straight onto the checklist your security team already uses.
 
 **One-line CLI install:**
 
