@@ -1,7 +1,7 @@
 {
-  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-29/server.schema.json",
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.Ventrova/sentinel-scan-cli",
-  "description": "Static, offline heuristic security scanner for MCP server manifests, mapped to the OWASP MCP Top 10 (tool description/name injection, excessive agency, command injection, hardcoded credentials, unpinned sources, wildcard scopes, missing HITL confirmation, hidden unicode, cross-origin exfiltration, DoS risk, definition drift). No server execution, no network calls, no LLM calls.",
+  "description": "Static, offline OWASP-mapped security scanner for MCP server manifests. No network/LLM calls.",
   "title": "Sentinel Scan",
   "repository": {
     "url": "https://github.com/Ventrova/sentinel-scan-cli",

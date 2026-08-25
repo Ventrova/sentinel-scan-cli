@@ -42,7 +42,18 @@ jobs:
       - name: Upgrade npm (Trusted Publishing OIDC needs >= 11.5.1)
         run: npm install -g npm@latest
       - name: Install dependencies (needed by prepublishOnly test run)
-        run: npm ci
+        # npm ci on ephemeral GH-hosted runners has occasionally left
+        # @modelcontextprotocol/sdk's subpath exports unresolved on the first
+        # attempt (transient extraction/cache flake, not reproducible with a
+        # clean local install) - retry a clean install rather than fail the
+        # publish on infra flakiness.
+        run: |
+          for i in 1 2 3; do
+            npm ci && node -e "require.resolve('@modelcontextprotocol/sdk/server/mcp.js')" && break
+            echo "::warning::npm ci attempt $i did not produce a resolvable @modelcontextprotocol/sdk install, retrying..."
+            rm -rf node_modules
+            sleep 5
+          done
       - name: Verify tag matches package.json version
         if: startsWith(github.ref, 'refs/tags/')
         run: |
