@@ -262,6 +262,62 @@ above that severity), or `none` (never fail, the default). `sentinel-scan
 arguments or an unreadable manifest still exit `2`/`1` as before. This works
 with either `--format json` or `--format sarif`.
 
+## MCP Server
+
+The same `scan_mcp_manifest` heuristics above are also available as an MCP
+tool, so an agent (Claude Desktop, Cursor, or any MCP client) can scan a
+manifest itself instead of you running the CLI by hand. The server exposes
+exactly one tool, does no server execution, no network calls, and no LLM
+calls - it's the identical static heuristic scan, just callable over stdio.
+
+**Node build (`npx`, no install):**
+
+```json
+{
+  "mcpServers": {
+    "sentinel-scan": {
+      "command": "npx",
+      "args": ["-y", "sentinel-scan-cli", "mcp-server"]
+    }
+  }
+}
+```
+
+**Python build (`uvx`, no install):**
+
+```json
+{
+  "mcpServers": {
+    "sentinel-scan": {
+      "command": "uvx",
+      "args": ["--from", "sentinel-scan-cli[mcp-server]", "sentinel-scan-mcp-server"]
+    }
+  }
+}
+```
+
+Drop either block into Claude Desktop's `claude_desktop_config.json` (Settings
+-> Developer -> Edit Config) or any other client's `mcp.json` under its
+`mcpServers` key - both builds register the same `scan_mcp_manifest` tool
+with the same input/output shape, so pick whichever runtime you already have.
+The Python build needs the optional `mcp-server` extra (`mcp>=1.2.0`,
+requires Python >= 3.10) since the base CLI stays zero-dependency.
+
+Once connected, ask the client to scan a manifest - it will call the tool
+with `{"manifest": {...}}` (a `tools`/`mcpServers` object, same shape as
+`mcp.json`) and get back the identical JSON `sentinel-scan mcp --manifest`
+would print, including an optional `baseline` argument for
+`tool_definition_drift` detection against a prior scan.
+
+To verify either build end-to-end yourself (starts the server, lists tools,
+calls `scan_mcp_manifest` against the built-in demo manifest, asserts
+findings came back):
+
+```bash
+node scripts/test-mcp-server.js          # Node build
+python scripts/test-mcp-server.py        # Python build (pip install "sentinel-scan-cli[mcp-server]" first)
+```
+
 ## Annex IV evidence pack
 
 `sentinel-scan evidence` runs the prompt-injection scan and/or the MCP

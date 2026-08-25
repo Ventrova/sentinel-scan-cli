@@ -19,12 +19,16 @@ classifiers = [
     "Topic :: Security",
 ]
 
+[project.optional-dependencies]
+mcp-server = ["mcp>=1.2.0"]
+
 [project.urls]
 Homepage = "https://github.com/Ventrova/sentinel-scan-cli"
 "Managed audit" = "https://ventrova.dev/audit"
 
 [project.scripts]
 sentinel-scan = "sentinel_scan:main"
+sentinel-scan-mcp-server = "sentinel_scan_mcp_server:main"
 
 [tool.setuptools]
-py-modules = ["sentinel_scan"]
+py-modules = ["sentinel_scan", "sentinel_scan_mcp_server"]
